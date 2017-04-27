@@ -1,0 +1,186 @@
+%Hauptdokumentation der Lösung
+\NeedsTeXFormat{LaTeX2e}
+
+\documentclass[a4paper,oneside,abstract,numbers=noenddot]{scrreprt}
+\usepackage{FHNW}
+\pagestyle{fancy}
+\usepackage{pdfpages}
+\usepackage{comment}
+\usepackage{framed}
+\usepackage{smartdiagram}
+\usepackage{amsmath}					%Mathematische Umgebungen
+%\usepackage{amsthm}
+%\usepackage{siunitx}					%SI Einheiten
+\graphicspath{{images/}}
+\usepackage{german}
+\usepackage[ngerman]{babel}
+\usepackage{mwe}
+\usepackage{subfigure}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphics}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{enumitem,blindtext}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+\usepackage{tabularx,colortbl} % for table that fit the page width
+% \definecolor{Gray}{gray}{0.9} % color of table top row
+
+
+
+% Define block styles
+\tikzstyle{circ} = [circle, draw, fill=white!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=white!20, 
+    text width=10em, text centered, minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+    minimum height=2em]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstand einer itemize auf 0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\let\tempone\itemize
+\let\temptwo\enditemize
+\renewenvironment{itemize}{\tempone\setlength{\itemsep}{0em}}{\temptwo}
+
+\newcommand{\titel}{Skatemate}
+\newcommand{\shorttitel}{}
+\newcommand{\doctype}{Fachbericht Projekt 4 (EIT) - Team 2}
+\newcommand{\datum}{\today}
+\newcommand{\team}{Team 2:}
+\newcommand{\autorA}{Selina Reich}
+\newcommand{\autorB}{Rafael Eberle}
+\newcommand{\autorC}{Raphael Brügger}
+\newcommand{\autorD}{Noah Hütter}
+\newcommand{\autorE}{Mike Mösner}
+\newcommand{\autorF}{Remo Suter}
+\newcommand{\ort}{Windisch}
+\newcommand{\dozent}{Hans Gysin}
+\newcommand{\betreuer}{Hans Gysin\\Matthias Meier\\Pascal Schleuniger\\Anita Gertiser\\Bonnie Domenghino}
+\newcommand{\version}{1.0}
+
+\title{\titel}
+\author{\autorA \and \AutorB \and \AutorC \and \AutorD \and \AutorE \and \AutorF}
+\date{\datum}
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Titelseite
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{chapters/000_Titelseite}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\abstractname}{Abstract}
+\pagenumbering{Roman}
+{\pagestyle{plain}{
+	\setcounter{tocdepth}{2}
+	\input{chapters/010_Abstract}
+}}
+
+\clearpage
+\pagestyle{plain}
+%\pagenumbering{Roman}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Inhaltsverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%{\pagestyle{plain}{
+%\setcounter{tocdepth}{2}
+\tableofcontents
+%}}
+
+\clearpage
+\fancyhdrplain
+\pagestyle{plain}
+\pagenumbering{arabic}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einleitung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\input{chapters/020_Einleitung}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Einleitung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Elektrotechnik
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{chapters/030_Hardware}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Software
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\input{chapters/040_Software}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Validierung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\input{chapters/050_Validierung}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Schlusswort
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\input{chapters/060_Schlusswort}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Literaturverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Quellenverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\phantomsection
+
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%\bibliography{Literatur}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\bibliographystyle{IEEEtran}
+\bibliography{Literatur}
+%\ExecuteBibliographyOptions{dashed=false}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abbildungsverzeichnis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+%\listoffigures %Abbildungsverzeichnis
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Anhang
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\begin{appendix}
+\input{chapters/100_Anhang}
+\end{appendix}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+
+\end{document}
