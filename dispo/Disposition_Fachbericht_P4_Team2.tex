@@ -49,22 +49,22 @@
 
 \newcommand{\titel}{Skatemate}
 \newcommand{\shorttitel}{}
-\newcommand{\doctype}{Fachbericht Projekt 4 (EIT) - Team 2}
+\newcommand{\doctype}{Disposition Fachbericht Projekt 4 (EIT) - Team 2}
 \newcommand{\datum}{\today}
 \newcommand{\team}{Team 2:}
-\newcommand{\autorA}{Selina Reich}
+\newcommand{\autorA}{Raphael Brügger}
 \newcommand{\autorB}{Rafael Eberle}
-\newcommand{\autorC}{Raphael Brügger}
-\newcommand{\autorD}{Noah Hütter}
-\newcommand{\autorE}{Mike Mösner}
+\newcommand{\autorC}{Noah Hütter}
+\newcommand{\autorD}{Mike Mösner}
+\newcommand{\autorE}{Selina Reich}
 \newcommand{\autorF}{Remo Suter}
 \newcommand{\ort}{Windisch}
 \newcommand{\dozent}{Hans Gysin}
-\newcommand{\betreuer}{Hans Gysin\\Matthias Meier\\Pascal Schleuniger\\Anita Gertiser\\Bonnie Domenghino}
+\newcommand{\betreuer}{Hans Gysin\\Matthias Meier\\Pascal Schleuniger\\Anita Gertiser\\Bonnie Domenghino\\Pascal Buchschacher}
 \newcommand{\version}{1.0}
 
 \title{\titel}
-\author{\autorA \and \AutorB \and \AutorC \and \AutorD \and \AutorE \and \AutorF}
+\author{\AutorA \and \AutorB \and \AutorC \and \AutorD \and \AutorE \and \AutorF}
 \date{\datum}
 
 
@@ -82,7 +82,7 @@
 \pagenumbering{Roman}
 {\pagestyle{plain}{
 	\setcounter{tocdepth}{2}
-	\input{chapters/010_Abstract}
+	\input{chapters/005_Abstract}
 }}
 
 \clearpage
@@ -110,7 +110,7 @@
 % Einleitung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\clearpage{\pagestyle{empty}\cleardoublepage}
-\input{chapters/020_Einleitung}
+\input{chapters/010_Einleitung}
 %\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -121,27 +121,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Elektrotechnik
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{chapters/030_Hardware}
+\input{chapters/020_Uebersicht}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Technische Grundlagen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\input{chapters/030_Technische_Grundlagen}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hardware
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage{\pagestyle{empty}\cleardoublepage}
+\input{chapters/040_Hardware}
+%\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Software
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\clearpage{\pagestyle{empty}\cleardoublepage}
-\input{chapters/040_Software}
+\input{chapters/050_Software}
 %\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validierung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\clearpage{\pagestyle{empty}\cleardoublepage}
-\input{chapters/050_Validierung}
+\input{chapters/060_Validierung}
 %\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Schlusswort
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\clearpage{\pagestyle{empty}\cleardoublepage}
-\input{chapters/060_Schlusswort}
+\input{chapters/070_Schlusswort}
 %\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
