@@ -4,13 +4,14 @@
 \label{tGl_FlexSensor}
 \section{Balancing}
 \label{tGl_Balancing}
-Das Board wird durch ein sechs Zellen Lipo Polymer Akku gespiesen. Jede einzelne Zelle hat einen eigenen Innenwiderstand, welcher sich mit dem alter verändert und somit von den anderen Zellen abweicht. Somit geraten die Zellen aus der Balance. Beim Ladevorgang weisen diese unterschiedliche Spannungen auf. Damit alle Zellen wieder auf die gleiche Spannung kommen, braucht es einen Balancing-Vorgang. Dabei werden die Zellen, sobald eine über 4.2V ist, über einen Widerstand auf die nächste Zelle kurzgeschlossen, damit die Spannung auf jeder Zelle wieder den selben Wert hat.
-
+Das Board wird durch einen sechs Zellen Li-Po Akku gespiesen. Jede einzelne Zelle hat dabei einen eigenen Innenwiderstand, welcher sich mit dem Alter verändern kann. Beim Ladevorgang entstehen somit unterschiedliche Spannungen wodurch die Zellen aus der Balance geraten.
+Damit sich einzelne Zellen nicht überladen während andere leer bleiben, benötigt es einen Balancing-Vorgang um die Differenzen der Zellen auszugleichen. 
+Dabei werden bei einer zu grossen Spannungsdifferenz alle Zellen auf die Spannung der niedrigsten Zelle entladen. Dabei wird in unserem Fall die überschüssige Energie über den Transistor und die Widerstände verheizt.
 
 \section{BLDC Motor}
 \label{tGl_BLDC}
 
-Für dieses Projekt wurde der Motor OX1 2-10 zur Verfügung gestellt. Dies ist ein dreiphasen Brushless DC-Motor ohne Hallsensoren. Die gegebenen technischen Daten sind in der Tabelle (Abbildung \ref{tabBLDCdaten}) ersichtlich. 
+Für dieses Projekt wurde der Motor OX1 2-10 zur Verfügung gestellt. Dies ist ein dreiphasen Brushless DC-Motor ohne Hallsensoren. Die gegebenen technischen Daten sind in der untenstehenden Tabelle (Abbildung \ref{tabBLDCdaten}) ersichtlich. 
 \todo{ref neben oben ... stehend u Referenz; in der nebenstehenden Tabelle} 
 Des Weiteren ist am Motor ersichtlich, dass die Erregung aus 14 Permanentmagneten besteht und somit 7 Polpaare resultieren. Der Stator besteht aus 12 Spulen, somit ist jede Phase vier Mal gewickelt.
 Der Aufbau entspricht einem Aussenläufermotor, ein BLDC-Motor verhält sich aus Regelungssicht wie eine permanenterregte Synchronmaschine. In der Abbildung \ref{figAufbauBLDC} ist das Feldverhalten dargestellt.\\
@@ -24,8 +25,7 @@ Der Aufbau entspricht einem Aussenläufermotor, ein BLDC-Motor verhält sich aus
 	\label{fig:BLDC}
 \end{figure}
 
-Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (siehe Kapitel \ref{tGl_FOC}), setzt einen sinusförmigen Strom auf jeder Phase voraus, dies jeweils 120 Grad \todo{Grad-Zeichen einfügen %\textdegree \textcelcius ...} 
-}Phasenverschoben. Realisiert wird dies mittels PWM-Ansteuerung der Halbbrücken. Da der Strom bei einer L-Last das Integral der Spannung ist, lässt sich ein quasi-sinusförmiger Strom generieren. Dargestellt ist dies in der Abbildung \ref{figSinusstromPWM}.
+Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (siehe Kapitel \ref{tGl_FOC}), setzt einen sinusförmigen Strom auf jeder Phase voraus, dies jeweils 120\(^\circ\) Phasenverschoben. \todo{ausschreiben od mit Zeichen? 120\(^\circ\) od 120 Grad?} Realisiert wird dies mittels PWM-Ansteuerung der Halbbrücken. Da der Strom bei einer L-Last das Integral der Spannung ist, lässt sich ein quasi-sinusförmiger Strom generieren. Dargestellt ist dies in der Abbildung \ref{figSinusstromPWM}.
 
 \begin{center}
 	\begin{tabular}{|c|c|}
@@ -79,6 +79,8 @@ Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (sieh
 
 \section{FOC}
 \label{tGl_FOC}
+
+
 \section{FET, H-Brücke}
 \label{tGl_HBrugg}
 \section{Funkübertragung}
