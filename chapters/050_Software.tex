@@ -1,10 +1,7 @@
-\chapter{Software}
-\label{Software}
+\chapter{Software} \label{Software}
 \section{Überblick}
-\section{Steuerung - Magic-Glove}
-\label{SW_MagicGlove}
-\section{Stromversorgung}
-\label{SW_Stromversorgung}
+\section{Steuerung - Magic-Glove} \label{SW_MagicGlove}
+\section{Stromversorgung} \label{SW_Stromversorgung}
 Mit der Software zum Battery Management werden wichtige Punkte geregelt, um ein langes Leben der Akkuzellen zu gewährleisten. Darunter gehören sowohl über- als auch unter- Spannungsschutz sowie ausbalancieren der einzelnen Zellenspannungen beim Laden. \\
 Der aktuelle Ladevorgang wird über drei verschiedenen LED’s angezeigt. Dabei zeigen diese den Constant Current (CC), Constant Voltage (CV) und den vollen Zustand (off) an. Diese können als Laden (CC, LED1) Betriebsbereit (CV, LED2) und vollständig geladen (off, LED3) interpretiert werden. 
 Das folgende Zustandsdiagramm (Abbildung \ref{fig:statediagrammbatterie}) zeigt den Ablauf der Software auf dem Mikrocontroller.
@@ -29,17 +26,165 @@ Ein weiterer Schwerpunkt der Software war die Berechnung der Spannungen der einz
 \todo{erklärung / Liste der verwendeten Symbole / bedeutung ADC,...}
 Die Zellspannungen werden in jedem Durchlauf gemessen und in einem Array abgespeichert. Aus diesen Werten werden die minimale und maximale Spannung berechnet, welche für die verschiedenen Logikabfragen in der Statemachine verwendet werden.
 
-\section{Motoransteuerung}
-\label{SW_Motoransteuerung}
+\section{Motoransteuerung} \label{SW_Motoransteuerung}
 \subsection*{Plattform}
-Erläuterung der verwendeten SW-Komponenten/Betriebssystem,
+Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 CPU mit FPU und DSP Instruktionen. Als RTOS wird ChibiOS verwendet. Es stellt grundlegende Kernel Funktionalitäten zur Verfügung wie Schedulers und Threads sowie einen HAL. Die komplette Firmware ist in C geschrieben.
+
 \subsection*{Entwicklungsumgebung}
-\subsection*{Programmablauf}
-Blockschaltmässiger Ablauf der Software
+\begin{center}
+	\begin{tabular}{ | l | l | }
+		\hline
+		Compiler & arm-none-eabi-gcc 5.4.1 20160919 \\ \hline
+		Editor & Sublime Text 3 \\ \hline
+		IDE für Debugging & Eclipse CDT \\ \hline
+		Debugger Probe & openocd 0.10.0 vie ST-Linkv2 \\ \hline
+	\end{tabular}
+	\captionof{table}{Verwendete SW-Entwicklertools}
+\end{center}
+
+
 \subsection*{Peripherie}
-Verwendete Peripheriegeräte wie Timer, ADC, DMA usw
+\begin{tabularx}{\textwidth}{l|c|c|c|X}
+	Peripherie & \rotatebox[origin=c]{90}{IRQ} & \rotatebox[origin=c]{90}{DMA} & \rotatebox[origin=c]{90}{DMA IRQ} & Verwendung \\ \hline
+	TIM1 &
+	- &
+	- &
+	- &
+	Zur Generation der PWM Signale wird der Timer \texttt{TIM1} verwendet. Er ist konfiguriert in Center Aligned PWM Mode. So zählt der Timer zu einem definierten Wert hoch und wieder runter.
+
+	Die PWM Kanäle schalten sobald deren Komperator Wert dem Zählerwert entsprechen. So sind alle PWM ausgänge in der Mitte des Pulses zentriert. Alle Kanäle sind komplementär, so wird der Low-side FET ausgeschaltet wenn der High-side FET eingeschaltet ist und umgekehrt. Kanäle eins bis drei werden für die drei Phasen verwendet und der Kanal vier zur Triggerung des ADC. 
+
+	Der Dutycycle des vierten Kanals ist auf den kleinsten Wert konfiguriert, wo werden die Signale genau in der Mitte des PWM Pulses eingelesen. So wird das \texttt{TIM1 TRGO} Signal generiert.
+	\\ \hline
+	ADC1 &
+	- &
+	1 CH1 &
+	- &
+	Der ADC1 wandelt die drei Phasenspannungen, sowie die Versorgungsspannung. Er wird getriggert von dem \texttt{TIM1 TRGO} Event. Die vier Kanäle werden sequentiell konvertiert und mittels DMA im RAM abgespeichert.
+	\\ \hline
+	ADC3 &
+	\texttt{FC} &
+	5 CH5 &
+	- &
+	Der ADC3 wandelt die zwei Phasenströme, sowie die interne Temperatur und Referenzspannung. Er wird getriggert von dem \texttt{TIM1 TRGO} Event. Die vier Kanäle werden sequentiell konvertiert und mittels DMA im RAM abgespeichert. Der End of Sequence Interrupt ist aktiviert. Er wird getriggert, sobald alle Kanäle gewandelt sind.
+	\\ \hline
+	TIM15 &
+	- &
+	- &
+	- &
+	Der \texttt{TIM15} wird für Zeitmessungen zu Debugzwecken verwendet. Er zählt im 72MHz Takt.
+	\\ \hline
+	TIM3 &
+	- &
+	- &
+	- &
+	Der \texttt{TIM3} wird für ein Input capture verwendet. So kann das Signal eines Modellbau RC-Empfägers eingelesen werden. Dies wird nur zu Debug Zwecken verwendet. Der \texttt{TIM3} wird vom ChibiOS HAL ICU Treiber verwendet.
+	\\ \hline
+	USART3 &
+	- &
+	- &
+	- &
+	Per \texttt{USART3} wird mir dem Computer zu Debug Zwecken kommuniziert. Die ChibiOS Shell läuft über diese Schnittstelle. Zudem werden Daten zur Visualisierung character basiert über \texttt{USART3} übertragen.
+	\\ \hline
+	SPI3 &
+	- &
+	- &
+	- &
+	\texttt{SPI3} wird verwendet zur Kommunikation mit dem Treiber IC und dem RFM Modul. Das Treiber IC wird nur zur Initialisierung beschrieben.
+	\\ \hline
+	USB1 &
+	- &
+	- &
+	- &
+	\texttt{USB1} wird initialisiert aber nur optional verwendet für eine virtuelle serielle Schnittstelle. So kann die Funktion von \texttt{USART3} ohne USB-Seriell Wandler verwendet werden.
+\end{tabularx}
+\captionof{table}{Verwendete Peripherie des Microkontrollers}
+
+
+\subsection*{Programmablauf}
+Der Grossteil der Software läuft in der Interrupt routine des AD-Wandlers sodass der Regler mit einer konstanten Frequenz berechnet wird. Dabei laufen parallel Threads für Steuerung und Debugging:\\
+
+\begin{tabularx}{\textwidth}{l|c|X}
+	Name & Thread/ISR & Verwendung \\ \hline
+	\texttt{ADC ISR} & ISR & FOC routine und Motor Regelung \\ \hline
+	\texttt{main} & Thread & Einlesen der Magic-Glove Daten \\ \hline
+	\texttt{mcfoc main} & Thread & Statusmaschine für die Motorregelung mit Anfahren und Schutzfunktionen \\ \hline
+	\texttt{mcfoc secondary} & Thread & Zur Aufzeichnung von Regeldaten. Nur zu Debug-Zwecken \\ \hline
+	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debug-Zwecken. Eingebaute ChibiOS Funktion
+\end{tabularx}
+\captionof{table}{Thread und ISR Übersicht}
+\label{tab:israndthreads}
+
+Folgend werden die in Tabelle \ref{tab:israndthreads} aufgelisteten Routinen beschrieben.
+
+\subsubsection*{ISR ADC}
+\begin{center}    
+	\begin{tikzpicture}[node distance = 1.5cm, auto]
+	    \node [block] (title) {VectorFC ADC3 Interrupt};
+	    \node [block, below of=title] (lock) {Lock System, Clear Flags};
+	    \node [block, below of=lock] (store) {Store Supply voltage and Phase Currents};
+	    \node [block, below of=store] (clark) {Clark transformation};
+	    \node [block, below of=clark] (esti) {run Position and Speed Estimation};
+		\node [draw, diamond, aspect=2, below of=esti] (slowdown) {Slowdown};
+	    \node [block, below of=slowdown] (park) {Park transformation};
+	    \node [block, below of=park] (currcontr) {Run Current Controller};
+	    \node [block, below of=currcontr] (set) {Set Outputs};
+	    \node [block, below of=set] (unlock) {Unlock System};
+
+
+	    \path [line] (title) -- (lock);
+	    \path [line] (lock) -- (store);
+	    \path [line] (store) -- (clark);
+	    \path [line] (clark) -- (esti);
+	    \path [line] (esti) -- (slowdown);
+	    \path [line] (slowdown) -- node [near start] {Yes} (park);
+	    \path [line] (slowdown) -| ++(4,0) |- node [near start] {No} (unlock);
+	    \path [line] (park) -- (currcontr);
+	    \path [line] (currcontr) -- (set);
+	    \path [line] (set) -- (unlock);
+	\end{tikzpicture}
+	\captionof{figure}{Ablauf der ADC Interrupt routine}
+	\label{fig:fw_adc}
+\end{center}
+
+Vor den Berechnungen wird das Betriebssystem mittels \texttt{chSysLockFromISR} in den I-Locked State geschaltet. So können keine andere Interrupts die Berechnungen unterbrechen und I-Class API Funktionen sind verfügbar. Die Konvertierten Signale werden vom DMA Buffer in Spannungswerte, respektive Strömwerte, umgerechnet und abgespeichert. Die Ströme werden clark-transformiert sodass der Positions- und Geschwindigkeits Beobachter aufgerufen werden kann. Der Stromregler wird langsamer ausgeführt als die Beobachter. Mit dem define \texttt{FOC\_CURRENT\_CONTROLLER\_SLOWDOWN} kann dieser Faktor eingestellt werden. \\
+Vor dem Stromregler werden die Messdaten park-transformiert. Der Stromregler wird aufgerufen und danach die berechneten dutycycles im Timer gesetzt.\\
+Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
+
+\subsubsection*{Thread main}
+\begin{center}    
+	\begin{tikzpicture}[node distance = 1.5cm, auto]
+	    \node [block] (title) {main Thread};
+	    \node [block, below of=title] (sysinit) {ChibiOS initialisieren};
+	    \node [block, below of=sysinit] (init) {Treiber, FOC und Magic-Glove initialisieren};
+	    \node [block, below of=init] (slp) {Sleep};
+		\node [draw, diamond, aspect=2, below of=slp] (slowdown) {Slowdown};
+	    \node [block, below of=slowdown] (mge) {Magic-Glove einlesen};
+	    \node [block, below of=mge] (set) {Neuer Strom im FOC Modul setzen};
+	    \node [block, below of=set] (shell) {Shell abarbeiten};
+
+	    \path [line] (title) -- (sysinit);
+	    \path [line] (sysinit) -- (init);
+	    \path [line] (init) -- (slp);
+	    \path [line] (slp) -- (slowdown);
+	    \path [line] (slowdown) -- node [near start] {Yes} (mge);
+	    \path [line] (mge) -- (set);
+	    \path [line] (set) -- (shell);
+	    \path [line] (slowdown) -| ++(4,0) |- node [near start] {No} (shell);
+	    \path [line] (shell) |- ++(-4,-1) |- (slp);
+	\end{tikzpicture}
+	\captionof{figure}{Ablauf des main Threads}
+	\label{fig:fw_adc}
+\end{center}
+
+\subsubsection*{Thread mcfoc main}
+\subsubsection*{Thread mcfoc secondary}
+\subsubsection*{Thread shell}
+Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Seriellen Schnittstelle oder dem USB Treiber und verarbeitet diese.
+
 \subsection*{Modulübersicht}
 Jedes Modul wird grob erläutert
+
 \subsection*{Libraries}
 Eine Übersicht über alle verwendeten externen Libraries
 
