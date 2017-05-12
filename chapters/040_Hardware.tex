@@ -29,7 +29,7 @@ Um das Board einfach laden zu können ohne jedes Mal den Akku ausbauen zu müsse
 
 \subsection*{Mikrocontroller}
 An den Mikrocontroller werden verschiedene Anforderungen gesetzt.
-In folgender Tabelle x werden die General Purpose Input Output (GPIO) Anforderungen an den Mikrocontroller aufgelistet.
+In folgender Tabelle \ref{tabGPIObat} werden die General Purpose Input Output (GPIO) Anforderungen an den Mikrocontroller aufgelistet.
 \begin{center}
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
@@ -58,13 +58,12 @@ In folgender Tabelle x werden die General Purpose Input Output (GPIO) Anforderun
 		Kommunikation SPI Schnittstelle MISO/MOSI/SCK & Serial & In/Output & 3 \\ 
 		\hline 
 	\end{tabular} 
-	\captionof{figure}{GPIO Anforderungen für den Mikrocontroller}
+	\captionof{table}{GPIO Anforderungen für den Mikrocontroller}
 	\label{tabGPIObat}
 \end{center}
 Für die Regelung der Stromversorgung wird der Mikrocontroller ATmega328P-AU verwendet.
 \subsection*{Zellmessung}
 Die Messung der Zellen durchlief während der Entwicklungsphase mehrere Änderungen. Die Zellen sind in Serie geschaltet, um dem Motor genügend Spannung zur Verfügung zu stellen. Mit einer Zellenspannung von 4.15V pro Zelle liegt am obersten Punkt (Anode der Zelle 6) eine Spannung von 24,9V. Da die Spannung an den Eingängen des Mikrocontrollers nicht seine Speisespannung übersteigen sollte, mussten diese Spannungen verringert werden. In unserem Fall beträgt die maximale Spannung am Eingang 5V. Die erste Idee war, wie in Abb.\ref{fig:zellmessung} links oben zu sehen, mit einfachen Spannungsteiler die Spannungen so zu skalieren, dass die Maximalspannung nicht überschritten wird. 
-
 \begin{figure} [H]
 	\centering
 	\includegraphics[width=1\linewidth]{images/Zellmessung}
