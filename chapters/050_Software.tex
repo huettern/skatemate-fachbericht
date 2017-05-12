@@ -147,12 +147,40 @@ Folgend werden die in Tabelle \ref{tab:israndthreads} aufgelisteten Routinen bes
 	\label{fig:fw_adc}
 \end{center}
 
-\subsubsection*{Thread main}
+Vor den Berechnungen wird das Betriebssystem mittels \texttt{chSysLockFromISR} in den I-Locked State geschaltet. So können keine andere Interrupts die Berechnungen unterbrechen und I-Class API Funktionen sind verfügbar. Die Konvertierten Signale werden vom DMA Buffer in Spannungswerte, respektive Strömwerte, umgerechnet und abgespeichert. Die Ströme werden clark-transformiert sodass der Positions- und Geschwindigkeits Beobachter aufgerufen werden kann. Der Stromregler wird langsamer ausgeführt als die Beobachter. Mit dem define \texttt{FOC\_CURRENT\_CONTROLLER\_SLOWDOWN} kann dieser Faktor eingestellt werden. \\
+Vor dem Stromregler werden die Messdaten park-transformiert. Der Stromregler wird aufgerufen und danach die berechneten dutycycles im Timer gesetzt.\\
+Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
 
+\subsubsection*{Thread main}
+\begin{center}    
+	\begin{tikzpicture}[node distance = 1.5cm, auto]
+	    \node [block] (title) {main Thread};
+	    \node [block, below of=title] (sysinit) {ChibiOS initialisieren};
+	    \node [block, below of=sysinit] (init) {Treiber, FOC und Magic-Glove initialisieren};
+	    \node [block, below of=init] (slp) {Sleep};
+		\node [draw, diamond, aspect=2, below of=slp] (slowdown) {Slowdown};
+	    \node [block, below of=slowdown] (mge) {Magic-Glove einlesen};
+	    \node [block, below of=mge] (set) {Neuer Strom im FOC Modul setzen};
+	    \node [block, below of=set] (shell) {Shell abarbeiten};
+
+	    \path [line] (title) -- (sysinit);
+	    \path [line] (sysinit) -- (init);
+	    \path [line] (init) -- (slp);
+	    \path [line] (slp) -- (slowdown);
+	    \path [line] (slowdown) -- node [near start] {Yes} (mge);
+	    \path [line] (mge) -- (set);
+	    \path [line] (set) -- (shell);
+	    \path [line] (slowdown) -| ++(4,0) |- node [near start] {No} (shell);
+	    \path [line] (shell) |- ++(-4,-1) |- (slp);
+	\end{tikzpicture}
+	\captionof{figure}{Ablauf des main Threads}
+	\label{fig:fw_adc}
+\end{center}
 
 \subsubsection*{Thread mcfoc main}
 \subsubsection*{Thread mcfoc secondary}
 \subsubsection*{Thread shell}
+Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Seriellen Schnittstelle oder dem USB Treiber und verarbeitet diese.
 
 \subsection*{Modulübersicht}
 Jedes Modul wird grob erläutert
