@@ -4,7 +4,7 @@
 \label{tGl_FlexSensor}
 \section{Balancing}
 \label{tGl_Balancing}
-Das Board wird durch einen sechs Zellen Li-Po Akku gespiesen. Jede einzelne Zelle hat dabei einen eigenen Innenwiderstand, welcher sich mit dem Alter verändern kann. Beim Ladevorgang entstehen somit unterschiedliche Spannungen wodurch die Zellen aus der Balance geraten.
+Das Board wird durch einen sechs Zellen Li-Po Akku gespeist. Jede einzelne Zelle hat dabei einen eigenen Innenwiderstand, welcher sich mit dem Alter verändern kann. Beim Ladevorgang entstehen somit unterschiedliche Spannungen wodurch die Zellen aus der Balance geraten.
 Damit sich einzelne Zellen nicht überladen während andere leer bleiben, benötigt es einen Balancing-Vorgang um die Differenzen der Zellen auszugleichen. 
 Dabei werden bei einer zu grossen Spannungsdifferenz alle Zellen auf die Spannung der niedrigsten Zelle entladen. Dabei wird in unserem Fall die überschüssige Energie über den Transistor und die Widerstände verheizt.
 
@@ -79,6 +79,13 @@ Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (sieh
 
 \section{FOC}
 \label{tGl_FOC}
+Einstieg...\\
+Das Prinzip der Transformationen:
+Ein kompliziertes Problem wird in ein anderes Koordinatensystem transformiert. Das transformierte Problem ist dort viel einfacher zu lösen, es ist also ein einfacheres Problem. Die leicht gefundene Lösung wird rücktransformiert, wodurch die Lösung des komplizierten Problems erhalten wird. Ein mögliches Beispiel dafür ist die Laplace-Transformierung von Differentialgleichungen. 
+\\
+In unserem Beispiel ist das Problem die Ansteuerung des Motors. Mit der Clarke-Transformation wird in ein statorfestes Koordinatensystem gewechselt, mit der anschliessenden Park-Transformation in ein rotorfestes. Das Problem ist nun linear und mit einem einfachen PI (oder PID) Regler lösbar. \\
+Anschliessend wird die gefundene Lösung zurücktransformiert.
+Dabei kann die komplette Rücktransformation (inverse Park- und inverse Clarke Transformation) ausgeführt und anschliessend der Motor über eine PWM angesteuert werden, oder aber es wird nur bis ins statorfeste Koordinatensystem rücktransformiert, (inverse Park Transformation) dann wird der Motor über eine Raumvektor-PWM (SVPWM) angesteuert.
 
 
 \section{FET, H-Brücke}
