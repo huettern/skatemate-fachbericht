@@ -18,43 +18,43 @@ Der Aufbau entspricht einem Aussenläufermotor, ein BLDC-Motor verhält sich aus
 
 \begin{figure} [H]
 %	\centering
-	\subfigure[Prinzip Aufbau BLDC \cite{ElAntriebe_Babiel}]{
-		\includegraphics[width=0.45\linewidth]{images/AufbauBLDC} \label{figAufbauBLDC} 	}
-	\subfigure[Sinstr][Sinusstrom mit PWM-Spannung \cite{InTech_PWM}]{ \includegraphics[width=0.5\linewidth]{images/StromBLDC} \label{figSinusstromPWM}}
-	\caption[BLDC Motor]{Aufbau BLDC und PWM-Ansteuerung}
-	\label{fig:BLDC}
+\subfigure[Prinzip Aufbau BLDC \cite{ElAntriebe_Babiel}]{
+\includegraphics[width=0.45\linewidth]{images/AufbauBLDC} \label{figAufbauBLDC} 	}
+\subfigure[Sinstr][Sinusstrom mit PWM-Spannung \cite{InTech_PWM}]{ \includegraphics[width=0.5\linewidth]{images/StromBLDC} \label{figSinusstromPWM}}
+\caption[BLDC Motor]{Aufbau BLDC und PWM-Ansteuerung}
+\label{fig:BLDC}
 \end{figure}
 
 Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (siehe Kapitel \ref{tGl_FOC}), setzt einen sinusförmigen Strom auf jeder Phase voraus, dies jeweils 120\(^\circ\) Phasenverschoben. \todo{ausschreiben od mit Zeichen? 120\(^\circ\) od 120 Grad?} Realisiert wird dies mittels PWM-Ansteuerung der Halbbrücken. Da der Strom bei einer L-Last das Integral der Spannung ist, lässt sich ein quasi-sinusförmiger Strom generieren. Dargestellt ist dies in der Abbildung \ref{figSinusstromPWM}.
 
 \begin{center}
-	\begin{tabular}{|c|c|}
-		\hline 
-		\rule[-1ex]{0pt}{2.5ex}  BLDC Motor & Werte  \\ 
-		\hline 
-		\rule[-1ex]{0pt}{2.5ex} Idle Current & 1.2A \\ 
-		\hline 
-		\rule[-1ex]{0pt}{2.5ex} Max. Current & 50A \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Input Volt. & 2..10 x 3.6 Lipo (25.2V) \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Max. Output & 1815W \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Max. Pull & 6700g \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Rated Curren & 42.5A \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Motor Weight & 460g \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Shaft & 8mm \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Motor dimension & \O 50 x 65mm \\ 
-		\hline
-		\rule[-1ex]{0pt}{2.5ex} Internal Resistance & 0.0361$\Omega$ \\ 
-		\hline	
-	\end{tabular} 
-	\captionof{table}{BLDC Daten}
-	\label{tabBLDCdaten}
+\begin{tabular}{|c|c|}
+\hline 
+\rule[-1ex]{0pt}{2.5ex}  BLDC Motor & Werte  \\ 
+\hline 
+\rule[-1ex]{0pt}{2.5ex} Idle Current & 1.2A \\ 
+\hline 
+\rule[-1ex]{0pt}{2.5ex} Max. Current & 50A \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Input Volt. & 2..10 x 3.6 Lipo (25.2V) \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Max. Output & 1815W \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Max. Pull & 6700g \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Rated Curren & 42.5A \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Motor Weight & 460g \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Shaft & 8mm \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Motor dimension & \O 50 x 65mm \\ 
+\hline
+\rule[-1ex]{0pt}{2.5ex} Internal Resistance & 0.0361$\Omega$ \\ 
+\hline	
+\end{tabular} 
+\captionof{table}{BLDC Daten}
+\label{tabBLDCdaten}
 \end{center}
 \todo{e-Deutsch uebersetzung und Formatierung usw}
 \todo{ev in Anhang??}
@@ -97,24 +97,24 @@ Die Clarke-Transformation wechselt die mehr- bzw. dreiphasigen Grössen (z.B. Ph
 Die mathematische Formulierung lautet:
 \begin{equation}\label{ClarkeTrafo}
 \left[
-	\begin{array}{c}
-	I_\alpha \\ 
-	I_\beta
-	\end{array} 
+\begin{array}{c}
+I_\alpha \\ 
+I_\beta
+\end{array} 
 \right]
 = \frac{2}{3}
 \left[
-	\begin{array}{ccc}
-	1 & -\frac{1}{2} & -\frac 12 \\ 
-	0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2}
-	\end{array} 
+\begin{array}{ccc}
+1 & -\frac{1}{2} & -\frac 12 \\ 
+0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2}
+\end{array} 
 \right] 
 \left[
-	\begin{array}{c}
-	I_A \\ 
-	I_B \\
-	I_C
-	\end{array} 
+\begin{array}{c}
+I_A \\ 
+I_B \\
+I_C
+\end{array} 
 \right]
 \end{equation}
 \todo{Abstände zwischen den Zeilen der Matrix?! ... schönere Darstellung gewünscht; Entscheid ob Multiplikationspunkt cdot dazwischen}
@@ -122,24 +122,24 @@ Die inverse Clarke-Transformation wird entsprechend durch folgende Gleichung bes
 \begin{equation}\label{invClarkeTrafo}
 \left[
 \begin{array}{c}
-	I_A \\ 
-	I_B \\
-	I_C
+I_A \\ 
+I_B \\
+I_C
 \end{array} 
 \right]
 = 
 \left[
-	\begin{array}{cc}
-	1 & 0 \\
-	-\frac{1}{2} & \frac{\sqrt{3}}{2} \\
-	-\frac 12  & -\frac{\sqrt{3}}{2}
-	\end{array} 
+\begin{array}{cc}
+1 & 0 \\
+-\frac{1}{2} & \frac{\sqrt{3}}{2} \\
+-\frac 12  & -\frac{\sqrt{3}}{2}
+\end{array} 
 \right] 
 \left[
-	\begin{array}{c}
-	I_\alpha \\ 
-	I_\beta
-	\end{array} 
+\begin{array}{c}
+I_\alpha \\ 
+I_\beta
+\end{array} 
 \right]
 \end{equation}
 
@@ -149,46 +149,46 @@ Die Park-Transformation transformiert die Grössen I$_{\alpha}$ und I$_{\beta}$ 
 Ausgehend vom statorfesten Bezugssystem benötigt es nur noch eine Rotation, um die Grössen in das rotorfeste Bezugssystem zu transformieren. Mathematisch gesehen geschieht die Transformation also über eine Drehmatrix, dargestellt ist die Transformation in der Gleichung \ref{ParkTrafo}. 
 \begin{equation}\label{ParkTrafo}
 \left[
-	\begin{array}{c}
-	I_d \\ 
-	I_q
-	\end{array} 
+\begin{array}{c}
+I_d \\ 
+I_q
+\end{array} 
 \right]
 = 
 \left[
-	\begin{array}{cc}
-	\cos (\theta) & \sin(\theta) \\
-	-\sin(\theta)  & \cos(\theta)
-	\end{array} 
+\begin{array}{cc}
+\cos (\theta) & \sin(\theta) \\
+-\sin(\theta)  & \cos(\theta)
+\end{array} 
 \right] 
 \left[
-	\begin{array}{c}
-	I_\alpha \\ 
-	I_\beta
-	\end{array} 
+\begin{array}{c}
+I_\alpha \\ 
+I_\beta
+\end{array} 
 \right]
 \end{equation}
 
 Die inverse Park-Transformation wird entsprechend durch folgende Gleichung beschrieben:
 \begin{equation}\label{invParkTrafo}
 \left[
-	\begin{array}{c}	
-	I_\alpha \\ 
-	I_\beta
-	\end{array} 
+\begin{array}{c}	
+I_\alpha \\ 
+I_\beta
+\end{array} 
 \right]
 = 
 \left[
-	\begin{array}{cc}
-	\cos (\theta) & -\sin(\theta) \\
-	\sin(\theta)  & \cos(\theta)
-	\end{array} 
+\begin{array}{cc}
+\cos (\theta) & -\sin(\theta) \\
+\sin(\theta)  & \cos(\theta)
+\end{array} 
 \right] 
 \left[
-	\begin{array}{c}
-	I_d \\ 
-	I_q
-	\end{array} 
+\begin{array}{c}
+I_d \\ 
+I_q
+\end{array} 
 \right]
 \end{equation}
 
@@ -197,49 +197,49 @@ Die Clarke- und Park-Transformation kann auch in einem Schritt durchgeführt wer
 Die mathematische Formulierung lautet:
 \begin{equation}\label{dqTrafo}
 \left[
-	\begin{array}{c}
-	I_d \\ 
-	I_q
-	\end{array} 
+\begin{array}{c}
+I_d \\ 
+I_q
+\end{array} 
 \right]
 = \frac{2}{3}
 \left[
-	\begin{array}{ccc}
-	\cos (\theta) & \cos (\theta-\frac{2\pi}{3} & \cos (\theta-\frac{4\pi}{3} \\ 
-	-\sin (\theta) & -\sin (\theta-\frac{2\pi}{3} & -\sin (\theta-\frac{4\pi}{3}
-	\end{array} 
+\begin{array}{ccc}
+\cos (\theta) & \cos (\theta-\frac{2\pi}{3} & \cos (\theta-\frac{4\pi}{3} \\ 
+-\sin (\theta) & -\sin (\theta-\frac{2\pi}{3} & -\sin (\theta-\frac{4\pi}{3}
+\end{array} 
 \right] 
 \left[
-	\begin{array}{c}
-	I_A \\ 
-	I_B \\
-	I_C
-	\end{array} 
+\begin{array}{c}
+I_A \\ 
+I_B \\
+I_C
+\end{array} 
 \right]
 \end{equation}
 
 Die inverse d/q-Transformation lautet:
 \begin{equation}\label{invdqTrafo}
 \left[
-	\begin{array}{c}
-	I_A \\ 
-	I_B \\
-	I_C
-	\end{array} 
+\begin{array}{c}
+I_A \\ 
+I_B \\
+I_C
+\end{array} 
 \right]
 =
 \left[
-	\begin{array}{cc}
-	\cos (\theta) & -\sin (\theta) \\
-	\cos (\theta-\frac{2\pi}{3} & -\sin (\theta-\frac{2\pi}{3} \\
-	\cos (\theta-\frac{4\pi}{3} & -\sin (\theta-\frac{4\pi}{3} 
-	\end{array} 
+\begin{array}{cc}
+\cos (\theta) & -\sin (\theta) \\
+\cos (\theta-\frac{2\pi}{3} & -\sin (\theta-\frac{2\pi}{3} \\
+\cos (\theta-\frac{4\pi}{3} & -\sin (\theta-\frac{4\pi}{3} 
+\end{array} 
 \right] 
 \left[
-	\begin{array}{c}
-	I_d \\ 
-	I_q
-	\end{array} 
+\begin{array}{c}
+I_d \\ 
+I_q
+\end{array} 
 \right]
 \end{equation}
 
@@ -261,7 +261,61 @@ Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobac
 \todo{Quelle nonlinear Observer}
 
 
-\section{FET, H-Brücke}
+\section{H-Brücke}
+Wie in Abbildung \ref{fig:BLDC} zu sehen, muss eine sinusförmige Spannung am Motor anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt welche mit der H-Brücke ausgegeben werden. Die H-Brücke besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs. 
+\begin{center}
+	\begin{circuitikz}[scale=2]
+		\draw[color=black]
+		% Fet, Fet and Resistor
+		(0,1) node[nigfete] (nmos1) {}
+		(0,0) node[nigfete] (nmos2) {}
+		(nmos1.S) to (nmos2.D)
+		(nmos2.S) to [R, l_=$R_{sense1}$] (0,-1.5) -- (1,-1.5)
+		(nmos1.D) |- (1,1.5)
+		% Fet, Fet and Resistor
+		(2,1) node[nigfete] (nmos3) {}
+		(2,0) node[nigfete] (nmos4) {}
+		(nmos3.S) to (nmos4.D)
+		(nmos4.S) to [R, l_=$R_{sense2}$] (2,-1.5) -- (2,-1.5)
+		(nmos3.D) |- (1,1.5)
+		% Fet, Fet
+		(4,1) node[nigfete] (nmos5) {}
+		(4,0) node[nigfete] (nmos6) {}
+		(nmos5.S) to (nmos6.D)
+		(nmos6.S) |- (1,-1.5)
+		(nmos6.D) |- (1,1.5)
+
+		% ground
+		(2,-1.5) node[ground]{}
+		% supply
+		(2,1.5) to [short,-o] (2,2) node[right]{$V_{BAT}$}
+		% gates
+		(nmos1.G) to [short,-o] ++(-0.1,0) node[left]{$AH$}
+		(nmos2.G) to [short,-o] ++(-0.1,0) node[left]{$AL$}
+		(nmos3.G) to [short,-o] ++(-0.1,0) node[left]{$BH$}
+		(nmos4.G) to [short,-o] ++(-0.1,0) node[left]{$BL$}
+		(nmos5.G) to [short,-o] ++(-0.1,0) node[left]{$CH$}
+		(nmos6.G) to [short,-o] ++(-0.1,0) node[left]{$CL$}
+		%outputs
+		(nmos1.S) ++(0,-0.1) to [short,-o] ++(0.5,0) node[right]{$A$}
+		(nmos3.S) ++(0,-0.1) to [short,-o] ++(0.5,0) node[right]{$B$}
+		(nmos5.S) ++(0,-0.1) to [short,-o] ++(0.5,0) node[right]{$C$}
+		;
+		% junctions
+		\fill (2,-1.5) circle(1pt);
+		\fill (2,1.5) circle(1pt);
+		\fill (nmos1.S) ++(0,-0.1) circle(1pt);
+		\fill (nmos3.S) ++(0,-0.1) circle(1pt);
+		\fill (nmos5.S) ++(0,-0.1) circle(1pt);
+	\end{circuitikz}
+	\captionof{figure}{H-Brücke zur Motoransteuerung}
+	\label{fig:hbridge}
+\end{center}
+
+Mit den sogenannten High-Side MOSFETs kann jede Phase einzeln auf die Batteriespannung geschaltet werden. Die Low-Side FETs arbeiten symmetrisch dazu und können die Phase auf Batteriemasse schalten. Durch die berechneten PWM kann so ein dreiphasiger Sinus approximiert werden. 
+
+Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine totzeit Schaltung eingebaut. Wird der eine FET ausgeschaltet sind für eine kurze Zeit beide ausgeschaltet bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird Dedatime genannt.
+
 \label{tGl_HBrugg}
 \section{Funkübertragung}
 \label{tGl_RF}
