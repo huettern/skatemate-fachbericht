@@ -37,13 +37,14 @@ Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 C
 		Compiler & arm-none-eabi-gcc 5.4.1 20160919 \\ \hline
 		Editor & Sublime Text 3 \\ \hline
 		IDE für Debugging & Eclipse CDT \\ \hline
-		Debugger Probe & openocd 0.10.0 vie ST-Linkv2 \\ \hline
+		Debugger Probe & openocd 0.10.0 via ST-Linkv2 \\ \hline
 	\end{tabular}
 	\captionof{table}{Verwendete SW-Entwicklertools}
 \end{center}
 
 
 \subsection*{Peripherie}
+Um dem Microkotroller Rechenleistung abzunehmen werden möglichst viele Aufgaben an die eingebauten Peripheriegeräte ausgelastet. Einige Aufgaben wie das Einlesen von Spannungen kann ausserdem nur von speziellen Peripheriegeräten übernommen werden. In der Tabelle \ref{tab:periph} sind alle verwendeten Peripherien aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|c|c|c|X}
 	Peripherie & \rotatebox[origin=c]{90}{IRQ} & \rotatebox[origin=c]{90}{DMA} & \rotatebox[origin=c]{90}{DMA IRQ} & Verwendung \\ \hline
 	TIM1 &
@@ -99,10 +100,11 @@ Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 C
 	\texttt{USB1} wird initialisiert aber nur optional verwendet für eine virtuelle serielle Schnittstelle. So kann die Funktion von \texttt{USART3} ohne USB-Seriell Wandler verwendet werden.
 \end{tabularx}
 \captionof{table}{Verwendete Peripherie des Microkontrollers}
+\label{tab:periph}
 
 
 \subsection*{Programmablauf}
-Der Grossteil der Software läuft in der Interrupt routine des AD-Wandlers sodass der Regler mit einer konstanten Frequenz berechnet wird. Dabei laufen parallel Threads für Steuerung und Debugging:\\
+Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers sodass der Regler mit einer konstanten Frequenz berechnet wird. Dabei laufen parallel Threads für Steuerung und Debugging:\\
 
 \begin{tabularx}{\textwidth}{l|c|X}
 	Name & Thread/ISR & Verwendung \\ \hline
@@ -201,9 +203,9 @@ Zur Zeit der Verfassung dieser Dokumentation war das Anfahren noch nicht impleme
 	    \node [block] (title) {mcfoc secondary Thread};
 	    \node [block, below of=title] (slp) {sleep};
 		\node [draw, diamond, aspect=2, below of=slp] (start) {start sample};
-	    \node [block, below of=start] (slp2) {sleep};
+	    \node [block, below=1cm of start] (slp2) {sleep};
 		\node [draw, diamond, aspect=2, below of=slp2] (done) {sample done};
-	    \node [block, below of=done] (send) {send data};
+	    \node [block, below=1cm of done] (send) {send data};
 
 	    \path [line] (title) -- (slp);
 	    \path [line] (slp) -- (start);
@@ -224,7 +226,8 @@ Der sekundäre \texttt{mc\_foc} Thread ist zuständig für das Datenaufzeichnen 
 \subsubsection*{Thread shell}
 Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Seriellen Schnittstelle oder dem USB Treiber und verarbeitet sie.
 
-\subsection*{Modul- und Headerübersicht}
+\subsection*{Modulübersicht}
+Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ein Modul besteht aus einer C-Quelldatei und optional aus einer Headerdatei. Die Module sind nach ihren Funktionen unterteilt und in Tabelle \ref{tab:mod} aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	\texttt{main} & Im main Modul befindet sich die main routine, welche nach der reset Funktion aufgerufen wird. Darin wird das Betriebssystem und alle anderen Module initialisiert. Im main thread werden die Daten des Magic-Gloves empfangen und an das \texttt{mc foc} Modul gesendet. \\ \hline
@@ -236,7 +239,10 @@ Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Se
 	\texttt{utelemetry} & Dieses Modul ermöglicht die Datenübertragung an einen Computer mit der geeigneten Empfängersoftware. So können Variablen zeitabhängig beobachtet werden. In der letzten Version wird dies jedoch nichtmehr verwendet. \\ \hline
 \end{tabularx}
 \captionof{table}{Modulübersicht}
+\label{tab:mod}
 
+\subsection*{Headerübersicht}
+Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdateien untergebracht. Eine Liste der wichtigsten Headerdateien ist in Tabelle \ref{tab:header} dargestellt.\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	\texttt{defs.h} & Globale definitionen wie Thread namen und stackgrösse, clockdefinitionen und debug macros. \\ \hline
@@ -244,12 +250,14 @@ Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Se
 	\texttt{halconf.h} & Einstellungen für den ChibiOS HAL Treiber. Welche Module er verwenden soll. \\ \hline
 	\texttt{mcuconf.h} & Welche Module für den ChibiOS HAL Treiber verwendet werden, verschiedene Clock Einstellungen. \\ \hline
 	\texttt{stm32f30x.h} & Nur ein Wrapper für die \texttt{STM32F30x standard peripheral} library. \\ \hline
-	\texttt{stm32f30x conf.h} & \texttt{STM32F30x standard peripheral} Konfiguration. \\ \hline
+	\texttt{stm32f30x\_conf.h} & \texttt{STM32F30x standard peripheral} Konfiguration. \\ \hline
 	\texttt{board.h} & Definiert die IO lines welche an den Microkontroller angeschlossen sind und deren Initialisierungswerte. \\ \hline
 \end{tabularx}
 \captionof{table}{Headerübersicht}
+\label{tab:header}
 
 \subsection*{Libraries}
+Einige Programmfunktionen wurden aus existierenden Librarier verwendet. Alle verwendeten externen Libraries sind in der Tabelle \ref{tab:lib} aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	CMSIS &  Der Cortex Microcontroller Software Interface Standard CMSIS stellt eine DSP-Library zur Verfügung mit welcher effizienter Gebrauch der DSP Instruktionen und der FPU gemacht werden kann. Trigonometrische Funktionen und Transformationen werden durch CMSIS realisiert. \\ \hline
@@ -257,5 +265,6 @@ Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Se
 	STM32F30x std periph library & Der HAL von ChibiOS ist nicht genug flexibel für die spezifische Anwendung der Timer und ADC. Die Standard Peripheral Library von ST stellt eine einfache, prozessorgebundene, Hardware Abstraktion zur Verfügung.  \\ \hline
 \end{tabularx}
 \captionof{table}{Übersicht über alle verwendeten externen Libraries}
+\label{tab:lib}
 
 
