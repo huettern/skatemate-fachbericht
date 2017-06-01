@@ -1,6 +1,6 @@
 \chapter{Software} \label{Software}
 \section{Überblick}
-\section{Steuerung - Magic-Glove} \label{SW_MagicGlove}
+\section{Steuerung - Magic Glove} \label{SW_MagicGlove}
 \section{Stromversorgung} \label{SW_Stromversorgung}
 Mit der Software zum Battery Management werden wichtige Punkte geregelt, um ein langes Leben der Akkuzellen zu gewährleisten. Darunter gehören sowohl über- als auch unter- Spannungsschutz sowie ausbalancieren der einzelnen Zellenspannungen beim Laden. \\
 Der aktuelle Ladevorgang wird über drei verschiedenen LED’s angezeigt. Dabei zeigen diese den Constant Current (CC), Constant Voltage (CV) und den vollen Zustand (off) an. Diese können als Laden (CC, LED1) Betriebsbereit (CV, LED2) und vollständig geladen (off, LED3) interpretiert werden. 
@@ -110,7 +110,7 @@ Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers sodass
 \begin{tabularx}{\textwidth}{l|c|X}
 	Name & Thread/ISR & Verwendung \\ \hline
 	\texttt{ADC ISR} & ISR & FOC routine und Motor Regelung \\ \hline
-	\texttt{main} & Thread & Einlesen der Magic-Glove Daten \\ \hline
+	\texttt{main} & Thread & Einlesen der Magic Glove Daten \\ \hline
 	\texttt{mcfoc main} & Thread & Statusmaschine für die Motorregelung mit Anfahren und Schutzfunktionen \\ \hline
 	\texttt{mcfoc secondary} & Thread & Zur Aufzeichnung von Regeldaten. Nur zu Debug-Zwecken \\ \hline
 	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debug-Zwecken. Eingebaute ChibiOS Funktion
@@ -159,10 +159,10 @@ Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
 	\begin{tikzpicture}[node distance = 1.5cm, auto]
 	    \node [block] (title) {main Thread};
 	    \node [block, below of=title] (sysinit) {ChibiOS initialisieren};
-	    \node [block, below of=sysinit] (init) {Treiber, FOC und Magic-Glove initialisieren};
+	    \node [block, below of=sysinit] (init) {Treiber, FOC und Magic Glove initialisieren};
 	    \node [block, below of=init] (slp) {Sleep};
 		\node [draw, diamond, aspect=2, below of=slp] (slowdown) {Slowdown};
-	    \node [block, below of=slowdown] (mge) {Magic-Glove einlesen};
+	    \node [block, below of=slowdown] (mge) {Magic Glove einlesen};
 	    \node [block, below of=mge] (set) {Neuer Strom im FOC Modul setzen};
 	    \node [block, below of=set] (shell) {Shell abarbeiten};
 
