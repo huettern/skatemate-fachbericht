@@ -1,8 +1,175 @@
-\chapter{Validierung} 
+\chapter{Validierung} \label{Validierung}
 
-\section{Überblick}
-\section{Steuerung - Magic Glove}
-\section{Stromversorgung}
-\section{Motoransteuerung}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Überblick
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Überblick} \label{ValidUeberblick}
+Ziel der Validierungsphase ist das Testen auf dem fertigen Board, anhand von Testpersonen. Der Weg bis dahin muss aber ebenfalls kontrolliert und geprüft sein. Zur Sicherstellung der Funktionalität werden die Komponenten einzeln als auch gesamthaft getestet. 
+Jeder Hardware-Bestandteil – Brett, Steuerung, Stromversorgung und Motoransteuerung - hat also sein eigenes Testkonzept.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Brett
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Brett} \label{ValidBrett}
+Das Brett selber, die gepressten Birkenholzplatten, dessen Bearbeitung und die darauf befindliche Stromleiter und Gehäuse wurden einem Stabilitätstest unterzogen, wo geprüft wurde, ob die Komponenten ein Ausreizen der Flexibilität des Brettes vertragen. Die Verbindungen wurden durchgemessen. Es wurde keine Widerstandserhöhung festgestellt. Das Brett selber ist auch nicht zerbrochen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Magic Glove
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Steuerung - Magic Glove} \label{ValidSteuerMagicGlove}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Stromversorgung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Stromversorgung} \label{ValidStromversorgung}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MC
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motoransteuerung} \label{ValidMotoransteuerung}
+Um reproduzierbare Ergebnisse zu erzielen, wird die Motoransteuerung auf einem Prüfstand getestet. Der Motor wird ohne Last befestigt und die Schaltung von einem Netzteil gespiesen. Weiter wird die Motoransteuerung in einzelnen Blöcken validiert. Dabei wird unterschieden in Hardware und Software.\\
+\\
+\textbf{Hardware}
+\begin{itemize}
+	\item Funktion der FETs
+	\item Spannungsmessung mit Spannungsteiler
+\end{itemize}
+\textbf{Software}
+\begin{itemize}
+	\item Einlesen der Spannungen und Ströme
+	\item SVPWM Raumvektormodulation
+	\item Positions- und Geschwindigkeitsbeobachter
+	\item D und Q Stromregler
+\end{itemize}
+
+\subsection*{Hardware}
+\subsubsection*{FETs}
+Die FETs werden der Reihe nach von der Software eingeschalten. Zum Test der High-Side FETs wird am Ausgang ein Widerstand auf Masse geschaltet. So kann die Spannung am Ausgang gemessen und aufgezeichnet werden. Zusätzlich wird die Gatespannung gemessen.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Versorgungsspannung & $15V$ \\ \hline
+		Lastwiderstand & $1k\Omega$ \\ \hline
+		Gatestrom Treiber & $1.7A$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messbedingungen FETs}
+	\label{tab:fetmessbed}
+\end{center}
+
+Zur Gunsten der Übersichtlichkeit wird nur die Messung eines FETs dargestellt.
+
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/placeholder.png}
+	\caption{Einschalten High-Side FET}
+	\label{fig:hsfet}
+\end{figure}
+
+Analog wird der Low-Side FET gemessen mit dem Unterschied, dass der Lastwiderstand auf Speisespannung angeschlossen wird.
+
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/placeholder.png}
+	\caption{Einschalten Low-Side FET}
+	\label{fig:hsfet}
+\end{figure}
+
+\todo{Mess this}
+
+\subsubsection*{Spannungsmessung}
+Ist der Microkontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann eine Spannung an die Ausgänge der H-Brücke gegeben werden und am Ausgang der Spannungsteiler die Spannung gemessen werden. Diese darf bei einem bestimmten Eingangsspannungsbereich die Microkontrollerspeisung nicht überschreiten.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Versorgungsspannungsbereich & $0$ bis $30V$ \\ \hline
+		Microkontrollerspeisung & $3.3V$ \\ \hline
+		Spannungsteiler Faktor & $0.0534$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messbedingungen Spannungsmessung}
+	\label{tab:vmessbed}
+\end{center}
+
+\todo{Mess this}
+
+\subsection*{Software}
+\subsubsection*{Einlesen der Spannungen}
+Über die Shell des Microkontrollers werden alle gemessenen Spannungen periodisch ausgegeben. Um die Spannungen zu messen werden die FETs ausgeschalten und eine Spannung an den Ausgängen angelegt. Um die Strommessung zu validieren werden die Low-Side FETs eingeschalten und ein Strom an den Ausgängen eingespiesen. So kann der gesamte Signalpfad der Messungen validiert werden.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Testspannung & $0$ bis $20V$ \\ \hline
+		Teststrom & $0$ bis $2A$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messbedingungen Spannungsmessung Software}
+	\label{tab:swvmessbed}
+\end{center}
+
+\subsubsection*{SVPWM Raumvektormodulation}
+Für diese Validierung wird ein Sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet und der SVM routine übergeben. Die Ein- und Ausgabedaten werden für eine Zeitdauer aufgezeichnet und dann an den Computer übertragen wo sie dargestellt werden.
+
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/placeholder.png}
+	\caption{Validierung SVPWM Raumvektormodulation}
+	\label{fig:svpwm}
+\end{figure}
+\todo{Matlab figure here}
+
+\subsubsection*{Positions- und Geschwindigkeitsbeobachter} \label{val:obs}
+Nun wird der Motor zwangskommutiert. Das heist, dass wieder eine Sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet wird und auf die H-Brücke geführt wird. Der Motor dreht nun mit einer konstanter Drehzahl. Die Ausgangswerte der Positions- und Geschwindigkeitsbeobachter werden erneut aufgezeichnet und mit dem Computer ausgewertet.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		$v_{d,set}$ & $0.0$ \\ \hline
+		$v_{q,set}$ & $0.07$ \\ \hline
+		$f_{set}$ & $30.0Hz$ \\ \hline
+		Versorgungsspannung & $15V$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messbedingungen Spannungsmessung Software}
+	\label{tab:obsmessbed}
+\end{center}
+
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/placeholder.png}
+	\caption{Validierung Positions- und Geschwindigkeitsbeobachter}
+	\label{fig:observer}
+\end{figure}
+\todo{Matlab figure here}
+
+\subsubsection*{D und Q Stromregler}
+Der letzte Validierungsschritt für die Motorsteuerung auf dem Prüfstand ist die Überprüfung der D und Q Stromregler. Wie bei Validierungsschritt \ref{val:obs} werden die Daten der Regler auf dem Microkontroller zwischengespeichert und anschliessend auf dem Computer dargestellt. Bei dieser Validierung wird der Motor im Closed-Loop Modus betrieben. Es wird softwaremässig ein Sollwertsprung ausgeführt.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		$i_{d,set}$ & $???$ \\ \hline
+		$i_{q,set}$ & $???$ \\ \hline
+		Versorgungsspannung & $15V$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messbedingungen D und Q Stromregler}
+	\label{tab:regmessbed}
+\end{center}
+
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/placeholder.png}
+	\caption{Validierung D und Q Stromregler}
+	\label{fig:reg}
+\end{figure}
+\todo{Matlab figure here}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gesamtvalidierung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Gesamtvalidierung}
-\section{Markttauglichkeit}
+\label{ValidGesamtv}
+Wie bereits angetönt, soll das fertige Board anhand von Testpersonen unterschiedlicher Skate-Erfahrung getestet werden. Die sanfte Anfahrmöglichkeit, die Manövrierfähigkeit und das allgemeine Wohlbefinden des Skaters sind die entscheidenden Kriterien. 
+Testpersonen wurden zufällig ausgewählt und die Bewertungen erfolgten nach subjektivem Einschätzen.
+\todo{unterschiedliche Zeiten (soll getestet werden - wurden ausgewählt / bereits getestet)}
+\section{Alltagstauglichkeit}
+\label{ValidAlltag}
