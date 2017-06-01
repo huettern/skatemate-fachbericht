@@ -30,6 +30,7 @@ Die Zellspannungen werden in jedem Durchlauf gemessen und in einem Array abgespe
 \subsection*{Plattform}
 Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 CPU mit FPU und DSP Instruktionen. Als RTOS wird ChibiOS verwendet. Es stellt grundlegende Kernel Funktionalitäten zur Verfügung wie Schedulers und Threads sowie einen HAL. Die komplette Firmware ist in C geschrieben.
 
+Die vom Code generierte Dokumentation kann jederzeit unter \url{https://noah95.github.io/skatemate-sw/} aufgerufen werden.
 \subsection*{Entwicklungsumgebung}
 \begin{center}
 	\begin{tabular}{ | l | l | }
@@ -37,13 +38,14 @@ Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 C
 		Compiler & arm-none-eabi-gcc 5.4.1 20160919 \\ \hline
 		Editor & Sublime Text 3 \\ \hline
 		IDE für Debugging & Eclipse CDT \\ \hline
-		Debugger Probe & openocd 0.10.0 vie ST-Linkv2 \\ \hline
+		Debugger Probe & openocd 0.10.0 via ST-Linkv2 \\ \hline
 	\end{tabular}
 	\captionof{table}{Verwendete SW-Entwicklertools}
 \end{center}
 
 
 \subsection*{Peripherie}
+Um dem Microkotroller Rechenleistung abzunehmen werden möglichst viele Aufgaben an die eingebauten Peripheriegeräte ausgelastet. Einige Aufgaben wie das Einlesen von Spannungen kann ausserdem nur von speziellen Peripheriegeräten übernommen werden. In der Tabelle \ref{tab:periph} sind alle verwendeten Peripherien aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|c|c|c|X}
 	Peripherie & \rotatebox[origin=c]{90}{IRQ} & \rotatebox[origin=c]{90}{DMA} & \rotatebox[origin=c]{90}{DMA IRQ} & Verwendung \\ \hline
 	TIM1 &
@@ -99,10 +101,11 @@ Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 C
 	\texttt{USB1} wird initialisiert aber nur optional verwendet für eine virtuelle serielle Schnittstelle. So kann die Funktion von \texttt{USART3} ohne USB-Seriell Wandler verwendet werden.
 \end{tabularx}
 \captionof{table}{Verwendete Peripherie des Microkontrollers}
+\label{tab:periph}
 
 
 \subsection*{Programmablauf}
-Der Grossteil der Software läuft in der Interrupt routine des AD-Wandlers sodass der Regler mit einer konstanten Frequenz berechnet wird. Dabei laufen parallel Threads für Steuerung und Debugging:\\
+Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers sodass der Regler mit einer konstanten Frequenz berechnet wird. Dabei laufen parallel Threads für Steuerung und Debugging:\\
 
 \begin{tabularx}{\textwidth}{l|c|X}
 	Name & Thread/ISR & Verwendung \\ \hline
@@ -177,15 +180,92 @@ Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
 	\label{fig:fw_adc}
 \end{center}
 
+Der Main-Thread wird nach der Initialisierung des Clocks und der Konfiguration der GPIOs gestartet. Nach der Initialisierung der restlichen Module startet die Endlosschleife. Da die Shell schneller abgearbeitet werden muss, wird das Einlesen des Magic-Gloves verlangsamt und bei jeder Iteration die Shell abgearbeitet. Nach dem Einlsesn der Steuerdaten werden diese an das \texttt{mc\_foc} Modul weitergeleitet.
+
 \subsubsection*{Thread mcfoc main}
+\begin{center}    
+	\begin{tikzpicture}[node distance = 1.5cm, auto]
+	    \node [block] (title) {mcfoc main Thread};
+	    \node [block, below of=title] (slp) {Sleep};
+
+	    \path [line] (title) -- (slp);
+	    \path [line] (slp) |- ++(-4,-1) |- (slp);
+	\end{tikzpicture}
+	\captionof{figure}{Ablauf des main Threads}
+	\label{fig:fw_adc}
+\end{center}
+
+Zur Zeit der Verfassung dieser Dokumentation war das Anfahren noch nicht implementiert. Dieser Thread ist vorgesehen für die Ansteuermethode des Motors zu entscheiden. Nach einem Stillstand muss angefahren werden, bei Sollwertsprüngen eventuell verlangsamt angesteuert werden und beim Bremsen den Maximalstrom zu limitieren.
+
 \subsubsection*{Thread mcfoc secondary}
+
+\begin{center}    
+	\begin{tikzpicture}[node distance = 1.5cm, auto]
+	    \node [block] (title) {mcfoc secondary Thread};
+	    \node [block, below of=title] (slp) {sleep};
+		\node [draw, diamond, aspect=2, below of=slp] (start) {start sample};
+	    \node [block, below=1cm of start] (slp2) {sleep};
+		\node [draw, diamond, aspect=2, below of=slp2] (done) {sample done};
+	    \node [block, below=1cm of done] (send) {send data};
+
+	    \path [line] (title) -- (slp);
+	    \path [line] (slp) -- (start);
+	    \path [line] (start) -- node [near start] {Yes} (slp2);
+	    \path [line] (slp2) -- (done);
+	    \path [line] (done) -- node [near start] {Yes} (send);
+
+	    \path [line] (start) -| ++(4,0) |- node [near start] {No} (slp);
+	    \path [line] (done) -| ++(4,0) |- node [near start] {No} (slp2);
+	    \path [line] (send) |- ++(-4,-1) |-  (slp);
+	\end{tikzpicture}
+	\captionof{figure}{Ablauf des main Threads}
+	\label{fig:fw_adc}
+\end{center}
+
+Der sekundäre \texttt{mc\_foc} Thread ist zuständig für das Datenaufzeichnen und -übertragen. Mit dem Shell-Command \texttt{sample} wird der Aufzeichnunsvorgang gestartet. In den Interruptroutinen werden die zu aufzeichnenden Daten im RAM gespeichert und sobald der Puffer voll ist, sendet der Thread diese Daten via Shell stream an den Computer.
+
 \subsubsection*{Thread shell}
-Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Seriellen Schnittstelle oder dem USB Treiber und verarbeitet diese.
+Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Seriellen Schnittstelle oder dem USB Treiber und verarbeitet sie.
 
 \subsection*{Modulübersicht}
-Jedes Modul wird grob erläutert
+Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ein Modul besteht aus einer C-Quelldatei und optional aus einer Headerdatei. Die Module sind nach ihren Funktionen unterteilt und in Tabelle \ref{tab:mod} aufgelistet.\\
+\begin{tabularx}{\textwidth}{l|X}
+	Name & Beschreibung \\ \hline
+	\texttt{main} & Im main Modul befindet sich die main routine, welche nach der reset Funktion aufgerufen wird. Darin wird das Betriebssystem und alle anderen Module initialisiert. Im main thread werden die Daten des Magic-Gloves empfangen und an das \texttt{mc foc} Modul gesendet. \\ \hline
+	\texttt{usbcdc} & Dieses Modul startet die USB schnittstelle und deklariert alle Shell-Funktionen. \\ \hline
+	\texttt{usbcfg} & In diesem Modul werden die USB Endpunkte erstellt und behandelt. Es ist teil vom ChibiOS und nicht selbst verfasst. \\ \hline
+	\texttt{util} & Das util Modul stellt verschiedene Module zur Verfügung. Wichtig für die Motoransteuerung sind die darin enthaltenen Trigonometriemethoden wie chnelle arcus tangens Berechnungen. \\ \hline
+	\texttt{drv8301} & Die Initialisierung des FET-Treiber ICs geschieht in diesem Modul. Es beinhaltet auch alle SPI-Registerdefinitionen. Die default Werte sind in der init Funktion enthalen. \\ \hline
+	\texttt{mc\_foc} & In diesem Modul geschieht die komplette Motorsteuerung. In der init Funktion werden Peripherie Module initialisiert, standardwerte geladen, Eingänge kalibriert und die Kontrol-Threads gestartet. Die ADC Interrupt routinen befinden sich am Ende dieses Moduls.\\ \hline
+	\texttt{utelemetry} & Dieses Modul ermöglicht die Datenübertragung an einen Computer mit der geeigneten Empfängersoftware. So können Variablen zeitabhängig beobachtet werden. In der letzten Version wird dies jedoch nichtmehr verwendet. \\ \hline
+\end{tabularx}
+\captionof{table}{Modulübersicht}
+\label{tab:mod}
+
+\subsection*{Headerübersicht}
+Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdateien untergebracht. Eine Liste der wichtigsten Headerdateien ist in Tabelle \ref{tab:header} dargestellt.\\
+\begin{tabularx}{\textwidth}{l|X}
+	Name & Beschreibung \\ \hline
+	\texttt{defs.h} & Globale definitionen wie Thread namen und stackgrösse, clockdefinitionen und debug macros. \\ \hline
+	\texttt{chconf.h} & Einstellungen für den ChibiOS Kernel. \\ \hline
+	\texttt{halconf.h} & Einstellungen für den ChibiOS HAL Treiber. Welche Module er verwenden soll. \\ \hline
+	\texttt{mcuconf.h} & Welche Module für den ChibiOS HAL Treiber verwendet werden, verschiedene Clock Einstellungen. \\ \hline
+	\texttt{stm32f30x.h} & Nur ein Wrapper für die \texttt{STM32F30x standard peripheral} library. \\ \hline
+	\texttt{stm32f30x\_conf.h} & \texttt{STM32F30x standard peripheral} Konfiguration. \\ \hline
+	\texttt{board.h} & Definiert die IO lines welche an den Microkontroller angeschlossen sind und deren Initialisierungswerte. \\ \hline
+\end{tabularx}
+\captionof{table}{Headerübersicht}
+\label{tab:header}
 
 \subsection*{Libraries}
-Eine Übersicht über alle verwendeten externen Libraries
+Einige Programmfunktionen wurden aus existierenden Librarier verwendet. Alle verwendeten externen Libraries sind in der Tabelle \ref{tab:lib} aufgelistet.\\
+\begin{tabularx}{\textwidth}{l|X}
+	Name & Beschreibung \\ \hline
+	CMSIS &  Der Cortex Microcontroller Software Interface Standard CMSIS stellt eine DSP-Library zur Verfügung mit welcher effizienter Gebrauch der DSP Instruktionen und der FPU gemacht werden kann. Trigonometrische Funktionen und Transformationen werden durch CMSIS realisiert. \\ \hline
+	ChibiOS & Realtime Betriebssystem: \url{www.chibios.org} \\ \hline
+	STM32F30x std periph library & Der HAL von ChibiOS ist nicht genug flexibel für die spezifische Anwendung der Timer und ADC. Die Standard Peripheral Library von ST stellt eine einfache, prozessorgebundene, Hardware Abstraktion zur Verfügung.  \\ \hline
+\end{tabularx}
+\captionof{table}{Übersicht über alle verwendeten externen Libraries}
+\label{tab:lib}
 
 
