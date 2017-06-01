@@ -37,6 +37,26 @@ Die Kommunikation zwischen Motorsteuerung und der Bedienung, dem Magic-Glove, ba
 
 \section{Steuerung - Magic-Glove}
 \label{HW_MagicGlove}
+Der innovative Magic-Glove ist ein Skatehandschuh der um einen Flex Sensor erweitert wurde. Somit schützt dieser bei einem Sturz nicht nur die Hände, sondern kann auch die Bewegung des Zeigefingers analysieren. Wird der Zeigefinger gestreckt, wie es beim Sturz aus Reflex passiert, wird das Board gebremst. Ballt man die Hand zur Faust, beschleunigt das Board.
+Da der Flexsensor nur sehr kleine Widerstandsänderungen aufweist, wird mit der sogenannten Wheatstone-Brücke, welche in der Abbildung \ref{fig:wheatstonebruecke} zu sehen ist, gemessen.
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=.7\linewidth]{images/wheatstone_Bruecke}
+	\caption{Wheatstone-Brücke}
+	\label{fig:wheatstonebruecke}
+\end{figure}
+Wird eine Brückenspeisespannung $U_B$ angelegt, kann mit der folgenden Formel $U_A$ berechnet werden. 
+
+\begin{equation}\label{glg_U_A}
+ U_A=\frac{R1 \cdot R3-R2 \cdot R4}{(R1+R2) \cdot (R3+R4)} \cdot U_B 
+\end{equation}
+\todo{Mathe-Malpunkt suchen od ganz auslassen}
+Ist der Flexsensor dabei in Ruhelage, misst man eine Spannung von 0V. Aus dem Verhältnis von $ U_A $ zu $ U_B $ erhält man die relative Dehnung S des Flexsensors \todo{Quelle Prof. Dr. Herbert Looser, „M4 Kraftmesstechnik“, FHNW, 04.06.14}.
+\begin{equation}\label{S_relativeDehnung}
+S=\frac{U_A}{U_B}
+\end{equation}
+$U_A$ wird mit dem 10-Bit Analog- Digital Wandler auf dem Mikrocontroller gemessen und mithilfe der fixen Spannung $U_B$ wird die relative Dehnung S berechnet. 
+
 
 \section{Stromversorgung}
 \label{HW_Stromversorgung}
