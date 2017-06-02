@@ -86,7 +86,7 @@ wiederum zurück in seine Ausgangsposition, verkleinert sich der Wiederstandswer
 
 Um diesen Widerstand messen zu können wurde eine Verstärkerschaltung mit Messbrücke aufgebaut s.h. Abbildung 2.3 untenstehend. Der Widerstand der als Flex Sensor angeschrieben ist, verfügt über einen Wertebereich von 13 bis 80 Kiloohm. Mit den beiden Widerständen R2 und R3 wird die Untergrenze der Messbaren Resistanz festgelegt. Mit R1 wird schliesslich die Skalierung der Brücke festgelegt. Die resultierenden Spannungen zwischen R1 und R2 bzw. zwischen R3 und R4 werden schliesslich durch einen Rail-To-Rail Operationsverstärker so fest verstärkt, dass sie den Spannungsbereich von 0 bis 3.3 Volt ausnutzen. Dadurch kann schliesslich der
 angehängte 10bit A/D-Wandler vollständig ausgesteuert werden.
-\begin{figure}
+\begin{figure} [H]
 	\centering
 
 \subfigure[Funktionsprinzip FlexSensor]{
@@ -346,7 +346,7 @@ Ev. Tabelle mit Variante, Pro, Contra; Erläuerungen \todo{Tabelle od Ausformuli
 Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. (Formulierung! Und Begründung…) Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, da aufgrund der Phasenströme auf die Lage des Motors rückgeschlossen werden kann. Beschrieben wird dieses Verfahren in xxx [Quelle IEEE-Paper].
 \todo{Quelle nonlinear Observer}
 
-\section{H-Brücke}
+\subsection{H-Brücke}
 Wie in Abbildung \ref{fig:BLDC} zu sehen, muss eine sinusförmige Spannung am Motor anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt welche mit der H-Brücke ausgegeben werden. Die H-Brücke besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs. 
 \begin{center}
 	\begin{circuitikz}[scale=2]
