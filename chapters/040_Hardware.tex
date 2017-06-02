@@ -117,16 +117,9 @@ An zwei Phasen werden die Ströme über Shunt-Messwiderstände gemessen und dem 
 Verwendet wird der Mikrokontroller STM32F303, dies weil es ein bewährter und bekannter Mikrokontroller ist, der mit seinen 8MHz Taktfrequenz genügend schnell ist. Dazu unterstützt er die PWM Funktion, hat genügend I/O-Ports und bleibt preislich im Budget.
 An ihm wird über ein SPI Interface noch das HopeRF RFM75 Modul angeschlossen, welches mit der Steuerung, dem Magic Glove, über eine 2.4 GHz-Funkverbindung kommuniziert.
 
-\subsection*{Endstufe (H-Brücken)}
+\subsection*{Endstufe (Treiber und H-Brücken)}
 Für die Ansteuerung Transistoren wird der DRV8301 Gate-Treiber von Texas Instruments verwendet. Dieser Treiber beinhaltet einen Gate Driver mit 1.7A Peak Gatestrom, Current Shunt Differenzverstärker, Über- und Unterschutzspannung sowie Übertemperaturschutz und Überstromschutz. Ebenfalls ist ein Buck Converter für die Spannungsversorgung eingebaut.
-Die Transistoren sind IRFS7534 N-Kanal Power MOSFETs von Infineon, die 60V und 164A permanent aushalten. Sie eignen sich besonders für schnelles Schalten von grossen Lasten, also genau dieses Einsatzgebiet. Dies vor Allem wegen dem tiefen $R_DSon$ (typ. 2\(\Omega\)) und der geringen Eigenkapazität. 
+Die Transistoren sind IRFS7534 N-Kanal Power MOSFETs von Infineon, die 60V und 164A permanent aushalten. Sie eignen sich besonders für schnelles Schalten von grossen Lasten, also genau dieses Einsatzgebiet. Dies vor allem wegen dem tiefen $R_DSon$ (typ. 2\(\Omega\)) und der geringen Eigenkapazität. 
 
 \subsection*{Messschaltungen}
-In der Ansteuerung von zwei Phasen sind 0.1\(\Omega\) Shunt-Widerstände zur Strommessung eingebaut. Die Spannung über den Widerständen wird im Gate-Treiber um den Faktor 10 verstärkt und mit einem Offset von $\frac{V_logic}{2}$ versehen. Der Mikrocontroller erhält dann eine Spannung zwischen 0 und $V_logic$ von dem Treiber. Damit wird dann der Dritte Phasenstrom berechnet und dann zur Regelung verwendet.
-
-
-\subsection*{Treiber IC und Speisung}
-\subsection*{Endstufe (H-Brücke)}
-\subsection*{Messschaltung}
-\subsection*{Mikrocontroller}
-
+In der Ansteuerung von zwei Phasen sind 0.1\(\Omega\) Shunt-Widerstände zur Strommessung eingebaut. Die Spannung über den Widerständen wird im Gate-Treiber um den Faktor 10 verstärkt und mit einem Offset von $\frac{V_logic}{2}$ versehen. Der Mikrocontroller erhält dann eine Spannung zwischen 0 und $V_logic$ von dem Treiber. Damit wird dann der dritte Phasenstrom berechnet und dann zur Regelung verwendet.
