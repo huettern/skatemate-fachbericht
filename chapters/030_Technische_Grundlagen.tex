@@ -77,7 +77,22 @@ Die Stromversorgung erfolgt über einen LiPo-5200mAh-Akku, dieser ist vorgegeben
 In den folgenden Unterkapiteln werden die technischen Grundlagen zum Verständnis der Hard- und Software erläutert, so dass deren Funktionsweisen verstanden werden können.  
 \subsection{Flex Sensor}
 \label{tGl_FlexSensor}
+Ein Flex Sensor eignet sich dazu, als analoges elektrisches Bauteil, eine Biegung zu messen. Im Falle dieses Projekts dazu zu erkennen wie fest der Finger des Fahrers gebogen ist. 
+Der Sensor ändert je nach Biegung seinen Widerstandswert im Bereich von 13 bis ca. 80kOhm bei der stärksten Verformung. Das Bauteil selbst besteht aus einem flexiblen PCB mit einer
+darauf befestigten Schicht von metallischen Partikeln. Wird der Sensor nun gebogen, entfernen sich die Partikel nun voneinander, vergrössert sich der Widerstand. Biegt man den Sensor
+wiederum zurück in seine Ausgangsposition, verkleinert sich der Wiederstandswert wieder.
 
+Um diesen Widerstand messen zu können wurde eine Verstärkerschaltung mit Messbrücke aufgebaut s.h. Abbildung 2.3 untenstehend. Der Widerstand der als Flex Sensor angeschrieben ist, verfügt über einen Wertebereich von 13 bis 80 Kiloohm. Mit den beiden Widerständen R2 und R3 wird die Untergrenze der Messbaren Resistanz festgelegt. Mit R1 wird schliesslich die Skalierung der Brücke festgelegt. Die resultierenden Spannungen zwischen R1 und R2 bzw. zwischen R3 und R4 werden schliesslich durch einen Rail-To-Rail Operationsverstärker so fest verstärkt, dass sie den Spannungsbereich von 0 bis 3.3 Volt ausnutzen. Dadurch kann schliesslich der
+angehängte 10bit A/D-Wandler vollständig ausgesteuert werden.
+\begin{figure}
+	\centering
+
+\subfigure[Funktionsprinzip FlexSensor]{
+	\includegraphics[width=0.45\linewidth]{images/FlexSensor} \label{FlexSensor} 	}
+\subfigure[Sinstr][Messbrücke für FlexSensor]{ \includegraphics[width=0.5\linewidth]{images/FlexSensor_Messbruecke} \label{FlexSensor_Messbruecke}}
+\caption[BLDC Motor]{Funktionsprinzip und Ansteuerung für einen FlexSensor}
+\label{fig:BLDC}
+\end{figure}
 \subsection{Balancing}
 \label{tGl_Balancing}
 Das Board wird durch einen sechs Zellen Li-Po Akku gespeist. Jede einzelne Zelle hat dabei einen eigenen Innenwiderstand, welcher sich mit dem Alter verändern kann. Beim Ladevorgang entstehen somit unterschiedliche Spannungen wodurch die Zellen aus der Balance geraten.
