@@ -1,6 +1,6 @@
 \chapter{Grobkonzept und technische Grundlagen}
 \label{TechnischeGrundlagen}
-In diesem Kapitel wird erst das Grobkonzept des Commute von Skatemate dargestellt, um einen Überblick über das Elektroskateboard zu geben.
+In diesem Kapitel wird erst das Grobkonzept des Longboards Commute von Skatemate dargestellt, um einen Überblick über das Elektroskateboard zu geben.
 Anschliessend werden die notwendigen technischen Grundlagen erklärt, so dass die Hardware und Software besser verstanden werden können.
 \todo{bessere Einleitung / ... anpassen}
 
@@ -9,23 +9,19 @@ Anschliessend werden die notwendigen technischen Grundlagen erklärt, so dass di
 \section{Grobkonzept}
 \label{Grobkonzept}
 \todo{Einstieg, beginnt zu sehr im Detail...?}
-Das Projekt Commute von Skatemate kann in drei Grundbereiche unterteilt werden: Die Steuerung über den Magic-Glove, die Motoransteuerung mittels feldorientierter Regelung FOC und die Stromversorgung mitsamt dem selbst konzipierten Akkuladegerät. Nachfolgend werden diese drei Bereiche detaillierter erläutert. Wie sie miteinander interagieren, ist in der Abbildung \ref{fig:grobkonzeptblockschaltbildgrob} dargestellt. Die Antriebstechnik ist über ein Kabel mit der Stromversorgung verbunden, die Inputs der Steuerung erhält sie über ein Funknetz. Nachfolgend werden die drei Bereiche detaillierter erläutert. Dargestellt sind sie im Blockschaltbild der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert}. \todo{Zudem wird darauf eingegangen, weshalb diese Lösung gewählt wurde. }
+
+Das Projekt Commute von Skatemate kann in drei Grundbereiche unterteilt werden: Die innovative Steuerung, die Motorregelung und die Stromversorgung. 
+In den folgenden Unterkapitel werden diese drei Bereiche und die dazugehörigen Begriffe detaillierter erläutert. Die intuitive Bedienung des Longboards geschieht über eine Fingerbewegung, welche dank des Magic Gloves gemessen werden kann. Der Motor wird mithilfe der Feldorientierten Regelung FOC angesteuert, mit dieser Regelungstechnik können Wechselgrössen elegant gesteuert werden. Die Stromversorgung verfügt über ein eigens dazu konzipiertes Akkuladegerät. 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth, keepaspectratio]{images/Grobkonzept_Blockschaltbild_grob}
 	\caption[Blockschaltbild Grobkonzept]{Blockschaltbild Grobkonzept}
 	\label{fig:grobkonzeptblockschaltbildgrob}
 \end{figure}
+Wie sie miteinander interagieren, ist in der Abbildung \ref{fig:grobkonzeptblockschaltbildgrob} dargestellt. Die Antriebstechnik ist über ein Kabel mit der Stromversorgung verbunden, die Inputs der Steuerung erhält sie über ein Funknetz. \\
+Um eine Übersicht über die enthaltenen Komponenten der drei genannten Bereiche zu erhalten, sind sie im Blockschaltbild der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt.
 
-\subsection*{Steuerung über den Magic-Glove}
-Es gibt verschiedene Wege, wie ein elektrisches Longboard gesteuert werden kann. Eine Variante ist, über Drucksensoren im Brett durch eine Gewichtsverlagerung in Fahrtrichtung eine Geschwindigkeitsregulation zu erreichen. Da auf unebenem Gelände eine natürliche Gewichtsverlagerung entsteht, und diese kompensiert werden müsste, und zudem lokal beschränkte Sensoren die Bewegungsfreiheit auf dem Longboard einschränken können, wurde diese Variante verworfen. Stattdessen wird die Geschwindigkeit über eine Fingerbewegung gesteuert. Dazu wird ein Handschuh mit integrierten Sensoren entwickelt. Dieses Wearable enthält einen Flex Sensor, der die Beugung des Zeigefinders misst. Der Flex Sensor wird im Kapitel \ref{tGl_FlexSensor} beschrieben. Die Beugung des Fingers wird mithilfe eines Mikrocontrollers quantifiziert und als Sollbeschleunigung der Motoransteuerung übergeben. Dies geschieht über ein 2.4 GHz Funknetz, dazu ist ein Funkmodul integriert. Die Stromversorgung erfolgt über eine Li-Ion Knopfbatterie LTR2450. 
-In der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} sind die einzelnen Elemente der Steuerung dargestellt.
-
-\subsection*{Antriebstechnik}
-Als Antrieb ist der OX1 2-10 Motor vorgegeben, dies ist ein Brushless-Gleichstrommotor (BLDC-Motor). Er verfügt nicht über Hallsensoren. Die technischen Hintergründe des Motors werden im Kapitel \ref{tGl_BLDC} gegeben. Ein BLDC-Motor ist wie ein permanentmagnetischer Drehstrom-Synchronmotor (PMSM) aufgebaut.\\
-Die Ansteuerung kann über eine Kommutierung oder eine Vektorregelung erfolgen\cite{BLDC} \todo{[ Quelle xxx ]}. Die Kommutierung kann prinzipiell gesteuert oder ungesteuert erfolgen. Bei der ungesteuerten Kommutierung kann der Motor als Schrittmotor genutzt werden, die Rotorposition folgt der Steuerung. Diese Variante ist für ein gleichmässig rollendes Longboard ungeeignet. Die Kommutierung muss also abhängig von der Rotorposition erfolgen (geführte Kommutierung), die Steuerung reagiert also auf die effektive Rotorposition und passt sich dieser an.\todo{(xxx korrekt?} Am einfachsten wäre diese mit Sensoren, da unser Motor jedoch nicht über Sensoren verfügt, muss der Motor über eine sensorlose gesteuerte Kommutierung angesteuert werden. Dies funktioniert jedoch nur ab einer Mindestdrehzahl wirklich gut. Zum Anfahren muss der Motor speziell angesteuert werden. \\
-Bei der Vektorreglung, in diesem Fall eine Feldorientierte Regelung (field oriented controll, FOC), werden die Spannungen zur Steuerung aktiv der Rotorlage angepasst. Auch mit der FOC kann zwischen sensorgesteuerte und sensorlosen Regelung unterschieden werden. Bei der sensorlosen Regelung muss wiederum zum Anfahren eine zusätzliche Ansteuerung erfolgen. \todo{Diese wird im Kapitel xxx erklärt.} Kann die Anfangsposition jedoch genügen genau geschätzt werden, läuft der Motor auch bei tiefen Geschwindigkeiten gleichmässig, da er genauer geregelt werden kann. Dies entspricht unseren Anforderungen für das Commute, da ein sanftes Anfahren sehr wichtig ist. Die FOC ist im Kapitel \ref{tGl_FOC} erklärt.\\
-Ausgeführt wird die FOC auf einem Mikrocontroller. Mittels eines RF-Modul wird die Sollbeschleunigung empfangen. Eine Halbbrücke mit FET-Treibern (siehe Kapitel \ref{tGl_HBrugg}) setzt  die gewünschte Motorsteuerung um. Zur Übersicht sind diese Elemente im Blockschaltbild Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. 
+ \todo{Zudem wird darauf eingegangen, weshalb diese Lösung gewählt wurde. }
 
 \begin{figure}[h]
 	\centering
@@ -34,15 +30,71 @@ Ausgeführt wird die FOC auf einem Mikrocontroller. Mittels eines RF-Modul wird 
 	\label{fig:grobkonzeptblockschaltbilddetailliert}
 \end{figure}
 
-\subsection*{Stromversorgung}
-Die Stromversorgung erfolgt über ein LiPo 5200mAh Akku, dieser ist vorgegeben. Es besteht ein externes Ladegerät. Da dies jedoch bedeutet, dass der Akku für jedes Laden vom Longboard gelöst werden muss. Dies ist umständlich und gefährdet die Wetterfestigkeit und Robustheit des Commute. Deshalb wird ein eigener, integrierter Akkulader entwickelt, so dass der Akku nicht mehr herausgelöst werden muss. Da die Entladung im Gebrauch sowieso überwacht werden muss, ist der Lader eine Ergänzung und kein alleinstehendes Element. Kernstück der Stromversorgung ist die Balancerschaltung. Dabei wird der Akku erst mit einem konstanten Strom geladen, bis die Zellspannung erreicht ist. Anschliessend wird mit einer konstanten Spannung geladen, bis der Strom unter 100mA gesunken ist, dann sind die Zellen vollständig geladen. Wie das Balancing genau funktioniert, ist im Kapitel \ref{tGl_Balancing} beschrieben. Anstelle einer eigenen Implementation hätte ein fertiges IC eingekauft werden können, aus finanziellen Gründen wurde jedoch darauf verzichtet. Die Elemente der Stromversorgung sind in der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt.
+\subsection*{Steuerung über den Magic Glove}
+Es gibt verschiedene Wege, wie ein elektrisches Longboard gesteuert werden kann. Eine Variante ist, über Drucksensoren im Brett durch eine Gewichtsverlagerung in Fahrtrichtung eine Geschwindigkeitsregulation zu erreichen. Da auf unebenem Gelände das Gewicht laufend ausbalanciert werden muss, müssten diese Bewegungsimpulse kompensiert werden. Ausserdem können lokal begrenzte Sensoren die Bewegungsfreiheit auf dem Longboard einschränken.
+Aus diesen Gründen wurde diese Variante verworfen. Das Team hat sich stattdessen entschieden, die Geschwindigkeit über eine Fingerbewegung zu steuern. Dazu wird ein Handschuh mit integrierten Sensoren entwickelt. Dieses Wearable enthält einen Flex Sensor, der die Beugung des Zeigefinders misst. Dieser Messvorgang und der Flex Sensor werden im Kapitel \ref{tGl_FlexSensor} beschrieben. Die mit dem Flex Sensor gemessene Beugung des Fingers wird mithilfe eines Mikrocontrollers quantifiziert. Diese Sollbeschleunigung wird anschliessend der Motoransteuerung übermittelt. Dies geschieht über ein 2.4 GHz-Funknetz, dazu ist ein Funkmodul integriert. Die Stromversorgung erfolgt über eine Li-Ion Knopfbatterie LTR2450. In der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} sind die genannten Elemente der Steuerung dargestellt.
 
+\subsection*{Antriebstechnik}
+\todo{def., Aufgabe ?}
+Als Antrieb ist der OX1 2-10 Motor vorgegeben. Dies ist ein Bürstenloser-Gleichstrommotor (brushless DC motor, BLDC-Motor). Er verfügt nicht über Hallsensoren, mit denen die Rotorposition gemessen werden könnte. Die technischen Hintergründe des Motors werden im Kapitel \ref{tGl_BLDC} gegeben. Ein BLDC-Motor ist wie ein permanentmagnetischer Drehstrom-Synchronmotor (PMSM) aufgebaut.\\
+Zur Ansteuerung gibt es grob unterteilt zwei verschiedene Arten, die Kommutierung und die Feldorientierte Regelung (FOC) \cite{BLDC}. \todo{[ Quelle xxx ]}. Die Kommutierung wiederum kann auf zwei verschiedene Arten erfolgen, ungesteuert (Blockkommutierung) oder gesteuert (Sinus-Kommutierung). Diese resultierenden drei Ansteuerungsmöglichkeiten sind in der Tabelle \ref{tabMotcontrVarProCon} zur Übersicht dargestellt und nachfolgend etwas genauer erläutert. 
+\begin{center}
+	\begin{tabularx}{\textwidth}{|c|X|X|}
+		\hline 
+		\textbf{Regelungsart} & \textbf{Vorteile} & \textbf{Nachteile} \\ 
+		\hline 
+		\textbf{Blockkommutierung} & einfach & schlechte Effizienz (eine Spule nicht gebraucht) 
+		
+		Drehmoment-Rippel \\
+		\hline 
+		\textbf{Sinus-Kommutierung} & alle drei Spulen benutzt & kompliziert
+		
+		Anfahren erschwert \\ 
+		\hline 
+		\textbf{FOC} & dynamisch 
+		
+		effizient 
+		
+		durch Trafo einfacher PI-Regler & Einstieg komplex \\ 
+		\hline 
+	\end{tabularx} 
+	\captionof{table}{Vor- und Nachteile der verschiedenen Regelungsarten}
+	\label{tabMotcontrVarProCon}
+\end{center}
+
+\todo{Tabelle formatieren!... ??}
+
+Bei der ungesteuerten Kommutierung (Blockkommutierung) wird der Motor als Schrittmotor genutzt. Dabei folgt die Rotorposition der Steuerung. Diese Variante ist für ein gleichmässig rollendes Longboard ungeeignet, da der Schrittmotor nicht durchgehend sondern immer nur schrittweise dreht. Für ein gleichmässiges Drehen muss die Kommutierung also abhängig von der Rotorposition erfolgen (geführte Kommutierung, Sinus-Kommutierung). Dabei reagiert die Steuerung auf die effektive Rotorposition und passt sich dieser an.\todo{(xxx korrekt?} Am einfachsten wäre dies mit Sensoren, da der Motor jedoch nicht über Sensoren verfügt, muss der Motor über eine sensorlos gesteuerte Kommutierung angesteuert werden. Dies funktioniert jedoch nur ab einer Mindestdrehzahl wirklich gut. Zum Anfahren muss der Motor speziell angesteuert werden. \\
+Bei der Feldorientierte Regelung (field oriented controll, FOC), werden die Spannungen zur Steuerung aktiv der Rotorlage angepasst. Dabei kann zwischen sensorgesteuerte und sensorlosen Regelung unterschieden werden. Bei der sensorlosen Regelung muss wiederum zum Anfahren eine zusätzliche Ansteuerung erfolgen. Kann die Anfangsposition ausreichend genau geschätzt werden, läuft der Motor auch bei tiefen Geschwindigkeiten gleichmässig, da er genauer geregelt werden kann. Dies entspricht unseren Anforderungen für das Commute, da ein sanftes Anfahren sehr wichtig ist. Die FOC als auch die Anfahr-Ansteuerung ist im Kapitel \ref{tGl_FOC} erklärt.\\
+Ausgeführt wird die FOC auf einem Mikrocontroller. Mittels eines RF-Modul wird die Sollbeschleunigung empfangen. Eine Halbbrücke mit FET-Treibern (siehe Kapitel \ref{tGl_HBrugg}) setzt  die gewünschte Motorsteuerung um. Zur Übersicht sind diese Elemente im Blockschaltbild Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. 
+
+\subsection*{Stromversorgung}
+Die Stromversorgung erfolgt über einen LiPo-5200mAh-Akku, dieser ist vorgegeben. Zwar besteht ein externes Ladegerät, doch dies bedeutet, dass der Akku für jedes Laden vom Longboard gelöst werden muss. Das ist umständlich und gefährdet die Wetterfestigkeit und Robustheit des Commute. Deshalb wird ein eigener, integrierter Akkulader entwickelt, so dass der Akku nicht mehr herausgelöst werden muss. Da die Entladung im Gebrauch sowieso überwacht werden muss, ist der Lader eine Ergänzung und kein alleinstehendes Element. Kernstück der Stromversorgung ist die Balancerschaltung. Dabei wird der Akku erst mit einem konstanten Strom geladen, bis die Zellspannung erreicht ist. Anschliessend wird mit einer konstanten Spannung geladen, bis der Strom unter 100mA gesunken ist, dann sind die Zellen vollständig geladen. Wie das Balancing genau funktioniert, ist im Kapitel \ref{tGl_Balancing} beschrieben. Anstelle einer eigenen Implementation hätte ein fertiges IC eingekauft werden können. Aus finanziellen Gründen wurde jedoch darauf verzichtet. Die Elemente der Stromversorgung sind in der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt.
+
+\todo{ev: wie viel Strom braucht der Motor? Wie weit reicht eine Akkuladung?}
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 \section{Technische Grundlagen}
 In den folgenden Unterkapiteln werden die technischen Grundlagen zum Verständnis der Hard- und Software erläutert, so dass deren Funktionsweisen verstanden werden können.  
-\subsection{FlexSensor}
+\subsection{Flex Sensor}
 \label{tGl_FlexSensor}
+Ein Flex Sensor eignet sich dazu, als analoges elektrisches Bauteil, eine Biegung zu messen. Im Falle dieses Projekts dazu zu erkennen wie fest der Finger des Fahrers gebogen ist. 
+Der Sensor ändert je nach Biegung seinen Widerstandswert im Bereich von 13 bis ca. 80kOhm bei der stärksten Verformung. Das Bauteil selbst besteht aus einem flexiblen PCB mit einer
+darauf befestigten Schicht von metallischen Partikeln. Wird der Sensor nun gebogen, entfernen sich die Partikel nun voneinander, vergrössert sich der Widerstand. Biegt man den Sensor
+wiederum zurück in seine Ausgangsposition, verkleinert sich der Wiederstandswert wieder.
 
+Um diesen Widerstand messen zu können wurde eine Verstärkerschaltung mit Messbrücke aufgebaut s.h. Abbildung 2.3 untenstehend. Der Widerstand der als Flex Sensor angeschrieben ist, verfügt über einen Wertebereich von 13 bis 80 Kiloohm. Mit den beiden Widerständen R2 und R3 wird die Untergrenze der Messbaren Resistanz festgelegt. Mit R1 wird schliesslich die Skalierung der Brücke festgelegt. Die resultierenden Spannungen zwischen R1 und R2 bzw. zwischen R3 und R4 werden schliesslich durch einen Rail-To-Rail Operationsverstärker so fest verstärkt, dass sie den Spannungsbereich von 0 bis 3.3 Volt ausnutzen. Dadurch kann schliesslich der
+angehängte 10bit A/D-Wandler vollständig ausgesteuert werden.
+\begin{figure} [H]
+	\centering
+
+\subfigure[Funktionsprinzip FlexSensor]{
+	\includegraphics[width=0.45\linewidth]{images/FlexSensor} \label{FlexSensor} 	}
+\subfigure[Sinstr][Messbrücke für FlexSensor]{ \includegraphics[width=0.5\linewidth]{images/FlexSensor_Messbruecke} \label{FlexSensor_Messbruecke}}
+\caption[BLDC Motor]{Funktionsprinzip und Ansteuerung für einen FlexSensor}
+\label{fig:BLDC}
+\end{figure}
 \subsection{Balancing}
 \label{tGl_Balancing}
 Das Board wird durch einen sechs Zellen Li-Po Akku gespeist. Jede einzelne Zelle hat dabei einen eigenen Innenwiderstand, welcher sich mit dem Alter verändern kann. Beim Ladevorgang entstehen somit unterschiedliche Spannungen wodurch die Zellen aus der Balance geraten.
@@ -97,24 +149,9 @@ Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (sieh
 \captionof{table}{BLDC Daten}
 \label{tabBLDCdaten}
 \end{center}
+
 \todo{e-Deutsch uebersetzung und Formatierung usw}
 \todo{ev in Anhang??}
-
-%\begin{figure} [H]
-%	\centering
-%	\includegraphics[width=0.4\linewidth]{images/AufbauBLDC}
-%	\caption[Prinzip Aufbau]{Prinzip Aufbau}
-%	\label{fig:aufbaubldc}
-%\end{figure}
-
-%\begin{figure} [H]
-%	\centering
-%	\includegraphics[width=0.5\linewidth]{images/StromBLDC}
-%	\caption[Sinusstrom mit PWM Spannung]{Sinusstrom mit PWM Spannung}
-%	\label{fig:strombldc}
-%\end{figure}
-
-
 \todo{\cite{ElAntriebe_Babiel} und korrekt zitieren...}
 
 
@@ -130,14 +167,21 @@ In unserem Beispiel ist das Problem die Ansteuerung des Motors. Mit der Clarke-T
 Anschliessend wird die gefundene Lösung zurücktransformiert. Dabei kann die komplette Rücktransformation (inverse Park- und inverse Clarke Transformation) ausgeführt und anschliessend der Motor über eine PWM angesteuert werden, oder aber es wird nur bis ins statorfeste Koordinatensystem rücktransformiert, (inverse Park Transformation) dann wird der Motor über eine Raumvektor-PWM (SVPWM) angesteuert.
 
 
-\subsubsection*{Clarke- und Park-Transformation}
+\subsubsection{Clarke- und Park-Transformation}
 \todo{Leserführung}
 \todo{ev. subsections nummeriert?!}
 \todo{Bmk dass nicht nur für I sondern auch für U usw... und I nur exemplarisch gilt}
+Im Folgenden wird die Clarke- und die Park-Transformation erklärt. \todo{......ev. mgl, die Abb. bereits hierhin zu nehmen?}
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=1\linewidth]{images/trafo_schematicPMSM}
+	\caption{Schematische Darstellung einer PMSM mit den drei Koordinatensystemen }
+	\label{fig:trafoschematicpmsm}
+\end{figure}
 
 \subsubsection*{Clarke-Transformation}
 \todo{weitere unterstrukturierung mgl?}
-Die Clarke-Transformation wechselt die mehr- bzw. dreiphasigen Grössen (z.B. Phasenströme) in ein statorfestes Bezugssystem. Das kartesische Koordinatensystem ist in der komplexen Ebene. Die drei Phasenströme I$_{a}$, I$_{b}$ und I$_{c}$ werden auf zwei komplexwertige Ströme I$_{\alpha}$ und I$_{\beta}$ abgebildet. Dargestellt ist die Transformation in xxx.
+Die Clarke-Transformation wechselt die mehr- bzw. dreiphasigen Grössen (z.B. Phasenströme) in ein statorfestes Bezugssystem. Das kartesische Koordinatensystem ist in der komplexen Ebene. Die drei Phasenströme I$_{a}$, I$_{b}$ und I$_{c}$ werden auf zwei komplexwertige Ströme I$_{\alpha}$ und I$_{\beta}$ abgebildet. Dargestellt ist die Transformation in der Abbildung \ref{fig:trafoschematicpmsm}.
 %Die Transformation kann geometrisch hergeleitet werden. (xxx…)
 Die mathematische Formulierung lautet:
 \begin{equation}\label{ClarkeTrafo}
@@ -289,29 +333,20 @@ I_q
 \end{equation}
 
 
-\subsubsection*{PI-Regler}
-Ein PI-Regler ist ein Regler mit einem Proportional- (P) und einem Integral- (I) Glied. Dies sind elementare Glieder der Regelungstechnik. Das P-Glied entspricht einer Multiplikation des Eingangs mit einer zeitunabhängigen Konstanten, das P-Glied einer Integration des Eingangs. 
-\\\\
+\subsubsection{PI-Regler}
+Der PI-Regler ist ein Regler mit einem Proportional- (P) und einem Integral- (I) Glied. Dies sind elementare Glieder der Regelungstechnik. Das P-Glied entspricht einer Multiplikation des Eingangs mit einer zeitunabhängigen Konstanten, das P-Glied einer Integration des Eingangs. 
+\\
 Die Regelung mit einem PI-Regler geschieht im rotorfesten Bezugssystem, Gegenstand der Regelung sind die Flussdichte des Motors (d-Komponente) und das Drehmoment (q-Komponente). Bei einem permanenterregten Motor ist diese Regelung vereinfacht. In der Abb.\ref{fig:trafoschematicpmsm} ist ersichtlich, dass die d-Achse in Richtung des Permanentmagneten zeigt. Das grösste resultierende Moment wird erreicht, wenn die resultierende Flussdichte im Stator um 90\(^\circ\) zur zeitlich konstanten Flussdichte des Rotors verschoben ist. Dies zeigt also genau in Richtung der q-Achse. Die resultierende Flussdichte liegt also auf der q-Achse und hat deshalb keinen d-Anteil. Der Sollwert der d-Komponente wird also null. Das Drehmoment kann somit direkt über die q-Komponente geregelt werden. 
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{images/trafo_schematicPMSM}
-	\caption{Schematische Darstellung einer PMSM mit den drei Koordinatensystemen }
-	\label{fig:trafoschematicpmsm}
-\end{figure}
 
 \todo{Ev. Begründung warum PI Regler, ohne D, Iteil grösser… träges system, d für schenlle änderungen}
 
-
-
-
-\subsubsection*{Nonlinear Observer}
+\subsubsection{Nonlinear Observer}
 Die Park-Transformation benötigt die momentane Lage des Rotors. Da der vorgegebene Motor nicht über integrierte Sensoren (wie beispielsweise Hall-Sonden) verfügt, die Ansteuerung also sensorlos erfolgt, muss der Winkel der Rotorlage auf einem anderen Weg herausgefunden werden. Dazu gibt es verschiedene Varianten. 
 Ev. Tabelle mit Variante, Pro, Contra; Erläuerungen \todo{Tabelle od Ausformulierung der Gründe für diese Variante}
 Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. (Formulierung! Und Begründung…) Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, da aufgrund der Phasenströme auf die Lage des Motors rückgeschlossen werden kann. Beschrieben wird dieses Verfahren in xxx [Quelle IEEE-Paper].
 \todo{Quelle nonlinear Observer}
 
-\section{H-Brücke}
+\subsection{H-Brücke}
 Wie in Abbildung \ref{fig:BLDC} zu sehen, muss eine sinusförmige Spannung am Motor anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt welche mit der H-Brücke ausgegeben werden. Die H-Brücke besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs. 
 \begin{center}
 	\begin{circuitikz}[scale=2]
