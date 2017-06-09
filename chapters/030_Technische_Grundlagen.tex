@@ -4,24 +4,23 @@ In diesem Kapitel wird erst das Grobkonzept des Longboards Commute von Skatemate
 Anschliessend werden die notwendigen technischen Grundlagen erklärt, so dass die Hardware und Software besser verstanden werden können.
 \todo{bessere Einleitung / ... anpassen}
 
-\todo{Ziel - Aufgabe - Anforderung pro Unterkapitel oder pro ... kA was}
 
 \section{Grobkonzept}
 \label{Grobkonzept}
-\todo{Einstieg, beginnt zu sehr im Detail...?}
-
-Das Projekt Commute von Skatemate kann in drei Grundbereiche unterteilt werden: Die innovative Steuerung, die Motorregelung und die Stromversorgung. 
-In den folgenden Unterkapitel werden diese drei Bereiche und die dazugehörigen Begriffe detaillierter erläutert. Die intuitive Bedienung des Longboards geschieht über eine Fingerbewegung, welche dank des Magic Gloves gemessen werden kann. Der Motor wird mithilfe der Feldorientierten Regelung FOC angesteuert, mit dieser Regelungstechnik können Wechselgrössen elegant gesteuert werden. Die Stromversorgung verfügt über ein eigens dazu konzipiertes Akkuladegerät. 
+Das Projekt Commute von Skatemate kann in drei Grundbereiche unterteilt werden: Die innovative Steuerung, die Motorregelung und die Stromversorgung. \\
+In den folgenden Unterkapitel werden diese drei Bereiche und die dazugehörigen Begriffe detaillierter erläutert. Die intuitive Bedienung des Longboards geschieht über eine Fingerbewegung, welche dank des Magic Gloves gemessen werden kann. Der Motor wird mithilfe der feldorientierten Regelung (field oriented controll FOC) angesteuert, mit dieser Regelungstechnik können Wechselgrössen elegant gesteuert werden. Die Stromversorgung verfügt über ein eigens dazu konzipiertes Akkuladegerät. 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth, keepaspectratio]{images/Grobkonzept_Blockschaltbild_grob}
 	\caption[Blockschaltbild Grobkonzept]{Blockschaltbild Grobkonzept}
 	\label{fig:grobkonzeptblockschaltbildgrob}
 \end{figure}
-Wie sie miteinander interagieren, ist in der Abbildung \ref{fig:grobkonzeptblockschaltbildgrob} dargestellt. Die Antriebstechnik ist über ein Kabel mit der Stromversorgung verbunden, die Inputs der Steuerung erhält sie über ein Funknetz. \\
-Um eine Übersicht über die enthaltenen Komponenten der drei genannten Bereiche zu erhalten, sind sie im Blockschaltbild der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt.
+Die Abbildung \ref{fig:grobkonzeptblockschaltbildgrob} stellt die Interaktion zwischen den drei Bereichen dar. Die Antriebstechnik ist über ein Kabel mit der Stromversorgung verbunden, die Inputs der Steuerung erhält sie über ein Funknetz. \\
+Um eine Übersicht über die enthaltenen Komponenten der drei genannten Bereiche zu erhalten, sind sie im Blockschaltbild der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. Für die Steuerung wird die vom Flex-Sensor gemessene Krümmung des Fingers an der Mikrocontroller weitergeleitet. Dieser Verarbeitet diese in eine Wunschbeschleunigung und leitet sie mithilfe eines Funkmoduls an die Antriebstechnik weiter. Zudem steuert er die Front-LEDs an. Mit Strom versorgt wird der Mikrocontroller und das Funkmodul mithilfe einer Knopfbatterie. 
 
- \todo{Zudem wird darauf eingegangen, weshalb diese Lösung gewählt wurde. }
+Der Mikrocontroller der Antriebstechnik erhält die Wunschbeschleunigung wiederum über ein Funkmodul. 
+
+
 
 \begin{figure}[h]
 	\centering
@@ -157,32 +156,31 @@ Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (sieh
 
 \subsection{FOC}
 \label{tGl_FOC}
-Einstieg...\todo{Einstieg}\\
-\todo{LEserführung, Metaebene!}\\
-\todo{Bilder und Quellen}
-Das Prinzip der Transformationen:
-Ein kompliziertes Problem wird in ein anderes Koordinatensystem transformiert. Das transformierte Problem ist dort viel einfacher zu lösen, es ist also ein einfacheres Problem. Die leicht gefundene Lösung wird rücktransformiert, wodurch die Lösung des komplizierten Problems erhalten wird. Ein mögliches Beispiel dafür ist die Laplace-Transformierung von Differentialgleichungen. 
-\\
-In unserem Beispiel ist das Problem die Ansteuerung des Motors. Mit der Clarke-Transformation wird in ein statorfestes Koordinatensystem gewechselt, mit der anschliessenden Park-Transformation in ein rotorfestes. Das Problem ist nun linear und mit einem einfachen PI (oder PID) Regler lösbar. \\
-Anschliessend wird die gefundene Lösung zurücktransformiert. Dabei kann die komplette Rücktransformation (inverse Park- und inverse Clarke Transformation) ausgeführt und anschliessend der Motor über eine PWM angesteuert werden, oder aber es wird nur bis ins statorfeste Koordinatensystem rücktransformiert, (inverse Park Transformation) dann wird der Motor über eine Raumvektor-PWM (SVPWM) angesteuert.
 
+Für die feldorientierte Regelung werden die Phasenströme des Motors gemessen und anschliessend in ein rotorfestes Bezugssystem transformiert (\textbf{Clarke- und Park-Transformation}). Dazu wird die Rotorlage benötigt, diese wird gemessen oder berechnet (\textbf{nonlinear observer}). Im rotorfesten Bezugssystem wird das Drehmoment und die Flussdichte des Motors mit einem \textbf{PI- oder PID-Regler} geregelt. Anschliessend werden diese Werte zurücktransformiert und für die PWM-Ansteuerung des Motors genutzt(\ref{tGl_HBrugg}). \todo{verständlicher?!}
+
+\todo{Bilder und Quellen}
 
 \subsubsection{Clarke- und Park-Transformation}
-\todo{Leserführung}
+Das allgemeine Prinzip der Transformationen lautet:
+Ein kompliziertes Problem wird in ein anderes Koordinatensystem transformiert. Das transformierte Problem ist dort viel einfacher zu lösen. Die so leicht gefundene transformierte Lösung wird rücktransformiert, wodurch die Lösung des komplizierten Problems im ursprünglichen Koordinatensystem erhalten wird. Ein mögliches Beispiel dafür ist die Laplace-Transformation von Differentialgleichungen. 
+\\
+Das komplizierte Problem ist hier die Ansteuerung des Motors mittels einer dreiphasigen PWM. Mit der Clarke-Transformation wird in ein statorfestes Koordinatensystem gewechselt, mit der anschliessenden Park-Transformation in ein rotorfestes. Das transformierte Problem ist nun linear und mit einem einfachen PI (oder PID) -Regler lösbar. \\
+Anschliessend wird die gefundene Lösung zurücktransformiert. Dabei kann die komplette Rücktransformation (inverse Park- und inverse Clarke Transformation) ausgeführt und anschliessend der Motor über eine PWM angesteuert werden, oder aber es wird nur bis ins statorfeste Koordinatensystem rücktransformiert (inverse Park Transformation), dann wird der Motor über eine Raumvektor-PWM (SVPWM) angesteuert.
+
 \todo{ev. subsections nummeriert?!}
 \todo{Bmk dass nicht nur für I sondern auch für U usw... und I nur exemplarisch gilt}
-Im Folgenden wird die Clarke- und die Park-Transformation erklärt. \todo{......ev. mgl, die Abb. bereits hierhin zu nehmen?}
+
 \begin{figure} [H]
 	\centering
-	\includegraphics[width=1\linewidth]{images/trafo_schematicPMSM}
+	\includegraphics[width=.5\linewidth]{images/trafo_schematicPMSM}
 	\caption{Schematische Darstellung einer PMSM mit den drei Koordinatensystemen }
 	\label{fig:trafoschematicpmsm}
-\end{figure}
+\end{figure}\todo{grösse des Bildes...}
 
 \subsubsection*{Clarke-Transformation}
 \todo{weitere unterstrukturierung mgl?}
-Die Clarke-Transformation wechselt die mehr- bzw. dreiphasigen Grössen (z.B. Phasenströme) in ein statorfestes Bezugssystem. Das kartesische Koordinatensystem ist in der komplexen Ebene. Die drei Phasenströme I$_{a}$, I$_{b}$ und I$_{c}$ werden auf zwei komplexwertige Ströme I$_{\alpha}$ und I$_{\beta}$ abgebildet. Dargestellt ist die Transformation in der Abbildung \ref{fig:trafoschematicpmsm}.
-%Die Transformation kann geometrisch hergeleitet werden. (xxx…)
+Die Clarke-Transformation wechselt die mehr- bzw. dreiphasigen Grössen (z.B. Phasenströme) in ein statorfestes Bezugssystem\cite{ClarkeTrafo_Wiki}. Das kartesische Koordinatensystem ist in der komplexen Ebene. Die drei Phasenströme I$_{a}$, I$_{b}$ und I$_{c}$ werden auf zwei komplexwertige Ströme I$_{\alpha}$ und I$_{\beta}$ abgebildet. Dargestellt ist die Transformation in der Abbildung \ref{fig:trafoschematicpmsm}.
 Die mathematische Formulierung lautet:
 \begin{equation}\label{ClarkeTrafo}
 \left[
@@ -234,8 +232,8 @@ I_\beta
 
 
 \subsubsection*{Park-Transformation}
-Die Park-Transformation transformiert die Grössen I$_{\alpha}$ und I$_{\beta}$ in ein rotorfestes Bezugssystem. Dieses neue kartesische Koordinatensystem besteht aus zwei Achsen, und von aussen gesehen (ruhendes Bezugssystem) rotiert es mit der gleichen Winkelgeschwindigkeit wie der Rotor. Eine Achse wird als d-Achse (direct axis) bezeichnet, die andere als q-Achse (quadrature axis). Die d-Achse beschreibt die magnetische Flussdichte des Rotors, die q-Achse das Drehmoment des Rotors. \\
-Ausgehend vom statorfesten Bezugssystem benötigt es nur noch eine Rotation, um die Grössen in das rotorfeste Bezugssystem zu transformieren. Mathematisch gesehen geschieht die Transformation also über eine Drehmatrix, dargestellt ist die Transformation in der Gleichung \ref{ParkTrafo}. 
+Die Park-Transformation transformiert die Grössen I$_{\alpha}$ und I$_{\beta}$ in ein rotorfestes Bezugssystem\cite{leiserEffizienterBLDC}. Dieses neue kartesische Koordinatensystem besteht aus zwei Achsen. Von aussen gesehen (ruhendes Bezugssystem) rotiert es mit der gleichen Winkelgeschwindigkeit wie der Rotor. Eine Achse wird als d-Achse (direct axis) bezeichnet, die andere als q-Achse (quadrature axis). Die d-Achse beschreibt die magnetische Flussdichte des Rotors, die q-Achse das Drehmoment des Rotors. \\
+Ausgehend vom statorfesten Bezugssystem benötigt es nur noch eine Rotation, um die Grössen in das rotorfeste Bezugssystem zu transformieren\cite{dqTrafo_Wiki}. Mathematisch gesehen geschieht die Transformation also über eine Drehmatrix, dargestellt ist die Transformation in der Gleichung \ref{ParkTrafo}. 
 \begin{equation}\label{ParkTrafo}
 \left[
 \begin{array}{c}
@@ -282,7 +280,7 @@ I_q
 \end{equation}
 
 \subsubsection*{d/q-Transformation} 
-Die Clarke- und Park-Transformation kann auch in einem Schritt durchgeführt werden, je nach Quelle wird diese dann auch Park-Transformation oder d/q-Transformation genannt. [xxx Quelle!] \todo{Quelle}
+Die Clarke- und Park-Transformation kann auch in einem Schritt durchgeführt werden, je nach Quelle wird diese dann auch Park-Transformation oder d/q-Transformation genannt\cite{dqTrafo_Wiki}.
 Die mathematische Formulierung lautet:
 \begin{equation}\label{dqTrafo}
 \left[
@@ -336,18 +334,15 @@ I_q
 \subsubsection{PI-Regler}
 Der PI-Regler ist ein Regler mit einem Proportional- (P) und einem Integral- (I) Glied. Dies sind elementare Glieder der Regelungstechnik. Das P-Glied entspricht einer Multiplikation des Eingangs mit einer zeitunabhängigen Konstanten, das P-Glied einer Integration des Eingangs. 
 \\
-Die Regelung mit einem PI-Regler geschieht im rotorfesten Bezugssystem, Gegenstand der Regelung sind die Flussdichte des Motors (d-Komponente) und das Drehmoment (q-Komponente). Bei einem permanenterregten Motor ist diese Regelung vereinfacht. In der Abb.\ref{fig:trafoschematicpmsm} ist ersichtlich, dass die d-Achse in Richtung des Permanentmagneten zeigt. Das grösste resultierende Moment wird erreicht, wenn die resultierende Flussdichte im Stator um 90\(^\circ\) zur zeitlich konstanten Flussdichte des Rotors verschoben ist. Dies zeigt also genau in Richtung der q-Achse. Die resultierende Flussdichte liegt also auf der q-Achse und hat deshalb keinen d-Anteil. Der Sollwert der d-Komponente wird also null. Das Drehmoment kann somit direkt über die q-Komponente geregelt werden. 
-
-\todo{Ev. Begründung warum PI Regler, ohne D, Iteil grösser… träges system, d für schenlle änderungen}
+Die Regelung mit einem PI-Regler geschieht im rotorfesten Bezugssystem. Gegenstand der Regelung sind die Flussdichte des Motors (d-Komponente) und das Drehmoment (q-Komponente). Bei einem permanenterregten Motor ist diese Regelung vereinfacht. In der Abb.\ref{fig:trafoschematicpmsm} ist ersichtlich, dass die d-Achse in Richtung des Permanentmagneten zeigt. Das grösste resultierende Moment wird erreicht, wenn die resultierende Flussdichte im Stator um 90\(^\circ\) zur zeitlich konstanten Flussdichte des Rotors verschoben ist. Dies zeigt also genau in Richtung der q-Achse. Die resultierende Flussdichte liegt also auf der q-Achse und hat deshalb keinen d-Anteil. Der Sollwert der d-Komponente wird also null. Das Drehmoment kann somit direkt über die q-Komponente geregelt werden.
 
 \subsubsection{Nonlinear Observer}
 Die Park-Transformation benötigt die momentane Lage des Rotors. Da der vorgegebene Motor nicht über integrierte Sensoren (wie beispielsweise Hall-Sonden) verfügt, die Ansteuerung also sensorlos erfolgt, muss der Winkel der Rotorlage auf einem anderen Weg herausgefunden werden. Dazu gibt es verschiedene Varianten. 
-Ev. Tabelle mit Variante, Pro, Contra; Erläuerungen \todo{Tabelle od Ausformulierung der Gründe für diese Variante}
-Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. (Formulierung! Und Begründung…) Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, da aufgrund der Phasenströme auf die Lage des Motors rückgeschlossen werden kann. Beschrieben wird dieses Verfahren in xxx [Quelle IEEE-Paper].
-\todo{Quelle nonlinear Observer}
+Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, weil von den Phasenströme auf die Lage des Motors geschlossen werden kann. Beschrieben wird dieses Verfahren in \cite{IEEE_nonlinearObserver} \todo{	-->Noah: keine Weitere Beschreibung ok?} 
 
 \subsection{H-Brücke}
-Wie in Abbildung \ref{fig:BLDC} zu sehen, muss eine sinusförmige Spannung am Motor anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt welche mit der H-Brücke ausgegeben werden. Die H-Brücke besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs. 
+\label{tGl_HBrugg}
+Wie in Abbildung \ref{fig:BLDC} auf Seite \pageref{fig:BLDC} zu sehen ist, muss am Motor eine sinusförmige Spannung anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt welche mit der H-Brücke ausgegeben werden. Die H-Brücke besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs. 
 \begin{center}
 	\begin{circuitikz}[scale=2]
 		\draw[color=black]
@@ -399,8 +394,8 @@ Wie in Abbildung \ref{fig:BLDC} zu sehen, muss eine sinusförmige Spannung am Mo
 
 Mit den sogenannten High-Side MOSFETs kann jede Phase einzeln auf die Batteriespannung geschaltet werden. Die Low-Side FETs arbeiten symmetrisch dazu und können die Phase auf Batteriemasse schalten. Durch die berechneten PWM kann so ein dreiphasiger Sinus approximiert werden. 
 
-Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine totzeit Schaltung eingebaut. Wird der eine FET ausgeschaltet sind für eine kurze Zeit beide ausgeschaltet bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird Dedatime genannt.
+Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine Totzeit-Schaltung eingebaut. Wird der eine FET ausgeschaltet, sind für eine kurze Zeit beide ausgeschaltet, bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird \todo{Deadtime? Davor: Dedatime}Deadtime genannt.
 
-\label{tGl_HBrugg}
+
 \subsection{Funkübertragung}
 \label{tGl_RF}
