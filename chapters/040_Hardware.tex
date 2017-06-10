@@ -7,7 +7,7 @@ Die Hardware besteht grob zusammengefasst aus den folgenden Komponenten:
 	\item Dem Longboard, bestehend aus dem Deck, den Achsen, dem Motor und der dazugehörigen Riemenübersetzung.
 	\item Der Stromversorgung, die mit den Akkus dessen Kontrollschaltungen, Absicherungen und Ladeschaltung für ein zuverlässiges Handling der Energie sorgt.
 	\item Der Motorsteuerung, welche die Ansteuerung des PLDC-Motors über drei Halbbrücken, einem Mikrocontroller, Strommesswiderständen und Kommunikationsschnittstellen integriert.
-	\item Der Steuerung, einem Ein-Finger-Handschuh ähnlichen Konstrukt, welches die Biegung des Zeigefingers mittels eines Flex Sensors detektiert, mit einem Mikroprozessor auswertet und über Funk dem Motorkontroller mitteilt. Ebenfalls integriert sind LED’s zur Akku-Ladestand- und Bedienanzeige sowie ein Taster zur Kalibration.
+	\item Der Steuerung, einem Ein-Finger-Handschuh ähnlichen Konstrukt, welches die Biegung des Zeigefingers mittels eines Flex-Sensors detektiert, mit einem Mikroprozessor auswertet und über Funk dem Motorkontroller mitteilt. Ebenfalls integriert sind LED’s zur Akku-Ladestand- und Bedienanzeige sowie ein Taster zur Kalibration.
 \end{itemize}
 Auf die einzelnen Punkte wird in den folgenden Kapiteln noch detaillierter eingegangen. Hier wird noch kurz die Verbindung untereinander beschrieben:
 
@@ -21,13 +21,13 @@ ergibt sich ein Strom von I=60A bei einem Temperaturdelta von lediglich 35\(^\ci
 \todo{Link / Quelle einfügen:
 [https://www.multi-circuit-boards.eu/leiterplatten-design-hilfe/oberflaeche/leiterbahn-strombelastbarkeit.html] }
 
-Die Kommunikation zwischen Motorsteuerung und der Bedienung, dem Magic Glove, basiert auf einer Funkverbindung mit einer Frequenz von 2.4 GHz. Übermittelt wird der Wert der Biegung des Flex Sensors in der einen Richtung, sowie der Akku-Ladestand in der Anderen. Auf die Details wird in den Kapiteln der Software eingegangen.
+Die Kommunikation zwischen Motorsteuerung und der Bedienung, dem Magic Glove, basiert auf einer Funkverbindung mit einer Frequenz von 2.4GHz. Übermittelt wird der Wert der Biegung des Flex-Sensors in der einen Richtung, sowie der Akku-Ladestand in der Anderen. Auf die Details wird in den Kapiteln der Software eingegangen.
 
 
 \section{Steuerung - Magic Glove}
 \label{HW_MagicGlove}
-Der innovative Magic Glove ist ein Skatehandschuh der um einen Flex Sensor erweitert wurde. Somit schützt dieser bei einem Sturz nicht nur die Hände, sondern kann auch die Bewegung des Zeigefingers analysieren. Wird der Zeigefinger gestreckt, wie es beim Sturz aus Reflex passiert, wird das Board gebremst. Ballt man die Hand zur Faust, beschleunigt das Board.
-Da der Flex Sensor nur sehr kleine Widerstandsänderungen aufweist, wird mit der sogenannten Wheatstone-Brücke, welche in der Abbildung \ref{fig:wheatstonebruecke} zu sehen ist, gemessen.
+Der innovative Magic Glove ist ein Skatehandschuh der um einen Flex-Sensor erweitert wurde. Somit schützt dieser bei einem Sturz nicht nur die Hände, sondern kann auch die Bewegung des Zeigefingers analysieren. Wird der Zeigefinger gestreckt, wie es beim Sturz aus Reflex passiert, wird das Board gebremst. Ballt man die Hand zur Faust, beschleunigt das Board.
+Da der Flex-Sensor nur sehr kleine Widerstandsänderungen aufweist, wird mit der sogenannten Wheatstone-Brücke, welche in der Abbildung \ref{fig:wheatstonebruecke} zu sehen ist, gemessen.
 \begin{figure} [H]
 	\centering
 	\includegraphics[width=.7\linewidth]{images/wheatstone_Bruecke}
@@ -40,7 +40,7 @@ Wird eine Brückenspeisespannung $U_B$ angelegt, kann mit der folgenden Formel $
  U_A=\frac{R1 \cdot R3-R2 \cdot R4}{(R1+R2) \cdot (R3+R4)} \cdot U_B 
 \end{equation}
 \todo{Mathe-Malpunkt suchen od ganz auslassen}
-Ist der Flex Sensor dabei in Ruhelage, misst man eine Spannung von 0V. Aus dem Verhältnis von $ U_A $ zu $ U_B $ erhält man die relative Dehnung S des Flex Sensors \todo{Quelle Prof. Dr. Herbert Looser, „M4 Kraftmesstechnik“, FHNW, 04.06.14}.
+Ist der Flex-Sensor dabei in Ruhelage, misst man eine Spannung von 0V. Aus dem Verhältnis von $ U_A $ zu $ U_B $ erhält man die relative Dehnung S des Flex-Sensors \todo{Quelle Prof. Dr. Herbert Looser, „M4 Kraftmesstechnik“, FHNW, 04.06.14}.
 \begin{equation}\label{S_relativeDehnung}
 S=\frac{U_A}{U_B}
 \end{equation}
@@ -119,7 +119,7 @@ An ihm wird über ein SPI Interface noch das HopeRF RFM75 Modul angeschlossen, w
 
 \subsection*{Endstufe (Treiber und H-Brücken)}
 Für die Ansteuerung Transistoren wird der DRV8301 Gate-Treiber von Texas Instruments verwendet. Dieser Treiber beinhaltet einen Gate Driver mit 1.7A Peak Gatestrom, Current Shunt Differenzverstärker, Über- und Unterschutzspannung sowie Übertemperaturschutz und Überstromschutz. Ebenfalls ist ein Buck Converter für die Spannungsversorgung eingebaut.
-Die Transistoren sind IRFS7534 N-Kanal Power MOSFETs von Infineon, die 60V und 164A permanent aushalten. Sie eignen sich besonders für schnelles Schalten von grossen Lasten, also genau dieses Einsatzgebiet. Dies vor allem wegen dem tiefen $R_DSon$ (typ. 2\(\Omega\)) und der geringen Eigenkapazität. 
+Die Transistoren sind IRFS7534 N-Kanal Power MOSFETs von Infineon, die 60V und 164A permanent aushalten. Sie eignen sich besonders für schnelles Schalten von grossen Lasten, also genau dieses Einsatzgebiet. Dies vor allem wegen dem tiefen $R_{DSon}$ (typ. 2\(\Omega\)) und der geringen Eigenkapazität. 
 
 \subsection*{Messschaltungen}
-In der Ansteuerung von zwei Phasen sind 0.1\(\Omega\) Shunt-Widerstände zur Strommessung eingebaut. Die Spannung über den Widerständen wird im Gate-Treiber um den Faktor 10 verstärkt und mit einem Offset von $\frac{V_logic}{2}$ versehen. Der Mikrocontroller erhält dann eine Spannung zwischen 0 und $V_logic$ von dem Treiber. Damit wird dann der dritte Phasenstrom berechnet und dann zur Regelung verwendet.
+In der Ansteuerung von zwei Phasen sind 0.1\(\Omega\) Shunt-Widerstände zur Strommessung eingebaut. Die Spannung über den Widerständen wird im Gate-Treiber um den Faktor 10 verstärkt und mit einem Offset von $\frac{V_{logic}}{2}$ versehen. Der Mikrocontroller erhält dann eine Spannung zwischen 0 und $V_{logic}$ von dem Treiber. Damit wird dann der dritte Phasenstrom berechnet und dann zur Regelung verwendet.

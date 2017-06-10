@@ -31,7 +31,7 @@ Der Mikrocontroller der Antriebstechnik erhält die Wunschbeschleunigung wiederu
 
 \subsection*{Steuerung über den Magic Glove}
 Es gibt verschiedene Wege, wie ein elektrisches Longboard gesteuert werden kann. Eine Variante ist, über Drucksensoren im Brett durch eine Gewichtsverlagerung in Fahrtrichtung eine Geschwindigkeitsregulation zu erreichen. Da auf unebenem Gelände das Gewicht laufend ausbalanciert werden muss, müssten diese Bewegungsimpulse kompensiert werden. Ausserdem können lokal begrenzte Sensoren die Bewegungsfreiheit auf dem Longboard einschränken.
-Aus diesen Gründen wurde diese Variante verworfen. Das Team hat sich stattdessen entschieden, die Geschwindigkeit über eine Fingerbewegung zu steuern. Dazu wird ein Handschuh mit integrierten Sensoren entwickelt. Dieses Wearable enthält einen Flex Sensor, der die Beugung des Zeigefinders misst. Dieser Messvorgang und der Flex Sensor werden im Kapitel \ref{tGl_FlexSensor} beschrieben. Die mit dem Flex Sensor gemessene Beugung des Fingers wird mithilfe eines Mikrocontrollers quantifiziert. Diese Sollbeschleunigung wird anschliessend der Motoransteuerung übermittelt. Dies geschieht über ein 2.4 GHz-Funknetz, dazu ist ein Funkmodul integriert. Die Stromversorgung erfolgt über eine Li-Ion Knopfbatterie LTR2450. In der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} sind die genannten Elemente der Steuerung dargestellt.
+Aus diesen Gründen wurde diese Variante verworfen. Das Team hat sich stattdessen entschieden, die Geschwindigkeit über eine Fingerbewegung zu steuern. Dazu wird ein Handschuh mit integrierten Sensoren entwickelt. Dieses Wearable enthält einen Flex-Sensor, der die Beugung des Zeigefinders misst. Dieser Messvorgang und der Flex-Sensor werden im Kapitel \ref{tGl_FlexSensor} beschrieben. Die mit dem Flex-Sensor gemessene Beugung des Fingers wird mithilfe eines Mikrocontrollers quantifiziert. Diese Sollbeschleunigung wird anschliessend der Motoransteuerung übermittelt. Dies geschieht über ein 2.4 GHz-Funknetz, dazu ist ein Funkmodul integriert. Die Stromversorgung erfolgt über eine Li-Ion Knopfbatterie LTR2450. In der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} sind die genannten Elemente der Steuerung dargestellt.
 
 \subsection*{Antriebstechnik}
 \todo{def., Aufgabe ?}
@@ -77,9 +77,7 @@ Die Stromversorgung erfolgt über einen LiPo-5200mAh-Akku, dieser ist vorgegeben
 \section{Technische Grundlagen}
 In den folgenden Unterkapiteln werden die technischen Grundlagen zum Verständnis der Hard- und Software erläutert, so dass deren Funktionsweisen verstanden werden können.  Dazu werden für die Steuerung der Flex-Sensor (Kapitel \ref{tGl_FlexSensor}) und die Funkübertragung (Kapitel \ref{tGl_RF}), für die Stromversorgung das Balancing (Kapitel \ref{tGl_Balancing}) und für die Motoransteuerung der BLDC-Motor (Kapitel \ref{tGl_BLDC}), die FOC (Kapitel \ref{tGl_FOC}) und die Treiber und FETs (H-Brücke, Kapitel \ref{tGl_HBrugg}) erklärt.
 
-
-
-\subsection{Flex Sensor}
+\subsection{Flex-Sensor}
 \label{tGl_FlexSensor}
 Ein Flex-Sensor eignet sich dazu, als analoges elektrisches Bauteil, eine Biegung zu messen. Im Falle dieses Projekts heisst dies, zu erkennen wie fest der Finger des Fahrers gebogen ist. 
 Der Sensor ändert je nach Biegung seinen Widerstandswert im Bereich von 13 bis ca. 80k$\Omega$ bei der stärksten Verformung. Das Bauteil selbst besteht aus einem flexiblen PCB mit einer darauf befestigten Schicht von metallischen Partikeln. Wird der Sensor nun gebogen, entfernen sich die Partikel voneinander, wodurch sich der Widerstand vergrössert. Biegt man den Sensor zurück in seine Ausgangsposition, verkleinert sich der Widerstandswert wieder.
@@ -89,10 +87,10 @@ angehängte 10bit A/D-Wandler vollständig ausgesteuert werden.
 \begin{figure} [H]
 	\centering
 
-\subfigure[Funktionsprinzip FlexSensor]{
+\subfigure[Funktionsprinzip Flex-Sensor]{
 	\includegraphics[width=0.45\linewidth]{images/FlexSensor} \label{FlexSensor} 	}
-\subfigure[Sinstr][Messbrücke für FlexSensor]{ \includegraphics[width=0.5\linewidth]{images/FlexSensor_Messbruecke} \label{FlexSensor_Messbruecke}}
-\caption[FlexSensor]{Funktionsprinzip und Ansteuerung für einen FlexSensor}
+\subfigure[Sinstr][Messbrücke für Flex-Sensor]{ \includegraphics[width=0.5\linewidth]{images/FlexSensor_Messbruecke} \label{FlexSensor_Messbruecke}}
+\caption[FlexSensor]{Funktionsprinzip und Ansteuerung für einen Flex-Sensor}
 \label{fig:gl_Flex-Sensor}
 \end{figure}
 
