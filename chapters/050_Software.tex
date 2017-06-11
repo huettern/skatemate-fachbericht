@@ -14,16 +14,17 @@ Die Software des Magic-Glove ist um eine einfache Bedienung zu garantieren, sehr
 	\captionof{table}{Verwendete SW-Entwicklertools}
 \end{center}
 \subsection*{Modulübersicht}
-Die Programmfunktionalität des Magic Glove ist in verschiedene C-Module untergebracht. Eine Liste der implementierten Module ist in der Tabelle \ref{HW_MagicGlove} untergebracht.\\ \newline
+Die Programmfunktionalität des Magic Glove ist in verschiedene C-Module untergebracht. Eine Liste der implementierten Module ist in der Tabelle \ref{HW_MagicGlove} dargestellt.\\ \newline
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	\texttt{rfm7x.h} & Enthält die Funktionsdefinitionen und spezifischen Einstellungen für das RFM75-Modul. \\ \hline
 	\texttt{rfm7x{\_}config.h} & Enthält die Konfigurationseinstellungen welche bei der Initialisierung auf das RFM75-Modul geladen werden. \\ \hline
-	\texttt{spi.h} & Speichert die Einstellungen der SPI für den verwendeten Atmega-Chip. \\ \hline
+	\texttt{spi.h} & Speichert die Einstellungen der SPI für den verwendeten ATMega-Chip. \\ \hline
 	\texttt{asf.h} & Automatisch generierte Header-Datei des Atmel Software Frameworks.
-	\captionof{table}{Magic Glove: C-Module}
-	\label{tab:ModulesMagicGlove}
 \end{tabularx}
+\captionof{table}{Magic Glove: C-Module}
+\label{tab:ModulesMagicGlove}
+
 \subsection*{Headerübersicht}
 Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdateien untergebracht. Eine Liste der wichtigsten Headerdateien ist in Tabelle \ref{tab:HeadersMagicGlove} dargestellt.\\ \newline
 \begin{tabularx}{\textwidth}{l|X}
@@ -50,17 +51,17 @@ Der Code auf dem ATMega328PB-AU sieht folgendermassen aus:
 	\begin{tikzpicture}[node distance = 1.5cm, auto]
 	\node [block] (InitMCU) {Mikrocontroller initialisieren};
 	\node [block, below of=InitMCU] (rfm75) {RFM75 initialisieren};
-	\node [draw, diamond, aspect=2, below of=rfm75] (start) {true};
-	\node [block, below of=start] (adcread) {ADC-Wert lesen};
+	% \node [draw, diamond, aspect=2, below of=rfm75] (start) {true};
+	\node [block, below of=rfm75] (adcread) {ADC-Wert lesen};
 	\node [block, below of=adcread] (sendrfm) {Sende Wert an RFM75};
 	\node [block, below of=sendrfm] (slp) {10 ms warten};
 	
 	 \path [line] (InitMCU) -- (rfm75);
-	 \path [line] (rfm75) -- (start);
-	 \path [line] (start) -- node [line] {Yes} (adcread);
+	 \path [line] (rfm75) -- (adcread);
+	 % \path [line] (start) -- node [line] {Yes} (adcread);
 	 \path [line] (adcread) -- (sendrfm);
 	 \path [line] (sendrfm) -- (slp);
-	 \path [line] (slp) -| ++(4,0) |- node [near start] {No} (start);
+	 \path [line] (slp) -| ++(4,0) |- node [near start] {} (adcread);
 	\end{tikzpicture}
 	\captionof{figure}{Ablauf des Magic Glove C-Code}
 	\label{fig:fw_adc}
