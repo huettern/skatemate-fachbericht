@@ -83,7 +83,7 @@ Nun werden die einzelnen Spannungsteiler ausgemessen. Dabei wird am Balancing An
 
 \subsubsection*{Highside-Driver}
 \label{Highside-Driver}
-Damit der Highside-Driver getestet werden kann, sollte die Batterie entfernt und einen Leistungswiderstand von rund 5$\omega$ angeschlossen werden. Der Highside-Driver wird dabei extern mit 15V gespiessen. Als erstes wird am Mikrocontroller einen PWM mit 50\% Duty-Cycle ausgegeben. Dabei sollte am Ausgang des Highside-Driver dasselbe Signal mit 15V Spannungsspitze anliegen. Nun wird eine externe Ladespannung angeschlossen. Diese liegt für Testzwecke bei 15V. Dabei sollte die Strombegrenzung auf 3A eingestellt sein. Nun wird der Duty-Cycle ständig erhöht. Dabei wird der Strom beim Leistungswiderstand gemessen und mit nachfolgender Tabelle abgeglichen.
+Damit der Highside-Driver getestet werden kann, sollte die Batterie entfernt und einen Leistungswiderstand von rund 5$\Omega$ angeschlossen werden. Der Highside-Driver wird dabei extern mit 15V gespiesen. Als erstes wird am Mikrocontroller ein PWM mit 50\% Duty-Cycle ausgegeben. Dabei sollte am Ausgang des Highside-Driver dasselbe Signal mit 15V Spannungsspitze anliegen. Nun wird eine externe Ladespannung angeschlossen. Diese liegt für Testzwecke bei 15V. Dabei sollte die Strombegrenzung auf 3A eingestellt sein. Nun wird der Duty-Cycle ständig erhöht. Dabei wird der Strom beim Leistungswiderstand gemessen und mit nachfolgender Tabelle abgeglichen.
 
 \begin{center}
 	\begin{tabular}{|c|c|}
@@ -101,10 +101,10 @@ Damit der Highside-Driver getestet werden kann, sollte die Batterie entfernt und
 Einen Duty-Cycle von 100\% wird nicht geprüft, da der Highside-Driver nicht dazu ausgelegt ist einen FET dauerhaft durch zusteuern.
 
 \subsection*{Software}
-Um diese Ergebnisse zu überprüfen, muss am USART des Mikrocontroller ein TTL-Kabel angeschlossen werden.
+Um diese Ergebnisse zu überprüfen, muss am UART des Mikrocontroller ein TTL-Kabel angeschlossen werden.
 
 \subsubsection*{ADC}
-Um die einzelnen Zellen auszulesen, kann die Batterie sowie eine Ladespannung von mindestens 30V angeschlossen werden. Dabei werden die einzelnen Spannungen jede Sekunde einmal über den USART Port ausgegeben. Dabei sollte die Spannung mit dem Fluke gemessen und überprüft werden. Um denn Strom zu messen, wird die Messung gleich wie in Kapitel \ref{Highside-Driver} aufgebaut. 
+Um die einzelnen Zellen auszulesen, kann die Batterie sowie eine Ladespannung von mindestens 30V angeschlossen werden. Dabei werden die einzelnen Spannungen jede Sekunde einmal über den UART Port ausgegeben. Dabei sollte die Spannung mit dem Multimeter gemessen und überprüft werden. Um denn Strom zu messen, wird die Messung gleich wie in Kapitel \ref{Highside-Driver} aufgebaut. 
 
 \subsubsection*{PWM-Regelung}
 Um zu überprüfen wird Software-Seitig ein vordefinierter Strom eingestellt. Dabei wird anstatt der Akku ein veränderbarer Leistungswiderstand am Ausgang angeschlossen. Nun wird der Widerstand verändert und überprüft, ob die Software richtig nachregelt.
@@ -120,7 +120,7 @@ Um zu überprüfen wird Software-Seitig ein vordefinierter Strom eingestellt. Da
 \todo{Wenn möglich, sollte hier noch ein Bild eingefügt werden} 
 
 \subsubsection{Balancing-Regelung}
-Für diese Validierung wird jeweils eine Spannung an den Zellen Anschlüssen angeschlossen. Dabei wird überprüft, ob die Software bei den jeweiligen Zellen die FETs durch steuert, um  die gleiche Spannung wie bei den anderen Zellen zu erreichen.
+Für diese Validierung wird jeweils eine Spannung an den Zellen Anschlüssen angeschlossen. Dabei wird überprüft, ob die Software bei den jeweiligen Zellen die FETs durchsteuert, um  die gleiche Spannung wie bei den anderen Zellen zu erreichen.
 
 
 %\begin{itemize}
