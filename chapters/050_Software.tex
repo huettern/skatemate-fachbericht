@@ -32,7 +32,7 @@ Die Zellspannungen werden in jedem Durchlauf gemessen und in einem Array abgespe
 \subsection*{Plattform}
 Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 CPU mit FPU und DSP Instruktionen. Als RTOS wird ChibiOS verwendet. Es stellt grundlegende Kernel Funktionalitäten zur Verfügung wie Schedulers und Threads sowie einen HAL. Die komplette Firmware ist in C geschrieben.
 
-Die vom Code generierte Dokumentation kann jederzeit unter \url{https://noah95.github.io/skatemate-sw/} aufgerufen werden.
+Die vom Code generierte Dokumentation kann unter \url{https://noah95.github.io/skatemate-sw/} aufgerufen werden.
 \subsection*{Entwicklungsumgebung}
 \begin{center}
 	\begin{tabular}{ | l | l | }
@@ -47,24 +47,24 @@ Die vom Code generierte Dokumentation kann jederzeit unter \url{https://noah95.g
 
 
 \subsection*{Peripherie}
-Um dem Microkotroller Rechenleistung abzunehmen werden möglichst viele Aufgaben an die eingebauten Peripheriegeräte ausgelastet. Einige Aufgaben wie das Einlesen von Spannungen kann ausserdem nur von speziellen Peripheriegeräten übernommen werden. In der Tabelle \ref{tab:periph} sind alle verwendeten Peripherien aufgelistet.\\
+Um dem Mikrocotroller Rechenleistung abzunehmen werden möglichst viele Aufgaben an die eingebauten Peripheriegeräte ausgelastet. Einige Aufgaben wie das Einlesen von Spannungen kann ausserdem nur von speziellen Peripheriegeräten übernommen werden. In der Tabelle \ref{tab:periph} sind alle verwendeten Peripherien aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|c|c|c|X}
 	Peripherie & \rotatebox[origin=c]{90}{IRQ} & \rotatebox[origin=c]{90}{DMA} & \rotatebox[origin=c]{90}{DMA IRQ} & Verwendung \\ \hline
 	TIM1 &
 	- &
 	- &
 	- &
-	Zur Generation der PWM Signale wird der Timer \texttt{TIM1} verwendet. Er ist konfiguriert in Center Aligned PWM Mode. So zählt der Timer zu einem definierten Wert hoch und wieder runter.
+	Zur Generation der PWM-Signale wird der Timer \texttt{TIM1} verwendet. Er ist konfiguriert in Center Aligned PWM Mode. So zählt der Timer zu einem definierten Wert hoch und wieder runter.
 
-	Die PWM Kanäle schalten sobald deren Komperator Wert dem Zählerwert entsprechen. So sind alle PWM ausgänge in der Mitte des Pulses zentriert. Alle Kanäle sind komplementär, so wird der Low-side FET ausgeschaltet wenn der High-side FET eingeschaltet ist und umgekehrt. Kanäle eins bis drei werden für die drei Phasen verwendet und der Kanal vier zur Triggerung des ADC. 
+	Die PWM Kanäle schalten, sobald deren Komperator-Wert dem Zählerwert entsprechen. So sind alle PWM-Ausgänge in der Mitte des Pulses zentriert. Alle Kanäle sind komplementär, so wird der Low-Side-FET ausgeschaltet, wenn der High-Side-FET eingeschaltet ist und umgekehrt. Kanäle eins bis drei werden für die drei Phasen verwendet und der Kanal vier zur Triggerung des ADC. 
 
-	Der Dutycycle des vierten Kanals ist auf den kleinsten Wert konfiguriert, wo werden die Signale genau in der Mitte des PWM Pulses eingelesen. So wird das \texttt{TIM1 TRGO} Signal generiert.
+	Der Dutycycle des vierten Kanals ist auf den kleinsten Wert konfiguriert, so werden die Signale genau in der Mitte des PWM Pulses eingelesen. So wird das \texttt{TIM1-TRGO}-Signal generiert.
 	\\ \hline
 	ADC1 &
 	- &
 	1 CH1 &
 	- &
-	Der ADC1 wandelt die drei Phasenspannungen, sowie die Versorgungsspannung. Er wird getriggert von dem \texttt{TIM1 TRGO} Event. Die vier Kanäle werden sequentiell konvertiert und mittels DMA im RAM abgespeichert.
+	Der ADC1 wandelt die drei Phasenspannungen sowie die Versorgungsspannung. Er wird getriggert von dem \texttt{TIM1 TRGO} Event. Die vier Kanäle werden sequentiell konvertiert und mittels DMA im RAM abgespeichert.
 	\\ \hline
 	ADC3 &
 	\texttt{FC} &
@@ -82,27 +82,27 @@ Um dem Microkotroller Rechenleistung abzunehmen werden möglichst viele Aufgaben
 	- &
 	- &
 	- &
-	Der \texttt{TIM3} wird für ein Input capture verwendet. So kann das Signal eines Modellbau RC-Empfägers eingelesen werden. Dies wird nur zu Debug Zwecken verwendet. Der \texttt{TIM3} wird vom ChibiOS HAL ICU Treiber verwendet.
+	Der \texttt{TIM3} wird für einen Input Capture verwendet. So kann das Signal eines Modellbau RC-Empfängers eingelesen werden. Dies wird nur zu Debugzwecken verwendet. Der \texttt{TIM3} wird vom ChibiOS HAL ICU Treiber verwendet.
 	\\ \hline
 	USART3 &
 	- &
 	- &
 	- &
-	Per \texttt{USART3} wird mir dem Computer zu Debug Zwecken kommuniziert. Die ChibiOS Shell läuft über diese Schnittstelle. Zudem werden Daten zur Visualisierung character basiert über \texttt{USART3} übertragen.
+	Per \texttt{USART3} wird mit dem Computer zu Debugzwecken kommuniziert. Die ChibiOS Shell läuft über diese Schnittstelle. Zudem werden Daten zur Visualisierung Charakter-basiert über \texttt{USART3} übertragen.
 	\\ \hline
 	SPI3 &
 	- &
 	- &
 	- &
-	\texttt{SPI3} wird verwendet zur Kommunikation mit dem Treiber IC und dem RFM Modul. Das Treiber IC wird nur zur Initialisierung beschrieben.
+	\texttt{SPI3} wird verwendet zur Kommunikation mit dem Treiber IC und dem RFM-Modul. Das Treiber IC wird nur zur Initialisierung beschrieben.
 	\\ \hline
 	USB1 &
 	- &
 	- &
 	- &
-	\texttt{USB1} wird initialisiert aber nur optional verwendet für eine virtuelle serielle Schnittstelle. So kann die Funktion von \texttt{USART3} ohne USB-Seriell Wandler verwendet werden.
+	\texttt{USB1} wird initialisiert, aber nur optional verwendet für eine virtuelle serielle Schnittstelle. So kann die Funktion von \texttt{USART3} ohne USB-Seriell-Wandler verwendet werden.
 \end{tabularx}
-\captionof{table}{Verwendete Peripherie des Microkontrollers}
+\captionof{table}{Verwendete Peripherie des Mikrocontrollers}
 \label{tab:periph}
 
 
@@ -111,11 +111,11 @@ Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers sodass
 
 \begin{tabularx}{\textwidth}{l|c|X}
 	Name & Thread/ISR & Verwendung \\ \hline
-	\texttt{ADC ISR} & ISR & FOC routine und Motor Regelung \\ \hline
-	\texttt{main} & Thread & Einlesen der Magic Glove Daten \\ \hline
+	\texttt{ADC ISR} & ISR & FOC Routine und Motor Regelung \\ \hline
+	\texttt{main} & Thread & Einlesen der Magic-Glove-Daten \\ \hline
 	\texttt{mcfoc main} & Thread & Statusmaschine für die Motorregelung mit Anfahren und Schutzfunktionen \\ \hline
-	\texttt{mcfoc secondary} & Thread & Zur Aufzeichnung von Regeldaten. Nur zu Debug-Zwecken \\ \hline
-	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debug-Zwecken. Eingebaute ChibiOS Funktion
+	\texttt{mcfoc secondary} & Thread & Zur Aufzeichnung von Regeldaten. Nur zu Debugzwecken \\ \hline
+	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debugzwecken. Eingebaute ChibiOS-Funktion
 \end{tabularx}
 \captionof{table}{Thread und ISR Übersicht}
 \label{tab:israndthreads}
@@ -152,9 +152,9 @@ Folgend werden die in Tabelle \ref{tab:israndthreads} aufgelisteten Routinen bes
 	\label{fig:fw_adc}
 \end{center}
 
-Vor den Berechnungen wird das Betriebssystem mittels \texttt{chSysLockFromISR} in den I-Locked State geschaltet. So können keine andere Interrupts die Berechnungen unterbrechen und I-Class API Funktionen sind verfügbar. Die Konvertierten Signale werden vom DMA Buffer in Spannungswerte, respektive Strömwerte, umgerechnet und abgespeichert. Die Ströme werden clark-transformiert sodass der Positions- und Geschwindigkeits Beobachter aufgerufen werden kann. Der Stromregler wird langsamer ausgeführt als die Beobachter. Mit dem define \texttt{FOC\_CURRENT\_CONTROLLER\_SLOWDOWN} kann dieser Faktor eingestellt werden. \\
-Vor dem Stromregler werden die Messdaten park-transformiert. Der Stromregler wird aufgerufen und danach die berechneten dutycycles im Timer gesetzt.\\
-Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
+Vor den Berechnungen wird das Betriebssystem mittels \texttt{chSysLockFromISR} in den I-Locked State geschaltet. So können keine andere Interrupts die Berechnungen unterbrechen und I-Class-API Funktionen sind verfügbar. Die konvertierten Signale werden vom DMA-Buffer in Spannungswerte, respektive Stromwerte umgerechnet und abgespeichert. Die Ströme werden clark-transformiert, sodass der Positions- und Geschwindigkeits Beobachter aufgerufen werden kann. Der Stromregler wird langsamer ausgeführt als die Beobachter. Mit dem Define \texttt{FOC\_CURRENT\_CONTROLLER\_SLOWDOWN} kann dieser Faktor eingestellt werden. \\
+Vor dem Stromregler werden die Messdaten park-transformiert. Der Stromregler wird aufgerufen und danach die berechneten Dutycycles im Timer gesetzt.\\
+Am Ende der ISR wird das System aus dem I-Locked State entsperrt.
 
 \subsubsection*{Thread main}
 \begin{center}    
@@ -182,7 +182,7 @@ Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
 	\label{fig:fw_adc}
 \end{center}
 
-Der Main-Thread wird nach der Initialisierung des Clocks und der Konfiguration der GPIOs gestartet. Nach der Initialisierung der restlichen Module startet die Endlosschleife. Da die Shell schneller abgearbeitet werden muss, wird das Einlesen des Magic Gloves verlangsamt und bei jeder Iteration die Shell abgearbeitet. Nach dem Einlsesn der Steuerdaten werden diese an das \texttt{mc\_foc} Modul weitergeleitet.
+Der Main-Thread wird nach der Initialisierung des Clocks und der Konfiguration der GPIOs gestartet. Nach der Initialisierung der restlichen Module startet die Endlosschleife. Da die Shell schneller abgearbeitet werden muss, wird das Einlesen des Magic Gloves verlangsamt und bei jeder Iteration die Shell abgearbeitet. Nach dem Einlesen der Steuerdaten werden diese an das \texttt{mc\_foc} Modul weitergeleitet.
 
 \subsubsection*{Thread mcfoc main}
 \begin{center}    
@@ -197,7 +197,7 @@ Der Main-Thread wird nach der Initialisierung des Clocks und der Konfiguration d
 	\label{fig:fw_adc}
 \end{center}
 
-Zur Zeit der Verfassung dieser Dokumentation war das Anfahren noch nicht implementiert. Dieser Thread ist vorgesehen für die Ansteuermethode des Motors zu entscheiden. Nach einem Stillstand muss angefahren werden, bei Sollwertsprüngen eventuell verlangsamt angesteuert werden und beim Bremsen den Maximalstrom zu limitieren.
+Zur Zeit der Verfassung dieser Dokumentation war das Anfahren noch nicht implementiert. Dieser Thread ist vorgesehen für die Ansteuermethode des Motors zu entscheiden. Nach einem Stillstand muss angefahren werden, bei Sollwertsprüngen eventuell verlangsamt angesteuert und beim Bremsen den Maximalstrom limitieren werden.
 
 \subsubsection*{Thread mcfoc secondary}
 
@@ -224,21 +224,21 @@ Zur Zeit der Verfassung dieser Dokumentation war das Anfahren noch nicht impleme
 	\label{fig:fw_adc}
 \end{center}
 
-Der sekundäre \texttt{mc\_foc} Thread ist zuständig für das Datenaufzeichnen und -übertragen. Mit dem Shell-Command \texttt{sample} wird der Aufzeichnunsvorgang gestartet. In den Interruptroutinen werden die zu aufzeichnenden Daten im RAM gespeichert und sobald der Puffer voll ist, sendet der Thread diese Daten via Shell stream an den Computer.
+Der sekundäre \texttt{mc\_foc} Thread ist zuständig für das Datenaufzeichnen und -übertragen. Mit dem Befehl \texttt{sample} wird der Aufzeichnunsvorgang gestartet. In den Interruptroutinen werden die zu aufzeichnenden Daten im RAM gespeichert und sobald, der Puffer voll ist, sendet der Thread diese Daten via Shell Stream an den Computer.
 
-\subsubsection*{Thread shell}
-Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Seriellen Schnittstelle oder dem USB Treiber und verarbeitet sie.
+\subsubsection*{Shell Thread}
+Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der seriellen Schnittstelle oder dem USB-Treiber und verarbeitet sie.
 
 \subsection*{Modulübersicht}
-Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ein Modul besteht aus einer C-Quelldatei und optional aus einer Headerdatei. Die Module sind nach ihren Funktionen unterteilt und in Tabelle \ref{tab:mod} aufgelistet.\\
+Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ein Modul besteht aus einer C-Quelldatei und optional aus einer Headerdatei. Die Module sind nach ihren Funktionen unterteilt und wie in Tabelle \ref{tab:mod} aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
-	\texttt{main} & Im main Modul befindet sich die main routine, welche nach der reset Funktion aufgerufen wird. Darin wird das Betriebssystem und alle anderen Module initialisiert. Im main thread werden die Daten des Magic Gloves empfangen und an das \texttt{mc foc} Modul gesendet. \\ \hline
-	\texttt{usbcdc} & Dieses Modul startet die USB schnittstelle und deklariert alle Shell-Funktionen. \\ \hline
-	\texttt{usbcfg} & In diesem Modul werden die USB Endpunkte erstellt und behandelt. Es ist teil vom ChibiOS und nicht selbst verfasst. \\ \hline
-	\texttt{util} & Das util Modul stellt verschiedene Module zur Verfügung. Wichtig für die Motoransteuerung sind die darin enthaltenen Trigonometriemethoden wie chnelle arcus tangens Berechnungen. \\ \hline
-	\texttt{drv8301} & Die Initialisierung des FET-Treiber ICs geschieht in diesem Modul. Es beinhaltet auch alle SPI-Registerdefinitionen. Die default Werte sind in der init Funktion enthalen. \\ \hline
-	\texttt{mc\_foc} & In diesem Modul geschieht die komplette Motorsteuerung. In der init Funktion werden Peripherie Module initialisiert, standardwerte geladen, Eingänge kalibriert und die Kontrol-Threads gestartet. Die ADC Interrupt routinen befinden sich am Ende dieses Moduls.\\ \hline
+	\texttt{main} & Im main-Modul befindet sich die main routine, welche nach der reset-Funktion aufgerufen wird. Darin wird das Betriebssystem und alle anderen Module initialisiert. Im main-Thread werden die Daten des Magic Gloves empfangen und an das \texttt{mc foc}-Modul gesendet. \\ \hline
+	\texttt{usbcdc} & Dieses Modul startet die USB-Schnittstelle und deklariert alle Shell-Funktionen. \\ \hline
+	\texttt{usbcfg} & In diesem Modul werden die USB Endpunkte erstellt und behandelt. Es ist Teil vom ChibiOS und nicht selbst verfasst. \\ \hline
+	\texttt{util} & Das util-Modul stellt verschiedene Module zur Verfügung. Wichtig für die Motoransteuerung sind die darin enthaltenen Trigonometriemethoden wie schnelle arcus-Tangens-Berechnungen. \\ \hline
+	\texttt{drv8301} & Die Initialisierung des FET-Treiber-ICs geschieht in diesem Modul. Es beinhaltet auch alle SPI-Registerdefinitionen. Die default-Werte sind in der init-Funktion enthalten. \\ \hline
+	\texttt{mc\_foc} & In diesem Modul geschieht die komplette Motorsteuerung. In der init-Funktion werden Peripherie-Module initialisiert, Standardwerte geladen, Eingänge kalibriert und die Kontrol-Threads gestartet. Die ADC-Interrupt-Routinen befinden sich am Ende dieses Moduls.\\ \hline
 	\texttt{utelemetry} & Dieses Modul ermöglicht die Datenübertragung an einen Computer mit der geeigneten Empfängersoftware. So können Variablen zeitabhängig beobachtet werden. In der letzten Version wird dies jedoch nichtmehr verwendet. \\ \hline
 \end{tabularx}
 \captionof{table}{Modulübersicht}
@@ -248,24 +248,24 @@ Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ei
 Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdateien untergebracht. Eine Liste der wichtigsten Headerdateien ist in Tabelle \ref{tab:header} dargestellt.\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
-	\texttt{defs.h} & Globale definitionen wie Thread namen und stackgrösse, clockdefinitionen und debug macros. \\ \hline
-	\texttt{chconf.h} & Einstellungen für den ChibiOS Kernel. \\ \hline
-	\texttt{halconf.h} & Einstellungen für den ChibiOS HAL Treiber. Welche Module er verwenden soll. \\ \hline
-	\texttt{mcuconf.h} & Welche Module für den ChibiOS HAL Treiber verwendet werden, verschiedene Clock Einstellungen. \\ \hline
+	\texttt{defs.h} & Globale Definitionen wie Thread-Namen und Stackgrösse, Clockdefinitionen und Debug-Macros. \\ \hline
+	\texttt{chconf.h} & Einstellungen für den ChibiOS-Kernel. \\ \hline
+	\texttt{halconf.h} & Einstellungen für den ChibiOS-HAL-Treiber. Welche Module er verwenden soll. \\ \hline
+	\texttt{mcuconf.h} & Welche Module für den ChibiOS-HAL-Treiber verwendet werden, verschiedene Clock-Einstellungen. \\ \hline
 	\texttt{stm32f30x.h} & Nur ein Wrapper für die \texttt{STM32F30x standard peripheral} library. \\ \hline
 	\texttt{stm32f30x\_conf.h} & \texttt{STM32F30x standard peripheral} Konfiguration. \\ \hline
-	\texttt{board.h} & Definiert die IO lines welche an den Microkontroller angeschlossen sind und deren Initialisierungswerte. \\ \hline
+	\texttt{board.h} & Definiert die IO-Lines, welche an den Mikrocontroller angeschlossen sind und deren Initialisierungswerte. \\ \hline
 \end{tabularx}
 \captionof{table}{Headerübersicht}
 \label{tab:header}
 
-\subsection*{Libraries}
-Einige Programmfunktionen wurden aus existierenden Librarier verwendet. Alle verwendeten externen Libraries sind in der Tabelle \ref{tab:lib} aufgelistet.\\
+\subsection*{Bibliotheken}
+Einige Programmfunktionen wurden aus existierenden Bibliotheken verwendet. Alle verwendeten externen Libraries sind in der Tabelle \ref{tab:lib} aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
-	CMSIS &  Der Cortex Microcontroller Software Interface Standard CMSIS stellt eine DSP-Library zur Verfügung mit welcher effizienter Gebrauch der DSP Instruktionen und der FPU gemacht werden kann. Trigonometrische Funktionen und Transformationen werden durch CMSIS realisiert. \\ \hline
+	CMSIS &  Der Cortex-Mikrocontroller-Software-Interface-Standard CMSIS stellt eine DSP-Library zur Verfügung, mit der effizienter Gebrauch der DSP-Instruktionen und der FPU gemacht werden kann. Trigonometrische Funktionen und Transformationen werden durch CMSIS realisiert. \\ \hline
 	ChibiOS & Realtime Betriebssystem: \url{www.chibios.org} \\ \hline
-	STM32F30x std periph library & Der HAL von ChibiOS ist nicht genug flexibel für die spezifische Anwendung der Timer und ADC. Die Standard Peripheral Library von ST stellt eine einfache, prozessorgebundene, Hardware Abstraktion zur Verfügung.  \\ \hline
+	STM32F30x std periph library & Der HAL von ChibiOS ist nicht genug flexibel für die spezifische Anwendung der Timer und ADC. Die Standard-Peripheral-Library von ST stellt eine einfache, prozessorgebundene Hardware-Abstraktion zur Verfügung.  \\ \hline
 \end{tabularx}
 \captionof{table}{Übersicht über alle verwendeten externen Libraries}
 \label{tab:lib}

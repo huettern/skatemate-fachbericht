@@ -4,7 +4,7 @@
 % Überblick
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Überblick} \label{ValidUeberblick}
-Ziel der Validierungsphase ist das Testen auf dem fertigen Board, anhand von Testpersonen. Der Weg bis dahin muss aber ebenfalls kontrolliert und geprüft sein. Zur Sicherstellung der Funktionalität werden die Komponenten einzeln als auch gesamthaft getestet. 
+Ziel der Validierungsphase ist das Testen auf dem fertigen Board, anhand von Testpersonen. Der Weg bis dahin muss aber ebenfalls controlliert und geprüft sein. Zur Sicherstellung der Funktionalität werden die Komponenten einzeln als auch gesamthaft getestet. 
 Jeder Hardware-Bestandteil – Brett, Steuerung, Stromversorgung und Motoransteuerung - hat also sein eigenes Testkonzept.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,7 +27,7 @@ Für die Validierung des Magic Glove wurde eine Hand 3d-gedruckt und ein seperat
 % MC
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Motoransteuerung} \label{ValidMotoransteuerung}
-Um reproduzierbare Ergebnisse zu erzielen, wird die Motoransteuerung auf einem Prüfstand getestet. Der Motor wird ohne Last befestigt und die Schaltung von einem Netzteil gespiesen. Weiter wird die Motoransteuerung in einzelnen Blöcken validiert. Dabei wird unterschieden in Hardware und Software.\\
+Um reproduzierbare Ergebnisse zu erzielen, wird die Motoransteuerung auf einem Prüfstand getestet. Dazu wird der Motor ohne Last befestigt und die Schaltung von einem Netzteil gespiesen. Weiter wird die Motoransteuerung in einzelnen Blöcken validiert. Dabei wird unterschieden in Hardware und Software.\\
 \\
 \textbf{Hardware}
 \begin{itemize}
@@ -44,7 +44,7 @@ Um reproduzierbare Ergebnisse zu erzielen, wird die Motoransteuerung auf einem P
 
 \subsection*{Hardware}
 \subsubsection*{FETs}
-Die FETs werden der Reihe nach von der Software eingeschalten. Zum Test der FETs wird am Ausgang ein Widerstand auf Masse geschaltet. So kann die Spannung am Ausgang gemessen und aufgezeichnet werden. Zusätzlich wird die Gatespannung gemessen.
+Die FETs werden der Reihe nach von der Software eingeschaltet. Zum Test der FETs wird am Ausgang ein Widerstand auf Masse geschaltet. So kann die Spannung am Ausgang gemessen und aufgezeichnet werden. Zusätzlich wird die Gatespannung gemessen.
 
 \begin{center}
 	\begin{tabular}{|c|c|}
@@ -62,7 +62,7 @@ Zur Gunsten der Übersichtlichkeit wird nur die Messung eines FETs dargestellt.
 \begin{figure} [H]
 	\centering
 	\includegraphics[width=0.5\linewidth]{images/valmcfet.jpg}
-	\caption{Einschalten High-Side FET}
+	\caption{Einschalten High-Side-FET}
 	\label{fig:hsfet}
 \end{figure}
 \begin{center}
@@ -76,13 +76,13 @@ Zur Gunsten der Übersichtlichkeit wird nur die Messung eines FETs dargestellt.
 Der Kanal 1 zeigt die Steuerspannung am Gate des FETs. Sie wird vom Treiber IC erzeugt und beträgt im eingeschalteten Zustand 24V, das sind rund 7V Gate-Source Spannung. Dies versichert ein schneller Durchschalten des FETs. Erkennbar ist dies an der schnellen Flank am Ausgang der Halbbrücke, zu sehen auf Kanal 4.
 
 \subsubsection*{Spannungsmessung}
-Ist der Microkontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann eine Spannung an die Ausgänge der H-Brücke gegeben werden und am Ausgang der Spannungsteiler die Spannung gemessen werden. Diese darf bei einem bestimmten Eingangsspannungsbereich die Microkontrollerspeisung nicht überschreiten.
+Ist der Mikrocontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann eine Spannung an die Ausgänge der H-Brücke gegeben und am Ausgang der Spannungsteiler die Spannung gemessen werden. Diese darf bei einem bestimmten Eingangsspannungsbereich die Mikrocontrollerspeisung nicht überschreiten.
 
 \begin{center}
 	\begin{tabular}{|c|c|}
 		\hline 
 		Versorgungsspannungsbereich & $0$ bis $20V$ \\ \hline
-		Microkontrollerspeisung & $3.3V$ \\ \hline
+		Mikrocontrollerspeisung & $3.3V$ \\ \hline
 		Spannungsteiler Faktor & $0.0534$ \\ \hline
 	\end{tabular} 
 	\captionof{table}{Messbedingungen Spannungsmessung}
@@ -92,7 +92,7 @@ Ist der Microkontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann e
 \begin{center}
 	\begin{tabular}{|l|l|l|}
 		\hline 
-		Spannung an Phase & Spannung gemessen am Microkontroller & Faktor\\ \hline
+		Spannung an Phase & Spannung gemessen am Mikrocontroller & Faktor\\ \hline
 		5V & 0.268V & 0.0536\\ \hline
 		10V & 0.536V & 0.0536\\ \hline
 		15V & 0.804V & 0.0536\\ \hline
@@ -106,7 +106,7 @@ Die Spannungen gemessen nach den Spannungsteiler entsprechen exakt dem angelegte
 
 \subsection*{Software}
 \subsubsection*{Einlesen der Spannungen}
-Über die Shell des Microkontrollers werden alle gemessenen Spannungen periodisch ausgegeben. Um die Spannungen zu messen werden die FETs ausgeschalten und eine Spannung an den Ausgängen angelegt. Um die Strommessung zu validieren werden die Low-Side FETs eingeschalten und ein Strom an den Ausgängen eingespiesen. So kann der gesamte Signalpfad der Messungen validiert werden.
+Über die Shell des Mikrocontrollers werden alle gemessenen Spannungen periodisch ausgegeben. Um die Spannungen zu messen, werden die FETs ausgeschalten und eine Spannung an den Ausgängen angelegt. Um die Strommessung zu validieren, werden die Low-Side-FETs eingeschalten und ein Strom an den Ausgängen eingespiesen. So kann der gesamte Signalpfad der Messungen validiert werden.
 
 \begin{center}
 	\begin{tabular}{|c|c|}
@@ -121,7 +121,7 @@ Die Spannungen gemessen nach den Spannungsteiler entsprechen exakt dem angelegte
 \begin{center}
 	\begin{tabular}{|l|l|}
 		\hline 
-		Spannung an Phase & Spannung gemessen vom Microkontroller \\ \hline
+		Spannung an Phase & Spannung gemessen vom Mikrocontroller \\ \hline
 		5V & 3.7V\\ \hline
 		10V & 8.5V\\ \hline
 		15V & 13.3V\\ \hline
@@ -136,7 +136,7 @@ Die Spannungswerte weichen stark von den Sollwerten ab. Dies ist aber nicht weit
 \begin{center}
 	\begin{tabular}{|l|l|}
 		\hline 
-		Strom & Gemessen vom Microkontroller \\ \hline
+		Strom & Gemessen vom Mikrocontroller \\ \hline
 		0.5A & 0.587A\\ \hline
 		1A & 1.007A\\ \hline
 		1.5A & 1.511A\\ \hline
@@ -149,7 +149,7 @@ Die Spannungswerte weichen stark von den Sollwerten ab. Dies ist aber nicht weit
 Auch bei den Stromwerten ist der relative Unterschied wichtiger als der Absolutwert.
 
 \subsubsection*{SVPWM Raumvektormodulation}
-Für diese Validierung wird ein Sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet und der SVM routine übergeben. Die Ein- und Ausgabedaten werden für eine Zeitdauer aufgezeichnet und dann an den Computer übertragen wo sie dargestellt werden.
+Für diese Validierung wird ein sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet und der SVM-Routine übergeben. Die Ein- und Ausgabedaten werden für eine Zeitdauer aufgezeichnet und dann an den Computer übertragen, wo sie dargestellt werden.
 
 \begin{figure} [H]
 	\centering
@@ -161,7 +161,7 @@ Für diese Validierung wird ein Sinusförmige Spannung mit konstanter Frequenz u
 Im unteren Plot der Abbildung \ref{fig:svpwm} ist sehr gut der dreiphasige Sinus mit dritter harmonischer Welle zu sehen. Diese Werte entsprechen den Dutycyclen der MOSFETs.
 
 \subsubsection*{Positions- und Geschwindigkeitsbeobachter} \label{val:obs}
-Nun wird der Motor zwangskommutiert. Das heist, dass wieder eine Sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet wird und auf die H-Brücke geführt wird. Der Motor dreht nun mit einer konstanter Drehzahl. Die Ausgangswerte der Positions- und Geschwindigkeitsbeobachter werden erneut aufgezeichnet und mit dem Computer ausgewertet.
+Nun wird der Motor zwangskommutiert. Das heisst, dass wieder eine sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet und auf die H-Brücke geführt wird. Der Motor dreht nun mit einer konstanter Drehzahl. Die Ausgangswerte der Positions- und Geschwindigkeitsbeobachter werden erneut aufgezeichnet und mit dem Computer ausgewertet.
 
 \begin{center}
 	\begin{tabular}{|c|c|}
@@ -194,7 +194,7 @@ Die Schätzung der Drehzahl schwingt um den Mittelwert von -300rpm was genau dem
 Die Welligkeit wird vor dem Verwendung für den Stromregler tiefpassgefiltert.
 
 \subsubsection*{D und Q Stromregler}
-Der letzte Validierungsschritt für die Motorsteuerung auf dem Prüfstand ist die Überprüfung der D und Q Stromregler. Wie bei Validierungsschritt \ref{val:obs} werden die Daten der Regler auf dem Microkontroller zwischengespeichert und anschliessend auf dem Computer dargestellt. Bei dieser Validierung wird der Motor im Closed-Loop Modus betrieben. Es wird softwaremässig ein Sollwertsprung ausgeführt.
+Der letzte Validierungsschritt für die Motorsteuerung auf dem Prüfstand ist die Überprüfung der D und Q Stromregler. Wie bei Validierungsschritt \ref{val:obs} werden die Daten der Regler auf dem Mikrocontroller zwischengespeichert und anschliessend auf dem Computer dargestellt. Bei dieser Validierung wird der Motor im Closed-Loop-Modus betrieben. Es wird softwaremässig ein Sollwertsprung ausgeführt.
 
 \begin{center}
 	\begin{tabular}{|c|c|}
@@ -236,7 +236,7 @@ Da das Longboard nicht fahrtüchtig ist, konnte die Gesamtvalidierung nicht gema
 
 \section{Alltagstauglichkeit}
 \label{ValidAlltag}
-Wie bereits angetönt, soll das fertige Board anhand von Testpersonen unterschiedlicher Skate-Erfahrung getestet werden. Die sanfte Anfahrmöglichkeit, die Manövrierfähigkeit und das allgemeine Wohlbefinden des Skaters sind die entscheidenden Kriterien. 
-Testpersonen wurden zufällig ausgewählt und die Bewertungen erfolgten nach subjektivem Einschätzen.
+Wie bereits angetönt, soll das fertige Board mit Testpersonen unterschiedlicher Skate-Erfahrung getestet werden. Die sanfte Anfahrmöglichkeit, die Manövrierfähigkeit und das allgemeine Wohlbefinden des Skaters sind die entscheidenden Kriterien für das Board. 
+Die Testpersonen wurden zufällig ausgewählt und die Bewertungen erfolgten nach subjektivem Einschätzen.
 \todo{unterschiedliche Zeiten (soll getestet werden - wurden ausgewählt / bereits getestet)}
 
