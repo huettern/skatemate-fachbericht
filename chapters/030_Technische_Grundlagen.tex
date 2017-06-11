@@ -395,10 +395,8 @@ Mit den sogenannten High-Side MOSFETs kann jede Phase einzeln auf die Batteriesp
 
 Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine Totzeit-Schaltung eingebaut. Wird der eine FET ausgeschaltet, sind für eine kurze Zeit beide ausgeschaltet, bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird \todo{Deadtime? Davor: Dedatime}Deadtime genannt.
 
-
 \subsection{Funkübertragung}
-
-Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert auf 2.4GHz in einem extrem einfachen proprietären Protokoll. Für dieses Projekt wurde der erste von 83 möglichen Datenkanälen genutzt. Die genaue Übertragungsfrequenz ist somit 2,401GHz. Die folgende Tabelle wurde sinngemäss aus dem Datenblatt des Funkmoduls übernommen und zeigt den Aufbau der übermittelten Pakete, wie sie für dieses Projekt aus den Einstellungen des Moduls gesendet werden.\\ \newline
+Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert auf 2.4GHz in einem extrem einfachen proprietären Protokoll. Für dieses Projekt wurde der erste von 83 möglichen Datenkanälen genutzt. Die genaue Übertragungsfrequenz ist somit 2,401GHz. Die folgende Tabelle wurde sinngemäss aus dem Datenblatt des Funkmoduls übernommen und zeigt den Aufbau der übermittelten Pakete, wie sie für dieses Projekt aus den Einstellungen des Moduls gesendet werden.
 \begin{center}
 	\begin{tabularx}{0.3\textwidth}{c|c}
 		Inhalt & Grösse \\ \hline
@@ -412,6 +410,6 @@ Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert
 	\end{tabularx}
 	\captionof{table}{Packetaufbau des Funkmoduls}
 \end{center}
-\newline
+
 Das Modul sendet im Stromsparmodus mit einer Datenrate von maximal 1Msps was für eine angestrebte Übertragungsrate von 100 8-Bit-Werten pro Sekunde ausreicht.
 \label{tGl_RF}
