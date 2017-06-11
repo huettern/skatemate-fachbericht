@@ -397,4 +397,21 @@ Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet s
 
 
 \subsection{Funkübertragung}
+
+Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert auf 2.4GHz in einem extrem einfachen proprietären Protokoll. Für dieses Projekt wurde der erste von 83 möglichen Datenkanälen genutzt. Die genaue Übertragungsfrequenz ist somit 2,401GHz. Die folgende Tabelle wurde sinngemäss aus dem Datenblatt des Funkmoduls übernommen und zeigt den Aufbau der übermittelten Pakete, wie sie für dieses Projekt aus den Einstellungen des Moduls gesendet werden.\\ \newline
+\begin{center}
+	\begin{tabularx}{0.3\textwidth}{c|c}
+		Inhalt & Grösse \\ \hline
+		Preample& 1 Bit \\ \hline
+		Adresse &3 Byte \\ \hline
+		Payload Length& 6 Bit \\ \hline
+		PID &2 Bit \\ \hline
+		NO ACK & 1 Bit \\ \hline
+		Daten & 1 Byte \\ \hline
+		CRC & 1 Byte \\
+	\end{tabularx}
+	\captionof{table}{Packetaufbau des Funkmoduls}
+\end{center}
+\newline
+Das Modul sendet im Stromsparmodus mit einer Datenrate von maximal 1Msps was für eine angestrebte Übertragungsrate von 100 8-Bit-Werten pro Sekunde ausreicht.
 \label{tGl_RF}
