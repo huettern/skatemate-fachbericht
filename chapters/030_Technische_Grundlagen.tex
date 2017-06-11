@@ -1,9 +1,6 @@
 \chapter{Grobkonzept und technische Grundlagen}
 \label{TechnischeGrundlagen}
-In diesem Kapitel wird erst das Grobkonzept des Longboards Commute von Skatemate dargestellt, um einen Überblick über das Elektroskateboard zu geben.
-Anschliessend werden die notwendigen technischen Grundlagen erklärt, so dass die Hardware und Software besser verstanden werden können.
-\todo{bessere Einleitung / ... anpassen}
-
+Dieses Kapitel beginnt mit dem Grobkonzept des Longboards Commute, um einen Überblick über das Elektroskateboard zu geben. Anschliessend werden die notwendigen technischen Grundlagen für die Hard- und Software erklärt.
 
 \section{Grobkonzept}
 \label{Grobkonzept}
@@ -16,11 +13,10 @@ In den folgenden Unterkapitel werden diese drei Bereiche und die dazugehörigen 
 	\label{fig:grobkonzeptblockschaltbildgrob}
 \end{figure}
 Die Abbildung \ref{fig:grobkonzeptblockschaltbildgrob} stellt die Interaktion zwischen den drei Bereichen dar. Die Antriebstechnik ist über ein Kabel mit der Stromversorgung verbunden, die Inputs der Steuerung erhält sie über ein Funknetz. \\
-Um eine Übersicht über die enthaltenen Komponenten der drei genannten Bereiche zu erhalten, sind sie im Blockschaltbild der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. Für die Steuerung wird die vom Flex-Sensor gemessene Krümmung des Fingers an der Mikrocontroller weitergeleitet. Dieser Verarbeitet diese in eine Wunschbeschleunigung und leitet sie mithilfe eines Funkmoduls an die Antriebstechnik weiter. Zudem steuert er die Front-LEDs an. Mit Strom versorgt wird der Mikrocontroller und das Funkmodul mithilfe einer Knopfbatterie. 
-
-Der Mikrocontroller der Antriebstechnik erhält die Wunschbeschleunigung wiederum über ein Funkmodul. 
-
-
+Um eine Übersicht über die enthaltenen Komponenten der drei genannten Bereiche zu erhalten, sind sie im Blockschaltbild der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. \\
+Für die Steuerung wird die vom Flex-Sensor gemessene Krümmung des Fingers an der Mikrocontroller weitergeleitet. Dieser Verarbeitet diese in eine Wunschbeschleunigung und leitet sie mithilfe eines Funkmoduls an die Antriebstechnik weiter. Zudem steuert er die Front-LEDs an. Mit Strom versorgt wird der Mikrocontroller und das Funkmodul mithilfe einer Knopfbatterie. \\
+Der Mikrocontroller der Antriebstechnik erhält die Wunschbeschleunigung wiederum über ein Funkmodul. Mit der FOC werten daraus die benötigten PWM-Spannungen berechnet. Diese werden durch eine H-Brücke, bestehend aus den Treiber und FETs, am Motor angelegt. Versorgt werden die Treiber und somit der Motor über die Akku-Stromversorgung. \\
+Zwischen der Akkuspannung und den Treibern ist ein elektrischer Schalter. Dieser wird über den Mikrocontroller der Stromversorgung gesteuert. Der Mikrocontroller steuert auch den Ladevorgang, also das Balancing. 
 
 \begin{figure}[h]
 	\centering
@@ -30,13 +26,17 @@ Der Mikrocontroller der Antriebstechnik erhält die Wunschbeschleunigung wiederu
 \end{figure}
 
 \subsection*{Steuerung über den Magic Glove}
-Es gibt verschiedene Wege, wie ein elektrisches Longboard gesteuert werden kann. Eine Variante ist, über Drucksensoren im Brett durch eine Gewichtsverlagerung in Fahrtrichtung eine Geschwindigkeitsregulation zu erreichen. Da auf unebenem Gelände das Gewicht laufend ausbalanciert werden muss, müssten diese Bewegungsimpulse kompensiert werden. Ausserdem können lokal begrenzte Sensoren die Bewegungsfreiheit auf dem Longboard einschränken.
-Aus diesen Gründen wurde diese Variante verworfen. Das Team hat sich stattdessen entschieden, die Geschwindigkeit über eine Fingerbewegung zu steuern. Dazu wird ein Handschuh mit integrierten Sensoren entwickelt. Dieses Wearable enthält einen Flex-Sensor, der die Beugung des Zeigefinders misst. Dieser Messvorgang und der Flex-Sensor werden im Kapitel \ref{tGl_FlexSensor} beschrieben. Die mit dem Flex-Sensor gemessene Beugung des Fingers wird mithilfe eines Mikrocontrollers quantifiziert. Diese Sollbeschleunigung wird anschliessend der Motoransteuerung übermittelt. Dies geschieht über ein 2.4 GHz-Funknetz, dazu ist ein Funkmodul integriert. Die Stromversorgung erfolgt über eine Li-Ion Knopfbatterie LTR2450. In der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} sind die genannten Elemente der Steuerung dargestellt.
+Es gibt verschiedene Wege, wie ein elektrisches Longboard gesteuert werden kann. 
+Eine Variante ist, Drucksensoren ins Brett einzubauen.
+Mit einer Gewichtsverlagerung in oder gegen die Fahrtrichtung wird eine Geschwindigkeitsregulation erreicht. Da auf unebenem Gelände das Gewicht laufend ausbalanciert werden muss, müssten diese Bewegungsimpulse kompensiert werden. Ausserdem können lokal begrenzte Sensoren die Bewegungsfreiheit auf dem Longboard einschränken.
+Aus diesen Gründen wurde diese Variante verworfen. \\
+Das Team hat sich stattdessen entschieden, die Geschwindigkeit über eine Fingerbewegung zu steuern. Dazu wird ein Handschuh mit integrierten Sensoren entwickelt. Dieses Wearable enthält einen Flex-Sensor, der die Beugung des Zeigefinders misst. Dieser Messvorgang und der Flex-Sensor werden im Kapitel \ref{tGl_FlexSensor} beschrieben. Der Mikrocontroller quantifiziert die mit dem Flex-Sensor gemessene Beugung des Fingers.
+Diese Sollbeschleunigung wird anschliessend an die Motoransteuerung übermittelt. Dies geschieht über ein 2.4GHz-Funknetz, dazu ist ein Funkmodul integriert. Die Stromversorgung erfolgt über eine Li-Ion Knopfbatterie LTR2450. In der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} sind die genannten Elemente der Steuerung dargestellt.
 
 \subsection*{Antriebstechnik}
-\todo{def., Aufgabe ?}
-Als Antrieb ist der OX1 2-10 Motor vorgegeben. Dies ist ein Bürstenloser-Gleichstrommotor (brushless DC motor, BLDC-Motor). Er verfügt nicht über Hallsensoren, mit denen die Rotorposition gemessen werden könnte. Die technischen Hintergründe des Motors werden im Kapitel \ref{tGl_BLDC} gegeben. Ein BLDC-Motor ist wie ein permanentmagnetischer Drehstrom-Synchronmotor (PMSM) aufgebaut.\\
-Zur Ansteuerung gibt es grob unterteilt zwei verschiedene Arten, die Kommutierung und die Feldorientierte Regelung (FOC) \cite{BLDC}. \todo{[ Quelle xxx ]}. Die Kommutierung wiederum kann auf zwei verschiedene Arten erfolgen, ungesteuert (Blockkommutierung) oder gesteuert (Sinus-Kommutierung). Diese resultierenden drei Ansteuerungsmöglichkeiten sind in der Tabelle \ref{tabMotcontrVarProCon} zur Übersicht dargestellt und nachfolgend etwas genauer erläutert. 
+Als Antrieb ist der OX1 2-10 Motor vorgegeben. Dies ist ein Bürstenloser-Gleichstrommotor (brushless DC motor, BLDC-Motor). Er verfügt über keine Hallsensoren, mit denen die Rotorposition gemessen werden könnte. Ein BLDC-Motor ist wie ein permanentmagnetischer Drehstrom-Synchronmotor (PMSM) aufgebaut. Die technischen Hintergründe des Motors werden im Kapitel \ref{tGl_BLDC} gegeben. 
+\\
+Zur Ansteuerung gibt es grob unterteilt zwei verschiedene Arten, die Kommutierung und die Feldorientierte Regelung \cite{BLDC}. Die Kommutierung wiederum kann auf zwei verschiedene Arten erfolgen, ungesteuert (Blockkommutierung) oder gesteuert (Sinus-Kommutierung). Diese resultierenden drei Ansteuerungsmöglichkeiten sind in der Tabelle \ref{tabMotcontrVarProCon} zur Übersicht dargestellt und nachfolgend etwas genauer erläutert. 
 \begin{center}
 	\begin{tabularx}{\textwidth}{|c|X|X|}
 		\hline 
@@ -63,14 +63,16 @@ Zur Ansteuerung gibt es grob unterteilt zwei verschiedene Arten, die Kommutierun
 
 \todo{Tabelle formatieren!... ??}
 
-Bei der ungesteuerten Kommutierung (Blockkommutierung) wird der Motor als Schrittmotor genutzt. Dabei folgt die Rotorposition der Steuerung. Diese Variante ist für ein gleichmässig rollendes Longboard ungeeignet, da der Schrittmotor nicht durchgehend sondern immer nur schrittweise dreht. Für ein gleichmässiges Drehen muss die Kommutierung also abhängig von der Rotorposition erfolgen (geführte Kommutierung, Sinus-Kommutierung). Dabei reagiert die Steuerung auf die effektive Rotorposition und passt sich dieser an.\todo{(xxx korrekt?} Am einfachsten wäre dies mit Sensoren, da der Motor jedoch nicht über Sensoren verfügt, muss der Motor über eine sensorlos gesteuerte Kommutierung angesteuert werden. Dies funktioniert jedoch nur ab einer Mindestdrehzahl wirklich gut. Zum Anfahren muss der Motor speziell angesteuert werden. \\
-Bei der Feldorientierte Regelung (field oriented controll, FOC), werden die Spannungen zur Steuerung aktiv der Rotorlage angepasst. Dabei kann zwischen sensorgesteuerte und sensorlosen Regelung unterschieden werden. Bei der sensorlosen Regelung muss wiederum zum Anfahren eine zusätzliche Ansteuerung erfolgen. Kann die Anfangsposition ausreichend genau geschätzt werden, läuft der Motor auch bei tiefen Geschwindigkeiten gleichmässig, da er genauer geregelt werden kann. Dies entspricht unseren Anforderungen für das Commute, da ein sanftes Anfahren sehr wichtig ist. Die FOC als auch die Anfahr-Ansteuerung ist im Kapitel \ref{tGl_FOC} erklärt.\\
-Ausgeführt wird die FOC auf einem Mikrocontroller. Mittels eines RF-Modul wird die Sollbeschleunigung empfangen. Eine Halbbrücke mit FET-Treibern (siehe Kapitel \ref{tGl_HBrugg}) setzt  die gewünschte Motorsteuerung um. Zur Übersicht sind diese Elemente im Blockschaltbild Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. 
+Bei der ungesteuerten Kommutierung (Blockkommutierung) wird der Motor als Schrittmotor genutzt. Dabei folgt die Rotorposition der Steuerung. Diese Variante ist für ein gleichmässig rollendes Longboard ungeeignet, da der Schrittmotor nicht durchgehend, sondern immer nur schrittweise dreht. \\
+Für ein gleichmässiges Drehen muss die Kommutierung also abhängig von der Rotorposition erfolgen (geführte Kommutierung, Sinus-Kommutierung). Dabei reagiert die Steuerung auf die effektive Rotorposition und passt sich dieser an.\todo{(xxx korrekt?} Am einfachsten wäre dies mit Sensoren. Da der Motor jedoch über keine Sensoren verfügt, muss er über eine sensorlos gesteuerte Kommutierung angesteuert werden. Dies funktioniert jedoch nur ab einer Mindestdrehzahl wirklich gut. Zum Anfahren muss der Motor speziell angesteuert werden. \\
+Bei der Feldorientierte Regelung  werden die Spannungen zur Steuerung aktiv der Rotorlage angepasst. Dabei kann zwischen sensorgesteuerter und sensorloser Regelung unterschieden werden. Bei der sensorlosen Regelung muss wiederum zum Anfahren eine zusätzliche Ansteuerung erfolgen. Kann die Anfangsposition ausreichend genau geschätzt werden, läuft der Motor auch bei tiefen Geschwindigkeiten gleichmässig, da er genauer geregelt werden kann. Dies entspricht den Anforderungen für das Commute, da ein sanftes Anfahren sehr wichtig ist. Die FOC als auch die Anfahr-Ansteuerung ist im Kapitel \ref{tGl_FOC} erklärt.\\
+Ausgeführt wird die FOC auf einem Mikrocontroller. Mittels RF-Modul wird die Sollbeschleunigung empfangen. Eine Halbbrücke mit FET-Treibern (siehe Kapitel \ref{tGl_HBrugg}) setzt  die gewünschte Motorsteuerung um. Zur Übersicht sind diese Elemente im Blockschaltbild Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. 
 
 \subsection*{Stromversorgung}
-Die Stromversorgung erfolgt über einen LiPo-5200mAh-Akku, dieser ist vorgegeben. Zwar besteht ein externes Ladegerät, doch um dieses zu nutzen, müsste der Akku für jedes Laden vom Longboard gelöst werden. Das ist umständlich und gefährdet die Wetterfestigkeit und Robustheit des Commute. Deshalb wird ein eigener, integrierter Akkulader entwickelt, so dass der Akku nicht mehr herausgelöst werden muss. Da die Entladung im Gebrauch sowieso überwacht werden muss, ist der Lader eine Ergänzung und kein alleinstehendes Element. \\ Kernstück der Stromversorgung ist die Balancerschaltung. Dabei wird der Akku erst mit einem konstanten Strom geladen, bis die Zellspannung erreicht ist. Anschliessend wird mit einer konstanten Spannung geladen, bis der Strom unter 100mA gesunken ist, dann sind die Zellen vollständig geladen. Wie das Balancing genau funktioniert, ist im Kapitel \ref{tGl_Balancing} beschrieben. Anstelle einer eigenen Implementation hätte ein fertiges IC eingekauft werden können. Aus finanziellen Gründen wurde jedoch darauf verzichtet. Wie bereits erwähnt sind die Elemente der Stromversorgung in der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} übersichtlich dargestellt.
+Die Stromversorgung erfolgt über einen LiPo-5200mAh-Akku, dieser ist vorgegeben. Bei einer durchschnittlichen Leistungsaufnahme von 50W des Motors reicht eine Akkuladung ungefähr für zwei Stunden Fahrt. Auch ein externes Ladegerät ist gestellt, doch um dieses zu nutzen, müsste der Akku für jedes Laden vom Longboard gelöst werden. Das ist umständlich und gefährdet die Wetterfestigkeit und Robustheit des Commute. Deshalb wird ein eigener, integrierter Akkulader entwickelt, so dass der Akku nicht mehr herausgelöst werden muss. Da die Entladung im Gebrauch sowieso überwacht werden muss, ist der Lader eine Ergänzung und kein alleinstehendes Element. \\ Kernstück der Stromversorgung ist die Balancerschaltung. Dabei wird der Akku erst mit einem konstanten Strom geladen, bis die Zellspannung erreicht ist. Anschliessend wird mit einer konstanten Spannung geladen, bis der Strom unter 100mA gesunken ist, dann sind die Zellen vollständig geladen. Wie das Balancing genau funktioniert, ist im Kapitel \ref{tGl_Balancing} beschrieben. Anstelle einer eigenen Implementation hätte ein fertiges IC eingekauft werden können. Aus finanziellen Gründen wurde jedoch darauf verzichtet. Wie bereits erwähnt sind die Elemente der Stromversorgung in der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} übersichtlich dargestellt.
 
-\todo{ev: wie viel Strom braucht der Motor? Wie weit reicht eine Akkuladung?}
+\todo{ev: wie viel Strom braucht der Motor? Wie weit reicht eine Akkuladung?
+Ich rechne metere Durchschnittliche Leistigsufnahm vo 50W. De akku het 5.3*22.2=118Wh, das heist me chan 2h fahre ohni de akku tüfentlade}
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -289,8 +291,8 @@ I_q
 = \frac{2}{3}
 \left[
 \begin{array}{ccc}
-\cos (\theta) & \cos (\theta-\frac{2\pi}{3} & \cos (\theta-\frac{4\pi}{3} \\ 
--\sin (\theta) & -\sin (\theta-\frac{2\pi}{3} & -\sin (\theta-\frac{4\pi}{3}
+\cos (\theta) & \cos (\theta-\frac{2\pi}{3}) & \cos (\theta-\frac{4\pi}{3}) \\ 
+-\sin (\theta) & -\sin (\theta-\frac{2\pi}{3}) & -\sin (\theta-\frac{4\pi}{3})
 \end{array} 
 \right] 
 \left[
@@ -315,8 +317,8 @@ I_C
 \left[
 \begin{array}{cc}
 \cos (\theta) & -\sin (\theta) \\
-\cos (\theta-\frac{2\pi}{3} & -\sin (\theta-\frac{2\pi}{3} \\
-\cos (\theta-\frac{4\pi}{3} & -\sin (\theta-\frac{4\pi}{3} 
+\cos (\theta-\frac{2\pi}{3}) & -\sin (\theta-\frac{2\pi}{3}) \\
+\cos (\theta-\frac{4\pi}{3}) & -\sin (\theta-\frac{4\pi}{3}) 
 \end{array} 
 \right] 
 \left[
