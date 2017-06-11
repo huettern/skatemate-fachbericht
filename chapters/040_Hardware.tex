@@ -122,6 +122,57 @@ An zwei Phasen werden die Ströme über Shunt-Messwiderstände gemessen und dem 
 Verwendet wird der Mikrokontroller STM32F303, dies weil es ein bewährter und bekannter Mikrokontroller ist, der mit seinen 8MHz Taktfrequenz genügend schnell ist. Dazu unterstützt er die PWM Funktion, hat genügend I/O-Ports und bleibt preislich im Budget.
 An ihm wird über ein SPI Interface noch das HopeRF RFM75 Modul angeschlossen, welches mit der Steuerung, dem Magic Glove, über eine 2.4 GHz-Funkverbindung kommuniziert.
 
+\begin{tabularx}{\textwidth}{l|l|l|X}
+	Typ & Pins & Ports & Beschreibung \\ \hline
+	Analog & 
+	11,14-16,26-27 & 
+	A, B, C &
+	Analoge Eingänge zur Messung der Phasenströme und -Spannungen sowie der Versorgungsspannung.
+	\\ \hline
+	Digital & 
+	54-56,37-38 &
+	B, C, D &
+	Standard digitale Steuersignale zum und vom Treiber-IC. Statussignale für Fehlermeldungen (FAULT, OCTW, PWRGD) und Steuersignale (EN\_GATE, DCCAL).
+	\\ \hline
+	SPI &
+	50-53 &
+	A, C &
+	SPI Bus zum Treiber-IC für Einstellungen und Statusmeldungen.
+	\\ \hline
+	PWM &
+	34-36, 41-43 &
+	A, B &
+	PWM Signale für die Halbbrücken. Diese gehen an das Treiber-IC, welches die FETs ansteuert.
+	\\ \hline
+	Digital &
+	8,10 &
+	C &
+	Steuersignale IRQ und Chip-Enable für das RFM-Modul.
+	\\ \hline
+	SPI &
+	51-53, 9 &
+	C &
+	SPI Bus zum RFM-Modul. Die Datenleitungen SDI und SDO sowie die Taktleitung SCK werden mit dem Treiber IC geteilt. Es unterscheiden sich nur die Chip-Select-Signale.
+	\\ \hline
+	UART &
+	29,30 &
+	B &
+	Serielle Schnittstelle zu Debug-Zwecken. Wird nur in der Entwicklung verwendet.
+	\\ \hline
+	SWD &
+	7, 46,49 &
+	A &
+	Programmierschnittstelle
+	\\ \hline
+	USB &
+	44,45 &
+	A &
+	USB Schnittstelle vorgesehen, wird jedoch nicht verwendet.
+	\\ \hline
+\end{tabularx}
+\captionof{table}{Ein-/Ausgänge Mikrocontroller}
+\label{tab:iomc}
+
 \subsection*{Endstufe (Treiber und H-Brücken)}
 Für die Ansteuerung Transistoren wird der DRV8301 Gate-Treiber von Texas Instruments verwendet. Dieser Treiber beinhaltet einen Gate Driver mit 1.7A Peak Gatestrom, Current Shunt Differenzverstärker, Über- und Unterspannungsschutz sowie Übertemperaturschutz und Überstromschutz. Ebenfalls ist ein Buck Converter für die Spannungsversorgung eingebaut.
 Die Transistoren sind IRFS7534 N-Kanal Power MOSFETs von Infineon, die 60V und 164A permanent aushalten. Sie eignen sich besonders für schnelles Schalten von grossen Lasten, also genau dieses Einsatzgebiet. Dies vor allem wegen dem tiefen $R_DSon$ (typ. 2\(\Omega\)) und der geringen Eigenkapazität. 
