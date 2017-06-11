@@ -17,7 +17,13 @@ Das Brett selber, die gepressten Birkenholzplatten, dessen Bearbeitung und die d
 % Magic Glove
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Steuerung - Magic Glove} \label{ValidSteuerMagicGlove}
-Für die Validierung des Magic Glove wurde eine Hand 3d-gedruckt und ein seperater Empfänger mit einem Arduino gebaut, welcher die empfangenen Daten an einen Computer sendet. Die Hand wird nun von Minima zu Maxima gebeugt und die gemessenen Werte aufgezeichnet. Somit kann garantiert werden, dass der maximale Bewegungsradius aufgelöst wird und die Daten korrekt gesendet werden.
+Für die Validierung des Magic Glove wurde eine Hand 3d-gedruckt und ein seperater Empfänger mit einem Arduino gebaut, welcher die empfangenen Daten über eine serielle Verbindung an einen Computer sendet. Die Hand wird nun von Minima zu Maxima gebeugt und die gemessenen Werte aufgezeichnet. Somit kann garantiert werden, dass der maximale Bewegungsradius aufgelöst wird und die Daten korrekt gesendet werden.
+\begin{figure} [H]
+	\centering
+	\includegraphics[scale=0.2]{images/receiver}
+	\caption{Empfänger zur Validierung des Magic Glove}
+	\label{fig:statediagrammbatterie}
+\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Stromversorgung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
