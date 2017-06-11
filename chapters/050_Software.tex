@@ -1,6 +1,8 @@
 \chapter{Software} \label{Software}
 \section{Überblick}
-\section{Steuerung - Magic-Glove} \label{SW_MagicGlove}
+Die Software besteht aus drei unterschiedlichen Teilen mit seperaten Teilaufgaben. Zum einen die Batteriezellenbalancierung und -ladung. Andererseits die eigentliche Motoransteuerung welche per Drathlos-Modul mit dem Magic Glove(Human Interface) verbunden ist. Das reibungslose Zusammenspiel dieser drei Softwarekomponenten ist äusserst kritisch, da jegliche Softwarefehler extrem gefährlich für den Piloten sein können.
+\section{Steuerung - Magic Glove} \label{SW_MagicGlove}
+Die Software des Magic Glove ist um eine einfache Bedienung zu garantieren, sehr simpel aufgebaut. Sie misst in periodischen Abständen von 10ms die Beugung des Fingers des Piloten und übermittelt diesen Wert mittels eingebautem Drahtlos-Modul zur Motorensteuerung, welche die Motordrehzahl entsprechend anpasst. Ausserdem ist es durch Betätigen des Buttons auf der Platine möglich, den Batteriestand des Longboards herauszufinden, welcher dann wiederum auf den 8 angebrachten LED's dargestellt wird. Die Steuerung merkt automatisch wann die Verbindung zum Board verloren ist, stellt diese aber wieder her sobald das Board wieder in Reichweite des Magic Gloves ist.
 \section{Stromversorgung} \label{SW_Stromversorgung}
 Mit der Software zum Battery Management werden wichtige Punkte geregelt, um ein langes Leben der Akkuzellen zu gewährleisten. Darunter gehören sowohl über- als auch unter- Spannungsschutz sowie ausbalancieren der einzelnen Zellenspannungen beim Laden. \\
 Der aktuelle Ladevorgang wird über drei verschiedenen LED’s angezeigt. Dabei zeigen diese den Constant Current (CC), Constant Voltage (CV) und den vollen Zustand (off) an. Diese können als Laden (CC, LED1) Betriebsbereit (CV, LED2) und vollständig geladen (off, LED3) interpretiert werden. 
@@ -110,7 +112,7 @@ Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers sodass
 \begin{tabularx}{\textwidth}{l|c|X}
 	Name & Thread/ISR & Verwendung \\ \hline
 	\texttt{ADC ISR} & ISR & FOC routine und Motor Regelung \\ \hline
-	\texttt{main} & Thread & Einlesen der Magic-Glove Daten \\ \hline
+	\texttt{main} & Thread & Einlesen der Magic Glove Daten \\ \hline
 	\texttt{mcfoc main} & Thread & Statusmaschine für die Motorregelung mit Anfahren und Schutzfunktionen \\ \hline
 	\texttt{mcfoc secondary} & Thread & Zur Aufzeichnung von Regeldaten. Nur zu Debug-Zwecken \\ \hline
 	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debug-Zwecken. Eingebaute ChibiOS Funktion
@@ -159,10 +161,10 @@ Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
 	\begin{tikzpicture}[node distance = 1.5cm, auto]
 	    \node [block] (title) {main Thread};
 	    \node [block, below of=title] (sysinit) {ChibiOS initialisieren};
-	    \node [block, below of=sysinit] (init) {Treiber, FOC und Magic-Glove initialisieren};
+	    \node [block, below of=sysinit] (init) {Treiber, FOC und Magic Glove initialisieren};
 	    \node [block, below of=init] (slp) {Sleep};
 		\node [draw, diamond, aspect=2, below of=slp] (slowdown) {Slowdown};
-	    \node [block, below of=slowdown] (mge) {Magic-Glove einlesen};
+	    \node [block, below of=slowdown] (mge) {Magic Glove einlesen};
 	    \node [block, below of=mge] (set) {Neuer Strom im FOC Modul setzen};
 	    \node [block, below of=set] (shell) {Shell abarbeiten};
 
@@ -180,7 +182,7 @@ Am Ende der ISR wird das System aus dem I-Locked state entsperrt.
 	\label{fig:fw_adc}
 \end{center}
 
-Der Main-Thread wird nach der Initialisierung des Clocks und der Konfiguration der GPIOs gestartet. Nach der Initialisierung der restlichen Module startet die Endlosschleife. Da die Shell schneller abgearbeitet werden muss, wird das Einlesen des Magic-Gloves verlangsamt und bei jeder Iteration die Shell abgearbeitet. Nach dem Einlsesn der Steuerdaten werden diese an das \texttt{mc\_foc} Modul weitergeleitet.
+Der Main-Thread wird nach der Initialisierung des Clocks und der Konfiguration der GPIOs gestartet. Nach der Initialisierung der restlichen Module startet die Endlosschleife. Da die Shell schneller abgearbeitet werden muss, wird das Einlesen des Magic Gloves verlangsamt und bei jeder Iteration die Shell abgearbeitet. Nach dem Einlsesn der Steuerdaten werden diese an das \texttt{mc\_foc} Modul weitergeleitet.
 
 \subsubsection*{Thread mcfoc main}
 \begin{center}    
@@ -231,7 +233,7 @@ Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der Se
 Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ein Modul besteht aus einer C-Quelldatei und optional aus einer Headerdatei. Die Module sind nach ihren Funktionen unterteilt und in Tabelle \ref{tab:mod} aufgelistet.\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
-	\texttt{main} & Im main Modul befindet sich die main routine, welche nach der reset Funktion aufgerufen wird. Darin wird das Betriebssystem und alle anderen Module initialisiert. Im main thread werden die Daten des Magic-Gloves empfangen und an das \texttt{mc foc} Modul gesendet. \\ \hline
+	\texttt{main} & Im main Modul befindet sich die main routine, welche nach der reset Funktion aufgerufen wird. Darin wird das Betriebssystem und alle anderen Module initialisiert. Im main thread werden die Daten des Magic Gloves empfangen und an das \texttt{mc foc} Modul gesendet. \\ \hline
 	\texttt{usbcdc} & Dieses Modul startet die USB schnittstelle und deklariert alle Shell-Funktionen. \\ \hline
 	\texttt{usbcfg} & In diesem Modul werden die USB Endpunkte erstellt und behandelt. Es ist teil vom ChibiOS und nicht selbst verfasst. \\ \hline
 	\texttt{util} & Das util Modul stellt verschiedene Module zur Verfügung. Wichtig für die Motoransteuerung sind die darin enthaltenen Trigonometriemethoden wie chnelle arcus tangens Berechnungen. \\ \hline
