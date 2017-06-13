@@ -62,8 +62,7 @@ Im Folgenden wird das Balancing, die Ladeelektronik, die Selbsterhaltung, der ve
 Der Mikrocontroller muss verschiedene Anforderungen erfüllen.
 In der folgenden Tabelle \ref{tabGPIObat} werden die General-Purpose-Input-Output-Anforderungen (GPIO-Anforderungen) an den Mikrocontroller aufgelistet.
 \begin{center}
-	\begin{tabular}{|c|c|c|c|}
-		\hline 
+	\begin{tabular}{l|c|c|c}
 		Beschreibung & Anforderung & Input/Output & Anzahl \\ 
 		\hline 
 		Überwachung der Zellen & Analog & Input & 6 \\ 
@@ -121,7 +120,8 @@ An zwei Phasen werden die Ströme über Shunt-Messwiderstände gemessen und dem 
 \subsection*{Mikrocontroller}
 Verwendet wird der Mikrocontroller STM32F303, weil er mit seinen 8MHz Taktfrequenz genügend schnell ist und zudem im Team bereits positive Erfahrungen damit gemacht wurden. Zudem unterstützt er die PWM-Funktion, hat genügend I/O-Ports und bleibt preislich im Budget. \todo{Gertiser:Wie viel Kosten?}
 An ihm wird über ein SPI Interface noch das HopeRF RFM75-Modul angeschlossen, das mit der Steuerung, dem Magic Glove, über eine 2.4GHz-Funkverbindung kommuniziert.
-
+\\
+\\
 \begin{tabularx}{\textwidth}{l|l|l|X}
 	Typ & Pins & Ports & Beschreibung \\ \hline
 	Analog & 
