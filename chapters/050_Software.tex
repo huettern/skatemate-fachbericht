@@ -70,12 +70,32 @@ Der Code auf dem ATMega328PB-AU sieht folgendermassen aus:
 	\captionof{figure}{Ablauf des Magic Glove C-Code}
 	\label{fig:fw_adc}
 \end{center}
+<<<<<<< HEAD
+\section{Stromversorgung} \label{SW_Stromversorgung}
+Mit der Software zum Battery Management werden wichtige Punkte geregelt, um ein langes Leben der Akkuzellen zu gewährleisten. Darunter gehören sowohl über- als auch unter- Spannungsschutz sowie ausbalancieren der einzelnen Zellenspannungen beim Laden. \\
+Der aktuelle Ladevorgang wird über drei verschiedenen LED’s angezeigt. Dabei zeigen diese den Constant Current (CC), Constant Voltage (CV) und den vollen Zustand (off) an. Diese können als Laden (CC, LED1) Betriebsbereit (CV, LED2) und vollständig geladen (off, LED3) interpretiert werden. 
+
+\subsubsection*{Entwicklungsumgebung}
+\begin{center}
+	\begin{tabular}{ | l | l | }
+		\hline
+		Compiler & AVR GCC \\ \hline
+		IDE für Debugging & ATMEL Studio \\ \hline
+		Programmer & AVR Dragon \\ \hline
+	\end{tabular}
+	\captionof{table}{Verwendete SW-Entwicklertools}
+\end{center}
+
+
+\subsubsection*{Programmablauf}
+=======
 
 
 \section{Stromversorgung} 
 \label{SW_Stromversorgung}
 Mit der Software des Battery Managements werden wichtige Punkte geregelt, um ein langes Leben der Akkuzellen zu gewährleisten. Darunter gehören sowohl über- als auch unter- Spannungsschutz sowie Ausbalancieren der einzelnen Zellenspannungen beim Laden. \\
 Der aktuelle Ladevorgang wird über drei verschiedenen LED’s angezeigt. Dabei zeigen diese den Constant Current (CC), Constant Voltage (CV) und den Vollen Zustand (off) an. Diese können als Laden (CC, LED1) Betriebsbereit (CV, LED2) und vollständig geladen (off, LED3) interpretiert werden. \\
+>>>>>>> refs/remotes/origin/master
 Das folgende Zustandsdiagramm (Abbildung \ref{fig:statediagrammbatterie}) zeigt den Ablauf der Software auf dem Mikrocontroller.
 \begin{figure} [H]
 	\centering
@@ -97,6 +117,39 @@ Ein weiterer Schwerpunkt der Software ist die Berechnung der Spannungen der einz
 
 \todo{erklärung / Liste der verwendeten Symbole / bedeutung ADC,...}
 Die Zellspannungen werden in jedem Durchlauf gemessen und in einem Array abgespeichert. Aus diesen Werten werden die minimale und maximale Spannung berechnet, welche für die verschiedenen Logikabfragen in der Statemachine verwendet werden.
+
+\subsubsection*{Peripherie}
+Um denn gesamten Mikrocontroller zu entlasten, wurden möglichst viele Anwendungen in interne Peripherien ausgelagert. \\
+\begin{tabularx}{\textwidth}{l|c|X}
+	Peripherie & \rotatebox[origin=c]{90}{Port} & Verwendung \\ \hline
+	ADC &
+	PD0-PD5 &
+	Auf diesen ADC-Eingängen werden die Zellspannungen des Akkus eingelesen. Dabei wird dies bei jedem Durchlauf aufgerufen. Sobald die Werte nicht mehr überein stimmen, wird ein Balancing ausgelöst. Somit wird sicher gestellt, das der Akku nicht zerstört wird.
+	\\ \hline
+	ADC &
+	ADC6 &
+	An diesem ADC-Eingang wird der Strom gemessen, mit welchem der Akku gerade geladen wird. Damit kann der Duty-Cycle des PWMs richtig eingestellt werden.
+	\\ \hline
+	ADC &
+	ADC7 &
+	Auf diesem ADC-Eingang wird die Ladespannung gemessen. Diese wir gebraucht um den Duty-Cycle zu bestimmen, mit welchem der PWM des Ladereglers getaktet werden soll. Weiter wird überprüft ob mindestens eine Spannung von 30V anliegt.
+	\\ \hline
+	Timer0 &
+	PD6 &
+	Der Timer wird ausschliesslich für den PWM verwendet. Der PWM ist auf rund 31kHz eingestellt, was dem Maximum entspricht. Mit diesem PWM wird der High-Side Driver gesteuert und somit die gesamte Ladeschaltung. 
+	\\ \hline
+	Timer1 &
+	- &
+	Dieser Timer wir für die Zeitmessung verwendet. Dabei werden die Sekunden gezählt. Dies wird dazu gebraucht, um die Inaktivität des Boardes festzustellen. Nach einer Zeit von 20min wird das gesamte Board ausgeschaltet. 
+	\\ \hline
+	USART &
+	PD0 - PD2 &
+	Wenn man an diesem Ausgang des Mikrocontroller ein TTL-Kabel anschliesst, können bestimmte Werte wie zum Beispiel die Akkuspannungen und der Duty-Cycle ausgelesen werden.
+	\\ \hline
+\end{tabularx}
+\captionof{table}{Verwendete Peripherie des Mikrocontrollers}
+\label{tab:peripherieBM}
+
 
 \section{Motoransteuerung} \label{SW_Motoransteuerung}
 \subsection*{Plattform}

@@ -69,6 +69,10 @@ Ausgeführt wird die FOC auf einem Mikrocontroller. Mittels RF-Modul wird die So
 \subsection*{Stromversorgung}
 Die Stromversorgung erfolgt über einen LiPo-5200mAh-Akku, dieser ist vorgegeben. Bei einer durchschnittlichen Leistungsaufnahme von 50W des Motors reicht eine Akkuladung ungefähr für zwei Stunden Fahrt. Auch ein externes Ladegerät ist gestellt, doch um dieses zu nutzen, müsste der Akku für jedes Laden vom Longboard gelöst werden. Das ist umständlich und gefährdet die Wetterfestigkeit und Robustheit des Commute. Deshalb wird ein eigener, integrierter Akkulader entwickelt, so dass der Akku nicht mehr herausgelöst werden muss. Da die Entladung im Gebrauch sowieso überwacht werden muss, ist der Lader eine Ergänzung und kein alleinstehendes Element. \\ Kernstück der Stromversorgung ist die Balancerschaltung. Dabei wird der Akku erst mit einem konstanten Strom geladen, bis die Zellspannung erreicht ist. Anschliessend wird mit einer konstanten Spannung geladen, bis der Strom unter 100mA gesunken ist, dann sind die Zellen vollständig geladen. Wie das Balancing genau funktioniert, ist im Kapitel \ref{tGl_Balancing} beschrieben. Anstelle einer eigenen Implementation hätte ein fertiges IC eingekauft werden können. Aus finanziellen Gründen wurde jedoch darauf verzichtet. Wie bereits erwähnt sind die Elemente der Stromversorgung in der Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} übersichtlich dargestellt.
 
+\todo{ev: wie viel Strom braucht der Motor? Wie weit reicht eine Akkuladung?
+Ich rechne metere Durchschnittliche Leistigsufnahm vo 50W. De akku het 5.3*22.2=118Wh, das heist me chan 2h fahre ohni de akku tüfentlade}
+
+
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 \section{Technische Grundlagen}
