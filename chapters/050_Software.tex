@@ -44,7 +44,8 @@ Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdatei
 Die Ansteuerung des RFM75-Modules wurde mittels einer existierenden Library implementiert. Alle verwendeten externen Libraries sind in der Tabelle \ref{tab:libMagicGLove} aufgelistet.\\
 \begin{center}
 \begin{tabularx}{\textwidth}{l|X|l}
-	Name & Beschreibung & URL \\ \hline
+	Name & Beschreibung & 
+	 \\ \hline
 	\texttt{RFM7x} &  Diese Library ermöglicht unter anderem die Ansteuerung des RFM75-Moduls und ermöglicht eine problemlose Ansteuerung desselben. Die Library ist unter der MIT-Lizenz verfügbar und somit frei weiterzuverwenden. & https://github.com/jnk0le/RFM7x-lib \\
 	\hline
 \end{tabularx}
@@ -152,7 +153,7 @@ Um denn gesamten Mikrocontroller zu entlasten, wurden möglichst viele Anwendung
 \subsection*{Plattform}
 Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 CPU mit FPU und DSP Instruktionen. Als RTOS wird ChibiOS verwendet. Es stellt grundlegende Kernel Funktionalitäten zur Verfügung wie Schedulers und Threads sowie einen HAL. Die komplette Firmware ist in C geschrieben.
 
-Die vom Code generierte Dokumentation kann unter \url{https://noah95.github.io/skatemate-sw/} aufgerufen werden.
+Die vom Code generierte Dokumentation kann unter https://noah95.github.io/skatemate-sw/ aufgerufen werden.
 \subsection*{Entwicklungsumgebung}
 \begin{center}
 	\begin{tabular}{  l | l  }
@@ -386,7 +387,7 @@ Einige Programmfunktionen wurden aus existierenden Bibliotheken verwendet. Alle 
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	CMSIS &  Der Cortex-Mikrocontroller-Software-Interface-Standard CMSIS stellt eine DSP-Library zur Verfügung, mit der effizienter Gebrauch der DSP-Instruktionen und der FPU gemacht werden kann. Trigonometrische Funktionen und Transformationen werden durch CMSIS realisiert. \\ \hline
-	ChibiOS & Realtime Betriebssystem: \url{www.chibios.org} \\ \hline
+	ChibiOS & Realtime Betriebssystem: www.chibios.org \\ \hline
 	STM32F30x std periph library & Der HAL von ChibiOS ist nicht genug flexibel für die spezifische Anwendung der Timer und ADC. Die Standard-Peripheral-Library von ST stellt eine einfache, prozessorgebundene Hardware-Abstraktion zur Verfügung.  \\ \hline
 \end{tabularx}
 \captionof{table}{Übersicht über alle verwendeten externen Libraries}
