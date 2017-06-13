@@ -331,7 +331,18 @@ Die Regelung mit einem PI-Regler geschieht im rotorfesten Bezugssystem. Gegensta
 
 \subsubsection{Nonlinear Observer}
 Die Park-Transformation benötigt die momentane Lage des Rotors. Da der vorgegebene Motor nicht über integrierte Sensoren (wie beispielsweise Hall-Sonden) verfügt, die Ansteuerung also sensorlos erfolgt, muss der Winkel der Rotorlage auf einem anderen Weg herausgefunden werden. Dazu gibt es verschiedene Varianten. 
-Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, weil von den Phasenströme auf die Lage des Motors geschlossen werden kann. Beschrieben wird dieses Verfahren in \cite{IEEE_nonlinearObserver} \todo{	-->Noah: keine Weitere Beschreibung ok?} 
+Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, weil von den Phasenströme auf die Lage des Motors geschlossen werden kann. Beschrieben wird dieses Verfahren in \cite{IEEE_nonlinearObserver}. Grundsätzlich wird in diesem Verfahren folgende Zustandsvariable definiert:
+
+\begin{equation}\label{statevar}
+	x = Li_{\alpha\beta}+\psi_m \left[ \begin{array}{c} cos\theta \\ sin\theta \end{array} \right]
+\end{equation}
+
+Der nichtlineare Beobachter wird nun um die in \ref{statevar} definierte Zustandsvariable erstellt:
+\begin{equation}\label{nonlinobs}
+	\dot{\hat{x}} = y + \frac{\lambda}{2}\eta(\hat{x})[\psi_m^2-||\eta(\hat{x})||^2]
+\end{equation}
+
+Grundsätzlich werden nun periodisch die Ströme gemessen, clarke-transformiert und der Observer ausgeführt. Der Observer braucht dafür sehr exakte Kennzahlen des Motors wie Motorkonstante, Seriewiderstand und Induktivität. So kann der Winkel $\hat{\theta}$ geschätzt werden. Die Berechnungen sind auf dem gewählten Mikrocontroller dank FPU schnell ausgeführt.
 
 \subsection{H-Brücke}
 \label{tGl_HBrugg}
