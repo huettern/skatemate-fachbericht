@@ -25,6 +25,73 @@ Für die Validierung des Magic Glove wurde eine Hand 3D-gedruckt und ein seperat
 	\caption{Empfänger zur Validierung des Magic Glove}
 	\label{fig:statediagrammbatteri}
 \end{figure}
+Für den Test der Schaltung wurde der Magic Glove mit der internen Batterie gespiesen. Somit kann gewährleistet werden, dass sich die Schaltung auch im Einsatz nicht anders verhalten wird.
+
+Hardware
+\begin{itemize}
+	\item Validierung Batteriemanagement
+	\item Aussteuerung Analogteil
+\end{itemize}
+Software
+\begin{itemize}
+	\item Validierung ADC-Wandler
+	\item Übertragungsgeschwindigkeit RFM75
+\end{itemize}
+
+\subsubsection*{Validierung Batteriemanagement}
+Zum Testen der Ladeschaltung auf dem Magic Glove wurde die verwendete Li-Ionen-Zelle mit einem Lastwiderstand auf 20\% entladen und dann eine Spannung von 5 Volt an den Schaltungsteil angelegt. Nach 6 Stunden wird die Spannung des Akkumulators gemessen.
+% befand sich die Akkumulatorenspannung auf 4.15 Volt.
+	\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Gemessene Akkuzelle (Entladen) & 3.72 V \\ \hline
+		Gemessene Spannung nach 6h & 4.15V \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messung Übertragungsgeschwindigkeit RFM75 Resultate}
+	\label{tab:MagicGlovevalid1}
+\end{center}
+
+\subsubsection*{Aussteuerung Analogteil}
+Um die Aussteuerung des Operationsverstärkers im Analogteil zu messen, wurde einerseits mit dem Oszilloskop die Spannung am ADC-Eingang gemessen und andererseits der gemessene Wert via UART-Kommunikation an den Computer gesendet.
+Die maximale Aussteuerung die mit dem Operationsverstärker erreicht werden konnte, beträgt 3.03V. Dies entspricht einer Aussteuerung von 91.7\% am ADC-Eingang, falls dessen Referenz auf genau 3.3V ist. 
+\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Gemessene min. Spannung & 21.7mV \\ \hline
+		Gemessene max. Spannung & 3.03V \\ \hline
+	\end{tabular} 
+	\captionof{table}{ADC-Messung Magic Glove}
+	\label{tab:MagicGlovevalid2}
+\end{center}
+
+\subsubsection*{Validierung ADC-Wandler}
+Für die Validierung der Software wurde ein seperater Empfänger mit einem Arduino Nano gebaut. Dieser kann über USB angesteuert werden und sendet die gemessenen Werte über UART an den angeschlossenen Computer.
+Nach der Aussteuerung wurde der Flex-Sensor an mehrere vordefinierte Positionen bewegt. 
+%er dazu parallel gemessene numerische Wert auf dem ADC-Eingang war 939. 
+%Da die Werte anschliessend mit einem Faktor 0.25 verkleinert werden, kann der Flex-Sensor die Schaltung nahezu komplett aussteuern.
+\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Kleinster nummerischer ADC-Wert & 7 \\ \hline
+		Höchster nummerischer ADC-Wert & 256 \\ \hline
+	\end{tabular} 
+	\captionof{table}{ADC-Messung Magic Glove}
+	\label{tab:MagicGlovevalid2}
+\end{center}
+
+\subsubsection*{Übertragungsgeschwindigkeit RFM75}
+Für diesen Test wurde auf dem Empfänger-PCB eine LED an- beziehungsweise ausgeschaltet. Dieser Puls wurde dann wiederum mit dem Oszilloskop gemessen. Ist die daraus entstehende Höchstfrequenz höher als die gewünschte Übertragungsgeschwindigkeit, 
+kann problemlos die erforderliche Datenmenge gesendet werden.
+\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Gewünschte Sendefrequenz & 100 Samples/Sekunde \\ \hline
+		Gemessene Zeit zwischen Paketen & 3.58ms \\ \hline
+		Resultierende Empfangsfrequenz & ca. 279 Samples/Sekunde \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messung Übertragungsgeschwindigkeit RFM75 Resultate}
+	\label{tab:MagicGlovevalid3}
+\end{center}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Stromversorgung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
