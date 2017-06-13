@@ -97,15 +97,24 @@ Für die Regelung der Stromversorgung wird der Mikrocontroller ATmega328P-AU ver
 Für das bessere Verständnis der Zellmess-Schaltung wird die Entwicklung geschildert. \\
 Das Ladegerät besteht aus jeweils sechs Zellen, die in Serie geschaltet sind, um dem Motor genügend Spannung zur Verfügung zu stellen. Mit einer Zellenspannung von 4.15V pro Zelle liegt am obersten Punkt (Anode der Zelle 6) eine Spannung von 24,9V an. Da die Spannung an den Eingängen des Mikrocontrollers nicht seine Speisespannung übersteigen sollte, mussten diese Spannungen verringert werden. Für den verwendeten Mikrocontroller beträgt die maximale Spannung am Eingang 5V.
 \\
-Die einfachste Variante ist, mit einem Spannungsteiler die Spannungen so skaliert, dass die Maximalspannung nicht überschritten wird. Diese Grundschaltung ist in Abb.\ref{fig:zellmessung} links oben (Variante 1) zu sehen. 
+Die einfachste Variante ist, mit einem Spannungsteiler die Spannungen so skaliert, dass die Maximalspannung nicht überschritten wird. Diese Grundschaltung ist in Abb.\ref{fig:zellmessung} links oben (Variante 1) zu sehen.
+
+ 
 \begin{figure} [H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/Zellmessung_var}
-	\caption{Messung der Zellen - drei Varianten}
-	\label{fig:zellmessung}
+%	\centering
+%	\includegraphics[width=1\linewidth]{images/Zellmessung_var}
+%	\caption{Messung der Zellen - drei Varianten}
+%	\label{fig:zellmessung}
+	\subfigure[Zellmessung Grundschaltung]{
+		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_ohne} \label{figZellmessung1} 	}
+	\subfigure[Zellmessung mit Transistoren über den Widerständen]{
+		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_unten} \label{figZellmessung2} 	}
+	\subfigure[Zellmessung mit Transistoren über den ADC-Eingängen]{
+		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_oben} \label{figZellmessung3} 	}
+	\caption[Zellmessung - drei Messvarianten]{Drei Varianten der Zellmessung}
+	\label{figZellmessung}
 \end{figure}
-\todo{besserer Titel für Abb.}
-\todo{a b c bzw Var 1, Var 2, Var3 fürs Bild...}
+
 Der Nachteil dieser Schaltung ist, dass die Zellen durch die Spannungsteiler kontinuierlich entladen werden. Somit können bei einem längeren Nichtgebrauch die Akkuzellen entladen oder sogar tiefentladen sein. \\
 Um dies zu verhindern, wurde die Schaltung mit Transistoren erweitert (Abb.\ref{fig:zellmessung} Variante 2). Diese Transistoren unterbrechen den Entladestromkreis über den Widerständen. Dazu werden die Transistoren übersteuert, um sie als Schalter zu verwenden und den durch die Sättigungsspannung $U_{CE}$ entstehende Fehler zu verkleinern. Dieser kann jedoch je nach Sättigungsspannung der Transistoren und aufgrund der unterschiedlichen Bauarten nur schwer korrigiert werden. Der zweite grosse Nachteil (und gleichzeitig das Killerkriterium für diese Schaltung) ist, dass durch das Unterbrechen des Spannungsteiler-Stromkreises an den ADC-Ausgängen wieder die Zellenspannung anliegt. Dadurch würden sich die Zellen über die Ableitdiode am Eingang des Mikrocontrollers entladen und diese Diode voraussichtlich zerstören. \\
 Dies könnte verhindert werden, indem der Stromkreis oberhalb der ADC-Eingängen unterbrochen wird. Dies ist in der linken unteren Schaltung der Abb.\ref{fig:zellmessung} (Variante 3) gezeichnet. Dadurch wären die Eingänge vor Überspannung geschützt. Aber auch diese Schaltung enthält diverse Nachteile. So fliesst beim geschlossenen Zustand der Basis-Emitter-Strom durch den Spannungsteiler. Dies verfälscht die Messresultate. Zusätzlich muss zwischen Basis und Emitter eine Schaltspannung von mindestens 0.7V anliegen. Dazu müsste die Schaltspannung 0.7V über der Zellspannung liegen, was nur mit grossem Aufwand erreichbar wäre. 
