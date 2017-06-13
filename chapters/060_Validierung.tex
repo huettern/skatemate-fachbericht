@@ -3,6 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Überblick
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Überblick} \label{ValidUeberblick}
 Ziel der Validierungsphase ist das Testen auf dem fertigen Board, anhand von Testpersonen. Der Weg bis dahin muss aber ebenfalls controlliert und geprüft sein. Zur Sicherstellung der Funktionalität werden die Komponenten einzeln als auch gesamthaft getestet. 
 Jeder Hardware-Bestandteil – Brett, Steuerung, Stromversorgung und Motoransteuerung - hat also sein eigenes Testkonzept.
@@ -17,7 +18,13 @@ Das Brett selber, die gepressten Birkenholzplatten, dessen Bearbeitung und die d
 % Magic Glove
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Steuerung - Magic Glove} \label{ValidSteuerMagicGlove}
-Für die Validierung des Magic Glove wurde eine Hand 3d-gedruckt und ein seperater Empfänger mit einem Arduino gebaut, welcher die empfangenen Daten an einen Computer sendet. Die Hand wird nun von Minima zu Maxima gebeugt und die gemessenen Werte aufgezeichnet. Somit kann garantiert werden, dass der maximale Bewegungsradius aufgelöst wird und die Daten korrekt gesendet werden.
+Für die Validierung des Magic Glove wurde eine Hand 3D-gedruckt und ein seperater Empfänger mit einem Arduino gebaut, welcher die empfangenen Daten über eine serielle Verbindung an einen Computer sendet. Die Hand wird nun von Minima zu Maxima gebeugt und die gemessenen Werte aufgezeichnet. Somit kann garantiert werden, dass der maximale Bewegungsradius aufgelöst wird und die Daten korrekt gesendet werden.
+\begin{figure} [H]
+	\centering
+	\includegraphics[scale=0.2]{images/receiver}
+	\caption{Empfänger zur Validierung des Magic Glove}
+	\label{fig:statediagrammbatteri}
+\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Stromversorgung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -25,6 +32,175 @@ Für die Validierung des Magic Glove wurde eine Hand 3d-gedruckt und ein seperat
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MC
+Damit die Ergebnisse reproduzierbar sind, wird die Stromversorgung auf einem Prüfstand getestet. In der ersten Validierungsphase wird der Print und die Software ohne Akku getestet, welcher dann in der zweiten Valierungsphase angeschlossen wird. \textbf{Achtung:} Da es sich beim Akku um einen Lithium-Polymer Akku handelt, welcher einen Spitzenstrom von bis zu 500A liefert, sollte der Print zuerst auf allfälligen Kurzschluss geprüft werden.   
+
+\textbf{Hardware}
+\begin{itemize}
+	\item Funktion der FETs
+	\item Messung der Spannungen
+	\item Ausmessung des Highside-Driver
+\end{itemize}
+\textbf{Software}
+\begin{itemize}
+	\item Einlesen Spannung und Ströme
+	\item PWM-Regelung
+	\item Balancing Steuerung
+\end{itemize}
+
+\subsection*{Hardware}
+\subsubsection*{FETs}
+Als erstes werde die FETs des Balancing der Reihe nach eingeschaltet. Dabei wird jeweils eine Spannung von 4.2V zwischen Zellanschluss 6 und 5, Zellanschluss 5 und 4 usw. angeschlossen. Sobald die richtige Spannung angeschlossen ist und derjenige FET durchgeschaltet ist, sollte einen Strom von 100mA fliessen. 
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Messobjekt & Strom \\ \hline
+		Balance Zelle 1 & $**mA$ \\ \hline
+		Balance Zelle 2 & $**mA$ \\ \hline
+		Balance Zelle 3 & $**mA$ \\ \hline
+		Balance Zelle 4 & $**mA$ \\ \hline
+		Balance Zelle 5 & $**mA$ \\ \hline
+		Balance Zelle 6 & $**mA$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Balancing Strom je Zelle}
+	\label{tab:StromBalancing}
+\end{center}
+
+Weiter werden die FETs getestet, welche die Spannung zum Motorkontrollboard steuern. Dabei wird einen Leistungswiderstand auf Masse geschaltet. 
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Versorgungsspannung & $25V$ \\ \hline
+		Lastwiderstand & $2.5\Omega$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messbedingungen FETs zu Motorcontroll}
+	\label{tab:fetmessbedzumotorcontrol}
+\end{center}
+
+Nun sollte ein Strom von rund 10A fliessen. Dabei sollten die FETs nur leicht bzw. gar nicht warm werden.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Strom & $***A$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Strom durch Motorcontrol-FET}
+	\label{tab:StromMotorcontrollFET}
+\end{center}
+
+Der FET welcher fürs Laden zuständig ist, wird bei der Ausmessung des Highside-Driver getestet.
+
+\subsubsection*{Spannungsmessung}
+Nun werden die einzelnen Spannungsteiler ausgemessen. Dabei wird am Balancing Anschluss die einzelnen Zellen angeschlossen. Weiter wird die Ladespannung angeschlossen. Nun sollte an den Spannungsteiler gemessen werden. Der Akku sollte voll geladen sein und die Spannungsteiler dürfen die Microcontrollerspeissung nicht überschreiten.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Versorgungsspannung Batterieseitig & $25V$ \\ \hline
+		Versorgungsspannung Ladeseitig & $30V$ \\ \hline
+		Versorgungsspannung Mikrokontroller & $5V$ \\ \hline
+		Versorgungsspannung Highside-Driver & $15V$ \\ \hline
+		
+	\end{tabular} 
+	\captionof{table}{Messbedinung Spannungsmessungen}
+	\label{tab:BedingungSpannungsmessungen}
+\end{center}
+
+Um zu Prüfen, ob die Spannungsregelung funktioniert, wurde auch diese gemessen.
+
+\begin{center}
+	\begin{tabular}{|l|c|c|}
+		\hline 
+		Messobjekt & Gemessene Spannung & Skalierungsfaktor \\ \hline
+		Versorgungsspannung Mikrokontroller & $5.016V$ & - \\ \hline
+		Versorgungsspannung Highside-Driver & $15.65V$ & - \\ \hline
+		Zelle 1 & $4.132V / 4.132V$ & 1 \\ \hline
+		Zelle 2 & $8.268V / 4.077V$ & 0.493 \\ \hline
+		Zelle 3 & $12.34V / 4.064V$ & 0.329 \\ \hline
+		Zelle 4 & $16.45V / 4.096V$ & 0.249 \\ \hline
+		Zelle 5 & $20.85V / 4.153V$ & 0.202 \\ \hline
+		Zelle 6 & $24.72V / 4.120V$ & 0.162 \\ \hline
+		Spannungsteiler Ladeseitig & $30.01V / 2.132V$ & 0.071\\ \hline
+	\end{tabular} 
+	\captionof{table}{Gemessene Spannung}
+	\label{tab:Spannungsmessungen}
+\end{center}
+
+Die Skalierungsfaktoren lagen ziemlich genau an unserem gewünschten Ergebnis. Somit konnten die berechneten Werte für die Widerstände übernommen werden.  
+
+\subsubsection*{Highside-Driver}
+\label{Highside-Driver}
+Damit der Highside-Driver getestet werden kann, sollte die Batterie entfernt und einen Leistungswiderstand von rund 5$\Omega$ angeschlossen werden. Der Highside-Driver wird dabei extern mit 15V gespiesen. Als erstes wird am Mikrocontroller ein PWM mit 50\% Duty-Cycle ausgegeben. Dabei sollte am Ausgang des Highside-Driver dasselbe Signal mit 15V Spannungsspitze anliegen. Nun wird eine externe Ladespannung angeschlossen. Diese liegt für Testzwecke bei 15V. Dabei sollte die Strombegrenzung auf 3A eingestellt sein. Nun wird der Duty-Cycle ständig erhöht. Dabei wird der Strom beim Leistungswiderstand gemessen und mit nachfolgender Tabelle abgeglichen.
+
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Duty-Cycle: 0\% & $0A$ \\ \hline
+		Duty-Cycle: 20\% & $0.6A$ \\ \hline
+		Duty-Cycle: 40\% & $1.2A$ \\ \hline
+		Duty-Cycle: 60\% & $1.8A$ \\ \hline
+		Duty-Cycle: 80\% & $2.4A$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Ladestrom bei verschiedenen Duty-Cycle}
+	\label{tab:LadestromHighsideDriver}
+\end{center}
+
+Einen Duty-Cycle von 100\% wird nicht geprüft, da der Highside-Driver nicht dazu ausgelegt ist einen FET dauerhaft durch zusteuern.
+
+Dies konnte aufgrund eines defekten Highside-Driver nicht evaluiert werden. \todo{Wenn bis Mittwoch doch möglich, unbedingt Graphik einbinden, dann kann dieser text gelöscht werden}
+
+\subsection*{Software}
+Um diese Ergebnisse zu überprüfen, muss am UART des Mikrocontroller ein TTL-Kabel angeschlossen werden.
+
+\subsubsection*{ADC}
+Um die einzelnen Zellen auszulesen, kann die Batterie sowie eine Ladespannung von mindestens 30V angeschlossen werden. Dabei werden die einzelnen Spannungen jede Sekunde einmal über den UART Port ausgegeben. Dabei sollte die Spannung mit dem Multimeter gemessen und überprüft werden. Um denn Strom zu messen, wird die Messung gleich wie in Kapitel \ref{Highside-Driver} aufgebaut. 
+
+\begin{center}
+	\begin{tabular}{|l|c|c|c|}
+		\hline 
+		ADC-Eingang & Spannung Flucke & Spannung ADC & Differenz \\ \hline
+		Zelle 1 & $4.132V$ & $4.116V$ & $0.016V$ \\ \hline
+		Zelle 2 & $4.134V$ & $4.121V$ & $0.013V$ \\ \hline
+		Zelle 3 & $4.065V$ & $4.028V$ & $0.037V$ \\ \hline
+		Zelle 4 & $4.117V$ & $4.106V$ & $0.011V$ \\ \hline
+		Zelle 5 & $4.132V$ & $4.131B$ & $0.001V$ \\ \hline
+		Zelle 6 & $4.131V$ & $4.111V$ & $0.020V$ \\ \hline
+		Ladespannung & $***$ & $***$ & $***$ \\ \hline
+		Strom & $***$ & $***$ & $***$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Ladestrom bei verschiedenen Duty-Cycle}
+	\label{tab:LadestromHighsideDriver}
+\end{center}
+
+All diese Werte liegen innerhalb der Toleranz des ADCs des Mikrocontrollers und sind somit genug genau.
+
+\subsubsection*{PWM-Regelung}
+Um zu überprüfen wird Software-Seitig ein vordefinierter Strom eingestellt. Dabei wird anstatt der Akku ein veränderbarer Leistungswiderstand am Ausgang angeschlossen. Nun wird der Widerstand verändert und überprüft, ob die Software richtig nachregelt.
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline 
+		Teststrom & $1A$ \\ \hline
+		${f}_{PWM}$ & $32kH$ \\ \hline
+	\end{tabular} 
+	\captionof{table}{Ladestrom bei verschiedenen Duty-Cycle}
+	\label{tab:LadestromHighsideDriver}
+\end{center}
+
+\todo{Hier muss noch ein KO-bild eingefügt werden.} 
+
+\subsubsection{Balancing-Regelung}
+Für diese Validierung wird jeweils eine Spannung an den Zellen Anschlüssen angeschlossen. Dabei wird überprüft, ob die Software bei den jeweiligen Zellen die FETs durchsteuert, um  die gleiche Spannung wie bei den anderen Zellen zu erreichen.
+
+\todo{Wie sollte dies bewiesen werden, das es Validiert wurde?}
+
+
+%\begin{itemize}
+%\item Einlesen Spannung und Ströme
+%\item PWM-Regelung
+%\item Balancing Steuerung
+%\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Motoransteuerung} \label{ValidMotoransteuerung}
 Um reproduzierbare Ergebnisse zu erzielen, wird die Motoransteuerung auf einem Prüfstand getestet. Dazu wird der Motor ohne Last befestigt und die Schaltung von einem Netzteil gespiesen. Weiter wird die Motoransteuerung in einzelnen Blöcken validiert. Dabei wird unterschieden in Hardware und Software.\\
@@ -232,11 +408,12 @@ Nach eingehendem Testen der einzelnen Komponenten wird das Gesamtprodukt geteste
 \textbf{Stromversorgung:} Funktioniert das aktive Balancing während dem Ladevorgang? Dazu werden die Zellspannungen während eines Ladevorganges überprüft und miteinander verglichen. Existiert der Überstromschutz?\\ \todo{gehört zur Stromvers-Valid! > gesamtvalid.frage??}
 \textbf{Motoransteuerung:} Ist das Fahren des Longboards ohne aktivierter Antrieb möglich? \\
 \\
-Da das Longboard nicht fahrtüchtig ist, konnte die Gesamtvalidierung nicht gemacht werden, deshalb sind keine Ergebnisse vorhanden.
+Da das Longboard nicht fahrtüchtig ist, kann die Gesamtvalidierung nicht gemacht werden, deshalb sind keine Ergebnisse vorhanden.
 
 \section{Alltagstauglichkeit}
 \label{ValidAlltag}
-Wie bereits angetönt, soll das fertige Board mit Testpersonen unterschiedlicher Skate-Erfahrung getestet werden. Die sanfte Anfahrmöglichkeit, die Manövrierfähigkeit und das allgemeine Wohlbefinden des Skaters sind die entscheidenden Kriterien für das Board. 
-Die Testpersonen wurden zufällig ausgewählt und die Bewertungen erfolgten nach subjektivem Einschätzen.
+Wie bereits angetönt, soll das fertige Board anhand von Testpersonen unterschiedlicher Skate-Erfahrung getestet werden. Die sanfte Anfahrmöglichkeit, die Manövrierfähigkeit und das allgemeine Wohlbefinden des Skaters sind die entscheidenden Kriterien. 
+Testpersonen werden zufällig ausgewählt und die Bewertungen erfolgten nach subjektivem Einschätzen. 
+Da das Longboard nicht fahrtüchtig ist, kann die Alltagstauglichkeit nicht getestet werden.
 \todo{unterschiedliche Zeiten (soll getestet werden - wurden ausgewählt / bereits getestet)}
 

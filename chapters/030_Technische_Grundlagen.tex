@@ -61,8 +61,6 @@ Zur Ansteuerung gibt es grob unterteilt zwei verschiedene Arten, die Kommutierun
 	\label{tabMotcontrVarProCon}
 \end{center}
 
-\todo{Tabelle formatieren!... ??}
-
 Bei der ungesteuerten Kommutierung (Blockkommutierung) wird der Motor als Schrittmotor genutzt. Dabei folgt die Rotorposition der Steuerung. Diese Variante ist für ein gleichmässig rollendes Longboard ungeeignet, da der Schrittmotor nicht durchgehend, sondern immer nur schrittweise dreht. \\
 Für ein gleichmässiges Drehen muss die Kommutierung also abhängig von der Rotorposition erfolgen (geführte Kommutierung, Sinus-Kommutierung). Dabei reagiert die Steuerung auf die effektive Rotorposition und passt sich dieser an.\todo{(xxx korrekt?} Am einfachsten wäre dies mit Sensoren. Da der Motor jedoch über keine Sensoren verfügt, muss er über eine sensorlos gesteuerte Kommutierung angesteuert werden. Dies funktioniert jedoch nur ab einer Mindestdrehzahl wirklich gut. Zum Anfahren muss der Motor speziell angesteuert werden. \\
 Bei der Feldorientierte Regelung  werden die Spannungen zur Steuerung aktiv der Rotorlage angepasst. Dabei kann zwischen sensorgesteuerter und sensorloser Regelung unterschieden werden. Bei der sensorlosen Regelung muss wiederum zum Anfahren eine zusätzliche Ansteuerung erfolgen. Kann die Anfangsposition ausreichend genau geschätzt werden, läuft der Motor auch bei tiefen Geschwindigkeiten gleichmässig, da er genauer geregelt werden kann. Dies entspricht den Anforderungen für das Commute, da ein sanftes Anfahren sehr wichtig ist. Die FOC als auch die Anfahr-Ansteuerung ist im Kapitel \ref{tGl_FOC} erklärt.\\
@@ -73,6 +71,7 @@ Die Stromversorgung erfolgt über einen LiPo-5200mAh-Akku, dieser ist vorgegeben
 
 \todo{ev: wie viel Strom braucht der Motor? Wie weit reicht eine Akkuladung?
 Ich rechne metere Durchschnittliche Leistigsufnahm vo 50W. De akku het 5.3*22.2=118Wh, das heist me chan 2h fahre ohni de akku tüfentlade}
+
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -88,7 +87,6 @@ Um diesen Widerstand messen zu können, wurde eine Verstärkerschaltung mit Mess
 angehängte 10bit A/D-Wandler vollständig ausgesteuert werden.
 \begin{figure} [H]
 	\centering
-
 \subfigure[Funktionsprinzip Flex-Sensor]{
 	\includegraphics[width=0.45\linewidth]{images/FlexSensor} \label{FlexSensor} 	}
 \subfigure[Sinstr][Messbrücke für Flex-Sensor]{ \includegraphics[width=0.5\linewidth]{images/FlexSensor_Messbruecke} \label{FlexSensor_Messbruecke}}
@@ -114,12 +112,13 @@ In der Abbildung \ref{figAufbauBLDC} ist das Feldverhalten dargestellt.\\
 %	\centering
 \subfigure[Prinzip Aufbau BLDC \cite{ElAntriebe_Babiel}]{
 \includegraphics[width=0.45\linewidth]{images/AufbauBLDC} \label{figAufbauBLDC} 	}
-\subfigure[Sinstr][Sinusstrom mit PWM-Spannung \cite{InTech_PWM}]{ \includegraphics[width=0.5\linewidth]{images/StromBLDC} \label{figSinusstromPWM}}
+\subfigure[Sinusstrom mit PWM-Spannung \cite{InTech_PWM}]{
+\includegraphics[width=0.45\linewidth]{images/StromBLDC} \label{figStromBLDC} 	}
 \caption[BLDC Motor]{Aufbau BLDC und PWM-Ansteuerung}
 \label{fig:BLDC}
 \end{figure}
 
-Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (siehe Kapitel \ref{tGl_FOC}) setzt einen sinusförmigen Strom auf jeder Phase voraus, dies jeweils 120\(^\circ\) phasenverschoben. Realisiert wird dieser Strom mittels PWM-Ansteuerung der Halbbrücken. Da der Strom bei einer L-Last das Integral der Spannung ist, lässt sich ein quasi-sinusförmiger Strom generieren. Dargestellt ist dies in der Abbildung \ref{figSinusstromPWM}.
+Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (siehe Kapitel \ref{tGl_FOC}) setzt einen sinusförmigen Strom auf jeder Phase voraus, dies jeweils 120\(^\circ\) phasenverschoben. Realisiert wird dieser Strom mittels PWM-Ansteuerung der Halbbrücken. Da der Strom bei einer L-Last das Integral der Spannung ist, lässt sich ein quasi-sinusförmiger Strom generieren. Dargestellt ist dies in der Abbildung \ref{figStromBLDC}.
 
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -152,8 +151,6 @@ Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (sieh
 \end{center}
 
 \todo{e-Deutsch uebersetzung und Formatierung usw}
-
-\todo{\cite{ElAntriebe_Babiel} und korrekt zitieren...}
 
 
 \subsection{FOC}
@@ -395,6 +392,21 @@ Mit den sogenannten High-Side MOSFETs kann jede Phase einzeln auf die Batteriesp
 
 Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine Totzeit-Schaltung eingebaut. Wird der eine FET ausgeschaltet, sind für eine kurze Zeit beide ausgeschaltet, bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird \todo{Deadtime? Davor: Dedatime}Deadtime genannt.
 
-
 \subsection{Funkübertragung}
+Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert auf 2.4GHz in einem extrem einfachen proprietären Protokoll. Für dieses Projekt wurde der erste von 83 möglichen Datenkanälen genutzt. Die genaue Übertragungsfrequenz ist somit 2,401GHz. Die folgende Tabelle wurde sinngemäss aus dem Datenblatt des Funkmoduls übernommen und zeigt den Aufbau der übermittelten Pakete, wie sie für dieses Projekt aus den Einstellungen des Moduls gesendet werden.
+\begin{center}
+	\begin{tabularx}{0.3\textwidth}{c|c}
+		Inhalt & Grösse \\ \hline
+		Preample& 1 Bit \\ \hline
+		Adresse &3 Byte \\ \hline
+		Payload Length& 6 Bit \\ \hline
+		PID &2 Bit \\ \hline
+		NO ACK & 1 Bit \\ \hline
+		Daten & 1 Byte \\ \hline
+		CRC & 1 Byte \\
+	\end{tabularx}
+	\captionof{table}{Packetaufbau des Funkmoduls}
+\end{center}
+
+Das Modul sendet im Stromsparmodus mit einer Datenrate von maximal 1Msps was für eine angestrebte Übertragungsrate von 100 8-Bit-Werten pro Sekunde ausreicht.
 \label{tGl_RF}
