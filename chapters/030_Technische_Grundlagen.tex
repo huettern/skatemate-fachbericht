@@ -334,7 +334,7 @@ Grundsätzlich werden nun periodisch die Ströme gemessen, clarke-transformiert 
 
 \subsection{Leistungsstufe}
 \label{tGl_HBrugg}
-Wie in Abbildung \ref{fig:BLDC} auf Seite \pageref{fig:BLDC} zu sehen ist, muss am Motor eine sinusförmige Spannung anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt die mit der Leistungsstufe ausgegeben werden. Die Leistungsstufe besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs. 
+Wie in Abbildung \ref{fig:BLDC} auf Seite \pageref{fig:BLDC} zu sehen ist, muss am Motor eine sinusförmige Spannung anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt. Die Signale werden mit der Leistungsstufe ausgegeben. Die Leistungsstufe besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs (Abbildung \ref{fig:hbridge}). 
 \begin{center}
 	\begin{circuitikz}[scale=2]
 		\draw[color=black]
@@ -384,9 +384,9 @@ Wie in Abbildung \ref{fig:BLDC} auf Seite \pageref{fig:BLDC} zu sehen ist, muss 
 	\label{fig:hbridge}
 \end{center}
 
-Mit den sogenannten High-Side MOSFETs kann jede Phase einzeln auf die Batteriespannung geschaltet werden. Die Low-Side FETs arbeiten symmetrisch dazu und können die Phase auf Batteriemasse schalten. Durch die berechneten PWM kann so ein dreiphasiger Sinus approximiert werden. 
+Mit den sogenannten High-Side-MOSFETs kann jede Phase einzeln auf die Batteriespannung geschaltet werden. Die Low-Side-FETs arbeiten symmetrisch dazu und können die Phase auf Batteriemasse schalten. Durch die berechneten PWM kann so ein dreiphasiger Sinus approximiert werden. 
 
-Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine Totzeit-Schaltung eingebaut. Wird der eine FET ausgeschaltet, sind für eine kurze Zeit beide ausgeschaltet, bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird Deadtime genannt.
+Damit nicht gleichzeitig die High- und Low-Side-FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine Totzeit-Schaltung eingebaut. Wird der eine FET ausgeschaltet, sind für eine kurze Zeit beide ausgeschaltet, bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird Deadtime genannt.
 
 \subsection{Funkübertragung}
 Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert auf 2.4GHz in einem extrem einfachen proprietären Protokoll. Für dieses Projekt wurde der erste von 83 möglichen Datenkanälen genutzt. Die genaue Übertragungsfrequenz ist somit 2,401GHz. Die folgende Tabelle wurde sinngemäss aus dem Datenblatt des Funkmoduls übernommen und zeigt den Aufbau der übermittelten Pakete, wie sie für dieses Projekt aus den Einstellungen des Moduls gesendet werden.

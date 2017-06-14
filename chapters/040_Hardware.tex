@@ -7,8 +7,8 @@ Die Hardware besteht grob zusammengefasst aus den folgenden Komponenten:
 \begin{itemize}
 	\item Dem Longboard, bestehend aus dem Deck, den Achsen, dem Motor und der dazugehörigen Riemenübersetzung.
 	\item Der Stromversorgung, die mit den Akkus dessen Kontrollschaltungen, Absicherungen und Ladeschaltung für ein zuverlässiges Handling der Energie sorgt.
-	\item Der Motorsteuerung, welche die Ansteuerung des PLDC-Motors über drei Halbbrücken, einem Mikrocontroller, Strommesswiderständen und Kommunikationsschnittstellen integriert.
-	\item Der Steuerung, einem Ein-Finger-Handschuh-ähnlichen-Konstrukt, das die Biegung des Zeigefingers mittels eines Flex-Sensors detektiert, mit einem Mikroprozessor auswertet und über Funk dem Motorkontroller mitteilt. Ebenfalls integriert sind LED’s zur Akku-Ladestand- und Bedienanzeige sowie ein Taster zur Kalibration.
+	\item Der Motorsteuerung, welche die Ansteuerung des BLDC-Motors über drei Halbbrücken, einem Mikrocontroller, Strommesswiderständen und Kommunikationsschnittstellen integriert.
+	\item Der Steuerung, einem Ein-Finger-Handschuh-ähnlichen-Konstrukt, das die Biegung des Zeigefingers mittels eines Flex-Sensors detektiert, mit einem Mikroprozessor auswertet und über Funk dem Motorcontroller mitteilt. Ebenfalls integriert sind LEDs zur Akku-Ladestand- und Bedienanzeige sowie ein Taster zur Kalibration.
 \end{itemize}
 Auf die einzelnen Punkte wird in den folgenden Kapiteln noch detaillierter eingegangen. Hier sind noch kurz die Verbindungen untereinander beschrieben:
 \\
@@ -94,9 +94,8 @@ Für die Regelung der Stromversorgung wird der Mikrocontroller ATmega328P-AU ver
 Für das bessere Verständnis der Zellmess-Schaltung wird die Entwicklung geschildert. \\
 Das Ladegerät besteht aus jeweils sechs Zellen, die in Serie geschaltet sind, um dem Motor genügend Spannung zur Verfügung zu stellen. Mit einer Zellenspannung von 4.15V pro Zelle liegt am obersten Punkt (Anode der Zelle 6) eine Spannung von 24,9V an. Da die Spannung an den Eingängen des Mikrocontrollers nicht seine Speisespannung übersteigen sollte, mussten diese Spannungen verringert werden. Für den verwendeten Mikrocontroller beträgt die maximale Spannung am Eingang 5V.
 \\
-Die einfachste Variante ist, mit einem Spannungsteiler die Spannungen so skaliert, dass die Maximalspannung nicht überschritten wird. Diese Grundschaltung ist in Abb.\ref{fig:zellmessung} links oben (Variante 1) zu sehen.
+Die einfachste Variante ist, mit einem Spannungsteiler die Spannungen so zu skaliert, dass die Maximalspannung nicht überschritten wird. Diese Grundschaltung ist in Abb.\ref{figZellmessung1} zu sehen.
 
- 
 \begin{figure} [H]
 %	\centering
 %	\includegraphics[width=1\linewidth]{images/Zellmessung_var}
@@ -105,23 +104,23 @@ Die einfachste Variante ist, mit einem Spannungsteiler die Spannungen so skalier
 	\subfigure[Zellmessung Grundschaltung]{
 		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_ohne} \label{figZellmessung1} 	}
 	\subfigure[Zellmessung mit Transistoren über den Widerständen]{
-		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_unten} \label{figZellmessung2} 	}
+		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_oben} \label{figZellmessung2} 	}
 	\subfigure[Zellmessung mit Transistoren über den ADC-Eingängen]{
-		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_oben} \label{figZellmessung3} 	}
+		\includegraphics[width=0.45\linewidth]{images/Zellmessung_Transistor_unten} \label{figZellmessung3} 	}
 	\caption[Zellmessung - drei Messvarianten]{Drei Varianten der Zellmessung}
 	\label{figZellmessung}
 \end{figure}
 
 Der Nachteil dieser Schaltung ist, dass die Zellen durch die Spannungsteiler kontinuierlich entladen werden. Somit können bei einem längeren Nichtgebrauch die Akkuzellen entladen oder sogar tiefentladen sein. \\
-Um dies zu verhindern, wurde die Schaltung mit Transistoren erweitert (Abb.\ref{figZellmessung} Variante b). Diese Transistoren unterbrechen den Entladestromkreis über den Widerständen. Dazu werden die Transistoren übersteuert, um sie als Schalter zu verwenden und den durch die Sättigungsspannung $U_{CE}$ entstehende Fehler zu verkleinern. Dieser kann jedoch je nach Sättigungsspannung der Transistoren und aufgrund der unterschiedlichen Bauarten nur schwer korrigiert werden. Der zweite grosse Nachteil (und gleichzeitig das Killerkriterium für diese Schaltung) ist, dass durch das Unterbrechen des Spannungsteiler-Stromkreises an den ADC-Ausgängen wieder die Zellenspannung anliegt. Dadurch würden sich die Zellen über die Ableitdiode am Eingang des Mikrocontrollers entladen und diese Diode voraussichtlich zerstören. \\
-Dies könnte verhindert werden, indem der Stromkreis oberhalb der ADC-Eingängen unterbrochen wird. Dies ist in der linken unteren Schaltung der Abb.\ref{figZellmessung} (Variante c) gezeichnet. Dadurch wären die Eingänge vor Überspannung geschützt. Aber auch diese Schaltung enthält diverse Nachteile. So fliesst beim geschlossenen Zustand der Basis-Emitter-Strom durch den Spannungsteiler. Dies verfälscht die Messresultate. Zusätzlich muss zwischen Basis und Emitter eine Schaltspannung von mindestens 0.7V anliegen. Dazu müsste die Schaltspannung 0.7V über der Zellspannung liegen, was nur mit grossem Aufwand erreichbar wäre. 
+Um dies zu verhindern, wurde die Schaltung mit Transistoren erweitert, sie ist in der Abb.\ref{figZellmessung2} zu sehen. Diese Transistoren unterbrechen den Entladestromkreis über den Widerständen. Dazu werden die Transistoren übersteuert, um sie als Schalter zu verwenden und den durch die Sättigungsspannung $U_{CE}$ entstehende Fehler zu verkleinern. Dieser kann jedoch je nach Sättigungsspannung der Transistoren und aufgrund der unterschiedlichen Bauarten nur schwer korrigiert werden. Der zweite grosse Nachteil (und gleichzeitig das Killerkriterium für diese Schaltung) ist, dass durch das Unterbrechen des Spannungsteiler-Stromkreises an den ADC-Ausgängen wieder die Zellenspannung anliegt. Dadurch würden sich die Zellen über die Ableitdiode am Eingang des Mikrocontrollers entladen und diese Diode voraussichtlich zerstören. \\
+Dies könnte verhindert werden, indem der Stromkreis oberhalb der ADC-Eingängen unterbrochen wird. Dies ist in der Schaltung der Abb.\ref{figZellmessung3} gezeichnet. Dadurch wären die Eingänge vor Überspannung geschützt. Aber auch diese Schaltung enthält diverse Nachteile. So fliesst beim geschlossenen Zustand der Basis-Emitter-Strom durch den Spannungsteiler. Dies verfälscht die Messresultate. Zusätzlich muss zwischen Basis und Emitter eine Schaltspannung von mindestens 0.7V anliegen. Dazu müsste die Schaltspannung 0.7V über der Zellspannung liegen, was nur mit grossem Aufwand erreichbar wäre. 
 Das Team entschied, die erste Methode zu wählen, da sie die genausten Messungen liefert und die Entladung der Zellen bei einer durchschnittlichen Benutzung des Boards nicht problematisch ist, also keine Tiefentladung auftritt.
 
 \section{Motoransteuerung}
 \label{HW_Motoransteuerung}
 Die Motoransteuerung ist bei der angetriebenen Achse montiert. Die Funktion deser Steuereinheit wird im folgenden im Überblick kurz erläutert und danach wird auf die einzelnen Bestandteile eingegangen.
 Bei diesem Board kommt die Drehfeldanregung mit FOC zum Einsatz, was bedeutet, dass an den drei Phasen je ein jeweils um 120\(^\circ\) phasenverschobener Sinusstrom angelegt wird. Dies erzeugt ein rotierendes Drehfeld, welches den aus Permanentmagneten bestehenden Erregerkreis auf dem Rotor mit einem Drehmoment versieht. Dieser grundsätzliche Ablauf wird hardwaretechnisch so umgesetzt:
-In einem Mikrocontroller, wird pro Motorphase ein PWM-Signal erzeugt, das integriert und gemittelt ein Sinussignal ergibt. Über einen intelligenten und schnellen Treiber werden dann die in einer H-Brücke angeordneten N-Kanal MOSFET Transistoren angesteuert, welche dieses PWM-Signal mit grosser Leistung an die Klemmen geben. Da jede Phase im Motor eine Spule ist, und der Strom durch eine Spule das Integral der Spannung ist, ergibt sich so der quasi-sinusförmige Stromverlauf.
+In einem Mikrocontroller, wird pro Motorphase ein PWM-Signal erzeugt, das integriert und gemittelt ein Sinussignal ergibt. Über einen intelligenten und schnellen Treiber werden dann die in einer H-Brücke angeordneten N-Kanal-MOSFET Transistoren angesteuert, welche dieses PWM-Signal mit grosser Leistung an die Klemmen geben. Da jede Phase im Motor eine Spule ist, und der Strom durch eine Spule das Integral der Spannung ist, ergibt sich so der quasi-sinusförmige Stromverlauf.
 An zwei Phasen werden die Ströme über Shunt-Messwiderstände gemessen und dem Mikrocontroller über einen A/D-Wandler mitgeteilt. Dies ist dann die Grundlage für die integrierte Regelung.
 
 \subsection*{Mikrocontroller}
