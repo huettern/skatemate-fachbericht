@@ -117,9 +117,10 @@ Ein weiterer Schwerpunkt der Software ist die Berechnung der Spannungen der einz
 \end{equation}
 
 Die Zellspannungen werden in jedem Durchlauf gemessen und in einem Array abgespeichert. Aus diesen Werten werden die minimale und maximale Spannung berechnet, welche für die verschiedenen Statuswechsel in der Statemachine verwendet werden.
-
+\newpage
 \subsubsection*{Peripherie}
 Um denn gesamten Mikrocontroller zu entlasten, wurden möglichst viele Anwendungen in interne Peripherien ausgelagert. \\
+\\
 \begin{tabularx}{\textwidth}{l|c|X}
 	Peripherie & Port & Verwendung \\ \hline
 	ADC &
@@ -150,7 +151,7 @@ Um denn gesamten Mikrocontroller zu entlasten, wurden möglichst viele Anwendung
 \captionof{table}{Verwendete Peripherie des Mikrocontrollers}
 \label{tab:peripherieBM}
 
-
+\newpage
 \section{Motoransteuerung} \label{SW_Motoransteuerung}
 Die Motoransteuerung regelt das Drehmoment des BLDC-Motors durch Implementation des FOC-Algrorithmus \ref{tGl_FOC}. Im folgenden Kapitel wird beschrieben welche Entwicklungsumgebung zum Einsatz kommt, wie der Code aufgebaut ist und wie der grobe Ablauf des Programms umgesetzt ist.
 
@@ -352,12 +353,14 @@ Der sekundäre \texttt{mc\_foc} Thread ist zuständig für das Datenaufzeichnen 
 \subsubsection*{Shell Thread}
 Der Shell Thread ist eine ChibiOS-eigene Funktion. Er liest die Daten von der seriellen Schnittstelle oder dem USB-Treiber und verarbeitet sie.
 
+\newpage
 \subsection*{Modulübersicht}
 Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ein Modul besteht aus einer C-Quelldatei und optional aus einer Headerdatei. Die Module sind nach ihren Funktionen unterteilt und wie in Tabelle \ref{tab:mod} aufgelistet.\\
+\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	\texttt{main} & Im main-Modul befindet sich die main routine, welche nach der reset-Funktion aufgerufen wird. Darin wird das Betriebssystem und alle anderen Module initialisiert. Im main-Thread werden die Daten des Magic Gloves empfangen und an das \texttt{mc foc}-Modul gesendet. \\ \hline
-	\texttt{usbcdc} & Dieses Modul startet die USB-Schnittstelle und deklariert alle Shell-Funktionen. \\ \hline
+	\texttt{usbcdc} & Startet die USB-Schnittstelle und deklariert alle Shell-Funktionen. \\ \hline
 	\texttt{usbcfg} & In diesem Modul werden die USB Endpunkte erstellt und behandelt. Es ist Teil vom ChibiOS und nicht selbst verfasst. \\ \hline
 	\texttt{util} & Das util-Modul stellt verschiedene Module zur Verfügung. Wichtig für die Motoransteuerung sind die darin enthaltenen Trigonometriemethoden wie schnelle arcus-Tangens-Berechnungen. \\ \hline
 	\texttt{drv8301} & Die Initialisierung des FET-Treiber-ICs geschieht in diesem Modul. Es beinhaltet auch alle SPI-Registerdefinitionen. Die default-Werte sind in der init-Funktion enthalten. \\ \hline
@@ -369,11 +372,12 @@ Zur Übersichtlichkeit und Wartbarkeit ist die Software in Module unterteilt. Ei
 
 \subsection*{Headerübersicht}
 Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdateien untergebracht. Eine Liste der wichtigsten Headerdateien ist in Tabelle \ref{tab:header} dargestellt.\\
+\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	\texttt{defs.h} & Globale Definitionen wie Thread-Namen und Stackgrösse, Clockdefinitionen und Debug-Macros. \\ \hline
 	\texttt{chconf.h} & Einstellungen für den ChibiOS-Kernel. \\ \hline
-	\texttt{halconf.h} & Einstellungen für den ChibiOS-HAL-Treiber. Welche Module er verwenden soll. \\ \hline
+	\texttt{halconf.h} & Welche Module der ChibiOS-HAL-Treiber verwenden soll. \\ \hline
 	\texttt{mcuconf.h} & Welche Module für den ChibiOS-HAL-Treiber verwendet werden, verschiedene Clock-Einstellungen. \\ \hline
 	\texttt{stm32f30x.h} & Nur ein Wrapper für die \texttt{STM32F30x standard peripheral} library. \\ \hline
 	\texttt{stm32f30x\_conf.h} & \texttt{STM32F30x standard peripheral} Konfiguration. \\ \hline
@@ -384,6 +388,7 @@ Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdatei
 
 \subsection*{Bibliotheken}
 Einige Programmfunktionen wurden aus existierenden Bibliotheken verwendet. Alle verwendeten externen Libraries sind in der Tabelle \ref{tab:lib} aufgelistet.\\
+\\
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	CMSIS &  Der Cortex-Mikrocontroller-Software-Interface-Standard CMSIS stellt eine DSP-Library zur Verfügung, mit der effizienter Gebrauch der DSP-Instruktionen und der FPU gemacht werden kann. Trigonometrische Funktionen und Transformationen werden durch CMSIS realisiert. \\ \hline

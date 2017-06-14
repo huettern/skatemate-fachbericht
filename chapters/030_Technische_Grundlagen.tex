@@ -8,7 +8,7 @@ Das Projekt Commute von Skatemate kann in drei Grundbereiche unterteilt werden: 
 In den folgenden Unterkapitel werden diese drei Bereiche und die dazugehörigen Begriffe detaillierter erläutert. Die intuitive Bedienung des Longboards geschieht über eine Fingerbewegung, welche dank des Magic Gloves gemessen werden kann. Der Motor wird mithilfe der feldorientierten Regelung (field oriented controll FOC) angesteuert, mit dieser Regelungstechnik können Wechselgrössen elegant gesteuert werden. Die Stromversorgung verfügt über ein eigens dazu konzipiertes Akkuladegerät. 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth, keepaspectratio]{images/GrobkonzeptBsb.png}
+	\includegraphics[width=0.85\linewidth, keepaspectratio]{images/GrobkonzeptBsb.png}
 	\caption[Blockschaltbild Grobkonzept]{Blockschaltbild Grobkonzept}
 	\label{fig:grobkonzeptblockschaltbildgrob}
 \end{figure}
@@ -62,6 +62,7 @@ Zur Ansteuerung gibt es grob unterteilt zwei verschiedene Arten, die Kommutierun
 \end{center}
 
 Bei der ungesteuerten Kommutierung (Blockkommutierung) wird der Motor als Schrittmotor genutzt. Dabei folgt die Rotorposition der Steuerung. Diese Variante ist für ein gleichmässig rollendes Longboard ungeeignet, da der Schrittmotor nicht durchgehend, sondern immer nur schrittweise dreht. \\
+\\
 Für ein gleichmässiges Drehen muss die Kommutierung also abhängig von der Rotorposition erfolgen (geführte Kommutierung, Sinus-Kommutierung). Dabei reagiert die Steuerung auf die effektive Rotorposition und passt sich dieser an. Am einfachsten wäre dies mit Sensoren. Da der Motor jedoch über keine Sensoren verfügt, muss er über eine sensorlos gesteuerte Kommutierung angesteuert werden. Dies funktioniert jedoch nur ab einer Mindestdrehzahl wirklich gut. Zum Anfahren muss der Motor speziell angesteuert werden. \\
 Bei der Feldorientierte Regelung  werden die Spannungen zur Steuerung aktiv der Rotorlage angepasst. Dabei kann zwischen sensorgesteuerter und sensorloser Regelung unterschieden werden. Bei der sensorlosen Regelung muss wiederum zum Anfahren eine zusätzliche Ansteuerung erfolgen. Kann die Anfangsposition ausreichend genau geschätzt werden, läuft der Motor auch bei tiefen Geschwindigkeiten gleichmässig, da er genauer geregelt werden kann. Dies entspricht den Anforderungen für das Commute, da ein sanftes Anfahren sehr wichtig ist. Die FOC als auch die Anfahr-Ansteuerung ist im Kapitel \ref{tGl_FOC} erklärt.\\
 Ausgeführt wird die FOC auf einem Mikrocontroller. Mittels RF-Modul wird die Sollbeschleunigung empfangen. Eine Halbbrücke mit FET-Treibern (siehe Kapitel \ref{tGl_HBrugg}) setzt  die gewünschte Motorsteuerung um. Zur Übersicht sind diese Elemente im Blockschaltbild Abbildung \ref{fig:grobkonzeptblockschaltbilddetailliert} dargestellt. 
@@ -364,7 +365,7 @@ Grundsätzlich werden nun periodisch die Ströme gemessen, clarke-transformiert 
 \label{tGl_HBrugg}
 Wie in Abbildung \ref{fig:BLDC} auf Seite \pageref{fig:BLDC} zu sehen ist, muss am Motor eine sinusförmige Spannung anliegen. Die FOC-Berechnungen aus Kapitel \ref{tGl_FOC} ergeben zeitdiskrete Spannungswerte. Diese werden mit der Raumvektor-PWM Methode in PWM Signale umgewandelt. Die Signale werden mit der Leistungsstufe ausgegeben. Die Leistungsstufe besteht aus drei Halbbrücken mit je zwei N-Kanal MOSFETs (Abbildung \ref{fig:hbridge}). 
 \begin{center}
-	\begin{circuitikz}[scale=2]
+	\begin{circuitikz}[scale=1.8]
 		\draw[color=black]
 		% Fet, Fet and Resistor
 		(0,1) node[nigfete] (nmos1) {}
@@ -412,9 +413,7 @@ Wie in Abbildung \ref{fig:BLDC} auf Seite \pageref{fig:BLDC} zu sehen ist, muss 
 	\label{fig:hbridge}
 \end{center}
 
-Mit den sogenannten High-Side-MOSFETs kann jede Phase einzeln auf die Batteriespannung geschaltet werden. Die Low-Side-FETs arbeiten symmetrisch dazu und können die Phase auf Batteriemasse schalten. Durch die berechneten PWM kann so ein dreiphasiger Sinus approximiert werden. 
-
-Damit nicht gleichzeitig die High- und Low-Side-FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine Totzeit-Schaltung eingebaut. Wird der eine FET ausgeschaltet, sind für eine kurze Zeit beide ausgeschaltet, bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird Deadtime genannt.
+Mit den sogenannten High-Side-MOSFETs kann jede Phase einzeln auf die Batteriespannung geschaltet werden. Die Low-Side-FETs arbeiten symmetrisch dazu und können die Phase auf Batteriemasse schalten. Durch die berechneten PWM kann so ein dreiphasiger Sinus approximiert werden. Damit nicht gleichzeitig die High- und Low-Side-FETs einer Phase eingeschaltet sind, was zu einem Kurzschluss führen würde, ist im Treiber IC eine Totzeit-Schaltung eingebaut. Wird der eine FET ausgeschaltet, sind für eine kurze Zeit beide ausgeschaltet, bevor der nächste eingeschaltet werden kann. Dieses Verfahren wird Deadtime genannt.
 
 \subsection{Funkübertragung}
 Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert auf 2.4GHz in einem extrem einfachen proprietären Protokoll. Für dieses Projekt wurde der erste von 83 möglichen Datenkanälen genutzt. Die genaue Übertragungsfrequenz ist somit 2,401GHz. Die folgende Tabelle wurde sinngemäss aus dem Datenblatt des Funkmoduls übernommen und zeigt den Aufbau der übermittelten Pakete, wie sie für dieses Projekt aus den Einstellungen des Moduls gesendet werden.
