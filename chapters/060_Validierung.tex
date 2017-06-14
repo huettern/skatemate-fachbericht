@@ -25,6 +25,73 @@ Für die Validierung des Magic Glove wurde eine Hand 3D-gedruckt und ein seperat
 	\caption{Empfänger zur Validierung des Magic Glove}
 	\label{fig:statediagrammbatteri}
 \end{figure}
+Für den Test der Schaltung wurde der Magic Glove mit der internen Batterie gespiesen. Somit kann gewährleistet werden, dass sich die Schaltung auch im Einsatz nicht anders verhalten wird.
+
+Hardware
+\begin{itemize}
+	\item Validierung Batteriemanagement
+	\item Aussteuerung Analogteil
+\end{itemize}
+Software
+\begin{itemize}
+	\item Validierung ADC-Wandler
+	\item Übertragungsgeschwindigkeit RFM75
+\end{itemize}
+
+\subsubsection*{Validierung Batteriemanagement}
+Zum Testen der Ladeschaltung auf dem Magic Glove wurde die verwendete Li-Ionen-Zelle mit einem Lastwiderstand auf 20\% entladen und dann eine Spannung von 5 Volt an den Schaltungsteil angelegt. Nach 6 Stunden wird die Spannung des Akkumulators gemessen.
+% befand sich die Akkumulatorenspannung auf 4.15 Volt.
+	\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Gemessene Akkuzelle (Entladen) & 3.72 V \\ \hline
+		Gemessene Spannung nach 6h & 4.15V \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messung Übertragungsgeschwindigkeit RFM75 Resultate}
+	\label{tab:MagicGlovevalid1}
+\end{center}
+
+\subsubsection*{Aussteuerung Analogteil}
+Um die Aussteuerung des Operationsverstärkers im Analogteil zu messen, wurde einerseits mit dem Oszilloskop die Spannung am ADC-Eingang gemessen und andererseits der gemessene Wert via UART-Kommunikation an den Computer gesendet.
+Die maximale Aussteuerung die mit dem Operationsverstärker erreicht werden konnte, beträgt 3.03V. Dies entspricht einer Aussteuerung von 91.7\% am ADC-Eingang, falls dessen Referenz auf genau 3.3V ist. 
+\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Gemessene min. Spannung & 21.7mV \\ \hline
+		Gemessene max. Spannung & 3.03V \\ \hline
+	\end{tabular} 
+	\captionof{table}{ADC-Messung Magic Glove}
+	\label{tab:MagicGlovevalid2}
+\end{center}
+
+\subsubsection*{Validierung ADC-Wandler}
+Für die Validierung der Software wurde ein seperater Empfänger mit einem Arduino Nano gebaut. Dieser kann über USB angesteuert werden und sendet die gemessenen Werte über UART an den angeschlossenen Computer.
+Nach der Aussteuerung wurde der Flex-Sensor an mehrere vordefinierte Positionen bewegt. 
+%er dazu parallel gemessene numerische Wert auf dem ADC-Eingang war 939. 
+%Da die Werte anschliessend mit einem Faktor 0.25 verkleinert werden, kann der Flex-Sensor die Schaltung nahezu komplett aussteuern.
+\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Kleinster nummerischer ADC-Wert & 7 \\ \hline
+		Höchster nummerischer ADC-Wert & 256 \\ \hline
+	\end{tabular} 
+	\captionof{table}{ADC-Messung Magic Glove}
+	\label{tab:MagicGlovevalid2}
+\end{center}
+
+\subsubsection*{Übertragungsgeschwindigkeit RFM75}
+Für diesen Test wurde auf dem Empfänger-PCB eine LED an- beziehungsweise ausgeschaltet. Dieser Puls wurde dann wiederum mit dem Oszilloskop gemessen. Ist die daraus entstehende Höchstfrequenz höher als die gewünschte Übertragungsgeschwindigkeit, 
+kann problemlos die erforderliche Datenmenge gesendet werden.
+\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Gewünschte Sendefrequenz & 100 Samples/Sekunde \\ \hline
+		Gemessene Zeit zwischen Paketen & 3.58ms \\ \hline
+		Resultierende Empfangsfrequenz & ca. 279 Samples/Sekunde \\ \hline
+	\end{tabular} 
+	\captionof{table}{Messung Übertragungsgeschwindigkeit RFM75 Resultate}
+	\label{tab:MagicGlovevalid3}
+\end{center}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Stromversorgung
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -227,7 +294,7 @@ Um reproduzierbare Ergebnisse zu erzielen, wird die Motoransteuerung auf einem P
 Die FETs werden der Reihe nach von der Software eingeschaltet. Zum Test der FETs wird am Ausgang ein Widerstand auf Masse geschaltet. So kann die Spannung am Ausgang gemessen und aufgezeichnet werden. Zusätzlich wird die Gatespannung gemessen.
 
 \begin{center}
-	\begin{tabular}{|c|c|}
+	\begin{tabular}{l|c}
 		\hline 
 		Versorgungsspannung & $15V$ \\ \hline
 		Lastwiderstand & $1k\Omega$ \\ \hline
@@ -246,11 +313,12 @@ Zur Gunsten der Übersichtlichkeit wird nur die Messung eines FETs dargestellt.
 	\label{fig:hsfet}
 \end{figure}
 \begin{center}
-	\begin{tabular}{|l|l|l|}
+	\begin{tabular}{l|l|l}
 		\hline 
 		Kanal 1 & High FET A Gate & Mit 10x Abschwächung\\ \hline
 		Kanal 2 & Spannung Phase A & {}\\ \hline
 	\end{tabular}
+	\captionof{table}{Scopeeinstellungen}
 \end{center}
 
 Der Kanal 1 zeigt die Steuerspannung am Gate des FETs. Sie wird vom Treiber IC erzeugt und beträgt im eingeschalteten Zustand 24V, das sind rund 7V Gate-Source Spannung. Dies versichert ein schneller Durchschalten des FETs. Erkennbar ist dies an der schnellen Flank am Ausgang der Halbbrücke, zu sehen auf Kanal 4.
@@ -259,7 +327,7 @@ Der Kanal 1 zeigt die Steuerspannung am Gate des FETs. Sie wird vom Treiber IC e
 Ist der Mikrocontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann eine Spannung an die Ausgänge der H-Brücke gegeben und am Ausgang der Spannungsteiler die Spannung gemessen werden. Diese darf bei einem bestimmten Eingangsspannungsbereich die Mikrocontrollerspeisung nicht überschreiten.
 
 \begin{center}
-	\begin{tabular}{|c|c|}
+	\begin{tabular}{l|c}
 		\hline 
 		Versorgungsspannungsbereich & $0$ bis $20V$ \\ \hline
 		Mikrocontrollerspeisung & $3.3V$ \\ \hline
@@ -270,8 +338,7 @@ Ist der Mikrocontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann e
 \end{center}
 
 \begin{center}
-	\begin{tabular}{|l|l|l|}
-		\hline 
+	\begin{tabular}{l|l|l}
 		Spannung an Phase & Spannung gemessen am Mikrocontroller & Faktor\\ \hline
 		5V & 0.268V & 0.0536\\ \hline
 		10V & 0.536V & 0.0536\\ \hline
@@ -289,7 +356,7 @@ Die Spannungen gemessen nach den Spannungsteiler entsprechen exakt dem angelegte
 Über die Shell des Mikrocontrollers werden alle gemessenen Spannungen periodisch ausgegeben. Um die Spannungen zu messen, werden die FETs ausgeschalten und eine Spannung an den Ausgängen angelegt. Um die Strommessung zu validieren, werden die Low-Side-FETs eingeschalten und ein Strom an den Ausgängen eingespiesen. So kann der gesamte Signalpfad der Messungen validiert werden.
 
 \begin{center}
-	\begin{tabular}{|c|c|}
+	\begin{tabular}{l|c}
 		\hline 
 		Testspannung & $0$ bis $20V$ \\ \hline
 		Teststrom & $0$ bis $2A$ \\ \hline
@@ -299,8 +366,7 @@ Die Spannungen gemessen nach den Spannungsteiler entsprechen exakt dem angelegte
 \end{center}
 
 \begin{center}
-	\begin{tabular}{|l|l|}
-		\hline 
+	\begin{tabular}{l|l} 
 		Spannung an Phase & Spannung gemessen vom Mikrocontroller \\ \hline
 		5V & 3.7V\\ \hline
 		10V & 8.5V\\ \hline
@@ -314,8 +380,7 @@ Die Spannungen gemessen nach den Spannungsteiler entsprechen exakt dem angelegte
 Die Spannungswerte weichen stark von den Sollwerten ab. Dies ist aber nicht weiter tragisch, da viel mehr der Spannungsunterschied von relevanz ist. Zudem wird bim FOC Verfahren nur die Versorgungsspannung gemessen.
 
 \begin{center}
-	\begin{tabular}{|l|l|}
-		\hline 
+	\begin{tabular}{l|l}
 		Strom & Gemessen vom Mikrocontroller \\ \hline
 		0.5A & 0.587A\\ \hline
 		1A & 1.007A\\ \hline
@@ -344,7 +409,7 @@ Im unteren Plot der Abbildung \ref{fig:svpwm} ist sehr gut der dreiphasige Sinus
 Nun wird der Motor zwangskommutiert. Das heisst, dass wieder eine sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet und auf die H-Brücke geführt wird. Der Motor dreht nun mit einer konstanter Drehzahl. Die Ausgangswerte der Positions- und Geschwindigkeitsbeobachter werden erneut aufgezeichnet und mit dem Computer ausgewertet.
 
 \begin{center}
-	\begin{tabular}{|c|c|}
+	\begin{tabular}{l|c}
 		\hline 
 		$v_{d,set}$ & $0.0$ \\ \hline
 		$v_{q,set}$ & $0.07$ \\ \hline
@@ -377,7 +442,7 @@ Die Welligkeit wird vor dem Verwendung für den Stromregler tiefpassgefiltert.
 Der letzte Validierungsschritt für die Motorsteuerung auf dem Prüfstand ist die Überprüfung der D und Q Stromregler. Wie bei Validierungsschritt \ref{val:obs} werden die Daten der Regler auf dem Mikrocontroller zwischengespeichert und anschliessend auf dem Computer dargestellt. Bei dieser Validierung wird der Motor im Closed-Loop-Modus betrieben. Es wird softwaremässig ein Sollwertsprung ausgeführt.
 
 \begin{center}
-	\begin{tabular}{|c|c|}
+	\begin{tabular}{l|c}
 		\hline 
 		$i_{d,set}$ & $0$ \\ \hline
 		$i_{q,set}$ & 3 auf 5 \\ \hline

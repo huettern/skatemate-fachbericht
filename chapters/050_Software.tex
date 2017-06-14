@@ -5,7 +5,7 @@ Die Software besteht aus drei unterschiedlichen Teilen mit separaten Teilaufgabe
 Die Software des Magic Glove ist um eine einfache Bedienung zu garantieren, sehr simpel aufgebaut. Sie misst in periodischen Abständen von 10ms die Beugung des Fingers des Piloten und übermittelt diesen Wert via eingebautem Drahtlos-Modul zur Motorensteuerung, welche die Motordrehzahl entsprechend anpasst. Ausserdem kann durch Betätigen des Buttons auf der Platine der Batteriestand des Longboards auf den acht angebrachten LED's dargestellt werden. Die Steuerung merkt automatisch, wann die Verbindung zum Board verloren ist, stellt diese aber wieder her, sobald das Board wieder in Reichweite des Magic Gloves ist.\\
 \subsection*{Entwicklungsumgebung}
 \begin{center}
-	\begin{tabular}{ | l | l | }
+	\begin{tabular}{  l | l  }
 		\hline
 		Compiler & AVR GCC \\ \hline
 		IDE für Debugging & ATMEL Studio \\ \hline
@@ -20,11 +20,12 @@ Die Programmfunktionalität des Magic Glove ist in verschiedene C-Module unterge
 	Name & Beschreibung \\ \hline
 	\texttt{rfm7x.c} & Enthält die Methoden und gewisse Konstanten für die Benutzung des RFM75-Moduls. \\ \hline
 	\texttt{spi.c} & Enthält die Logik für die SPI-Schnittstelle des Mikrocontrollers. \\ \hline
-	\texttt{main.c} & Enthält den eigentlichen Programmablauf der Steuerung. Beschrieben in \ref{MagicGloveCode} 
-	\label{tab:ModulesMagicGlove}
+	\texttt{main.c} & Enthält den eigentlichen Programmablauf der Steuerung. Beschrieben in \ref{MagicGloveCode} \\ 
+	\hline
 \end{tabularx}
-\end{center}
 \captionof{table}{Magic Glove: C-Module}
+	\label{tab:ModulesMagicGlove}
+\end{center}
 \subsection*{Headerübersicht}
 Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdateien untergebracht. Eine Liste der wichtigsten Headerdateien ist in Tabelle \ref{tab:HeadersMagicGlove} dargestellt.
 \begin{center}
@@ -33,21 +34,24 @@ Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdatei
 	\texttt{rfm7x.h} & Enthält die Funktionsdefinitionen und spezifischen Einstellungen für das RFM75-Modul. \\ \hline
 	\texttt{rfm7x{\_}config.h} & Enthält die Konfigurationseinstellungen welche bei der Initialisierung auf das RFM75-Modul geladen werden. \\ \hline
 	\texttt{spi.h} & Speichert die Einstellungen der SPI für den verwendeten Atmega-Chip. \\ \hline
-	\texttt{asf.h} & Automatisch generierte Header-Datei des Atmel Software Frameworks.
-	\label{tab:HeadersMagicGlove}
+	\texttt{asf.h} & Automatisch generierte Header-Datei des Atmel Software Frameworks. \\
+	\hline
 \end{tabularx}
-\end{center}
 \captionof{table}{Magic Glove: Header-Dateien}
+	\label{tab:HeadersMagicGlove}
+\end{center}
 \subsection*{Libraries}
 Die Ansteuerung des RFM75-Modules wurde mittels einer existierenden Library implementiert. Alle verwendeten externen Libraries sind in der Tabelle \ref{tab:libMagicGLove} aufgelistet.\\
 \begin{center}
 \begin{tabularx}{\textwidth}{l|X|l}
-	Name & Beschreibung & URL \\ \hline
+	Name & Beschreibung & 
+	 \\ \hline
 	\texttt{RFM7x} &  Diese Library ermöglicht unter anderem die Ansteuerung des RFM75-Moduls und ermöglicht eine problemlose Ansteuerung desselben. Die Library ist unter der MIT-Lizenz verfügbar und somit frei weiterzuverwenden. & https://github.com/jnk0le/RFM7x-lib \\
-	\label{tab:libMagicGLove}
+	\hline
 \end{tabularx}
-\end{center}
+	\label{tab:libMagicGLove}
 \captionof{table}{Magic Glove: Übersicht über externe Libraries}
+\end{center}
 \newpage
 \subsection*{Programmablauf}
 Der Code auf dem ATMega328PB-AU sieht folgendermassen aus:
@@ -70,32 +74,26 @@ Der Code auf dem ATMega328PB-AU sieht folgendermassen aus:
 	\captionof{figure}{Ablauf des Magic Glove C-Code}
 	\label{fig:fw_adc}
 \end{center}
-<<<<<<< HEAD
 \section{Stromversorgung} \label{SW_Stromversorgung}
 Mit der Software zum Battery Management werden wichtige Punkte geregelt, um ein langes Leben der Akkuzellen zu gewährleisten. Darunter gehören sowohl über- als auch unter- Spannungsschutz sowie ausbalancieren der einzelnen Zellenspannungen beim Laden. \\
 Der aktuelle Ladevorgang wird über drei verschiedenen LED’s angezeigt. Dabei zeigen diese den Constant Current (CC), Constant Voltage (CV) und den vollen Zustand (off) an. Diese können als Laden (CC, LED1) Betriebsbereit (CV, LED2) und vollständig geladen (off, LED3) interpretiert werden. 
 
 \subsubsection*{Entwicklungsumgebung}
 \begin{center}
-	\begin{tabular}{ | l | l | }
+	\begin{tabular}{  l | l  }
 		\hline
 		Compiler & AVR GCC \\ \hline
 		IDE für Debugging & ATMEL Studio \\ \hline
-		Programmer & AVR Dragon \\ \hline
+		Programmer & AVR Dragon \\ 
+		\hline
 	\end{tabular}
 	\captionof{table}{Verwendete SW-Entwicklertools}
 \end{center}
 
-
 \subsubsection*{Programmablauf}
-=======
-
-
-\section{Stromversorgung} 
 \label{SW_Stromversorgung}
 Mit der Software des Battery Managements werden wichtige Punkte geregelt, um ein langes Leben der Akkuzellen zu gewährleisten. Darunter gehören sowohl über- als auch unter- Spannungsschutz sowie Ausbalancieren der einzelnen Zellenspannungen beim Laden. \\
 Der aktuelle Ladevorgang wird über drei verschiedenen LED’s angezeigt. Dabei zeigen diese den Constant Current (CC), Constant Voltage (CV) und den Vollen Zustand (off) an. Diese können als Laden (CC, LED1) Betriebsbereit (CV, LED2) und vollständig geladen (off, LED3) interpretiert werden. \\
->>>>>>> refs/remotes/origin/master
 Das folgende Zustandsdiagramm (Abbildung \ref{fig:statediagrammbatterie}) zeigt den Ablauf der Software auf dem Mikrocontroller.
 \begin{figure} [H]
 	\centering
@@ -155,10 +153,10 @@ Um denn gesamten Mikrocontroller zu entlasten, wurden möglichst viele Anwendung
 \subsection*{Plattform}
 Zum Einsatz kommt ein STM32F303 Mikrocontroller. Er besitzt eine ARM Cortex-M4 CPU mit FPU und DSP Instruktionen. Als RTOS wird ChibiOS verwendet. Es stellt grundlegende Kernel Funktionalitäten zur Verfügung wie Schedulers und Threads sowie einen HAL. Die komplette Firmware ist in C geschrieben.
 
-Die vom Code generierte Dokumentation kann unter \url{https://noah95.github.io/skatemate-sw/} aufgerufen werden.
+Die vom Code generierte Dokumentation kann unter https://noah95.github.io/skatemate-sw/ aufgerufen werden.
 \subsection*{Entwicklungsumgebung}
 \begin{center}
-	\begin{tabular}{ | l | l | }
+	\begin{tabular}{  l | l  }
 		\hline
 		Compiler & arm-none-eabi-gcc 5.4.1 20160919 \\ \hline
 		Editor & Sublime Text 3 \\ \hline
@@ -223,7 +221,8 @@ Um dem Mikrocotroller Rechenleistung abzunehmen werden möglichst viele Aufgaben
 	- &
 	- &
 	- &
-	\texttt{USB1} wird initialisiert, aber nur optional verwendet für eine virtuelle serielle Schnittstelle. So kann die Funktion von \texttt{USART3} ohne USB-Seriell-Wandler verwendet werden.
+	\texttt{USB1} wird initialisiert, aber nur optional verwendet für eine virtuelle serielle Schnittstelle. So kann die Funktion von \texttt{USART3} ohne USB-Seriell-Wandler verwendet werden. \\
+	\hline
 \end{tabularx}
 \captionof{table}{Verwendete Peripherie des Mikrocontrollers}
 \label{tab:periph}
@@ -238,7 +237,8 @@ Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers sodass
 	\texttt{main} & Thread & Einlesen der Magic-Glove-Daten \\ \hline
 	\texttt{mcfoc main} & Thread & Statusmaschine für die Motorregelung mit Anfahren und Schutzfunktionen \\ \hline
 	\texttt{mcfoc secondary} & Thread & Zur Aufzeichnung von Regeldaten. Nur zu Debugzwecken \\ \hline
-	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debugzwecken. Eingebaute ChibiOS-Funktion
+	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debugzwecken. Eingebaute ChibiOS-Funktion \\
+	\hline
 \end{tabularx}
 \captionof{table}{Thread und ISR Übersicht}
 \label{tab:israndthreads}
@@ -387,7 +387,7 @@ Einige Programmfunktionen wurden aus existierenden Bibliotheken verwendet. Alle 
 \begin{tabularx}{\textwidth}{l|X}
 	Name & Beschreibung \\ \hline
 	CMSIS &  Der Cortex-Mikrocontroller-Software-Interface-Standard CMSIS stellt eine DSP-Library zur Verfügung, mit der effizienter Gebrauch der DSP-Instruktionen und der FPU gemacht werden kann. Trigonometrische Funktionen und Transformationen werden durch CMSIS realisiert. \\ \hline
-	ChibiOS & Realtime Betriebssystem: \url{www.chibios.org} \\ \hline
+	ChibiOS & Realtime Betriebssystem: www.chibios.org \\ \hline
 	STM32F30x std periph library & Der HAL von ChibiOS ist nicht genug flexibel für die spezifische Anwendung der Timer und ADC. Die Standard-Peripheral-Library von ST stellt eine einfache, prozessorgebundene Hardware-Abstraktion zur Verfügung.  \\ \hline
 \end{tabularx}
 \captionof{table}{Übersicht über alle verwendeten externen Libraries}

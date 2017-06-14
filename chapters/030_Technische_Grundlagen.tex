@@ -38,23 +38,22 @@ Als Antrieb ist der OX1 2-10 Motor vorgegeben. Dies ist ein Bürstenloser-Gleich
 \\
 Zur Ansteuerung gibt es grob unterteilt zwei verschiedene Arten, die Kommutierung und die Feldorientierte Regelung \cite{BLDC}. Die Kommutierung wiederum kann auf zwei verschiedene Arten erfolgen, ungesteuert (Blockkommutierung) oder gesteuert (Sinus-Kommutierung). Diese resultierenden drei Ansteuerungsmöglichkeiten sind in der Tabelle \ref{tabMotcontrVarProCon} zur Übersicht dargestellt und nachfolgend etwas genauer erläutert. 
 \begin{center}
-	\begin{tabularx}{\textwidth}{|c|X|X|}
+	\begin{tabularx}{\textwidth}{l|X|X}
+		Regelungsart & Vorteile & Nachteile \\ 
 		\hline 
-		\textbf{Regelungsart} & \textbf{Vorteile} & \textbf{Nachteile} \\ 
+		Blockkommutierung & -einfach & -schlechte Effizienz (eine Spule nicht gebraucht) 
+		
+		-Drehmoment-Rippel \\
 		\hline 
-		\textbf{Blockkommutierung} & einfach & schlechte Effizienz (eine Spule nicht gebraucht) 
+		Sinus-Kommutierung & -alle drei Spulen benutzt & -kompliziert
 		
-		Drehmoment-Rippel \\
+		-Anfahren erschwert \\ 
 		\hline 
-		\textbf{Sinus-Kommutierung} & alle drei Spulen benutzt & kompliziert
+		FOC & -dynamisch 
 		
-		Anfahren erschwert \\ 
-		\hline 
-		\textbf{FOC} & dynamisch 
+		-effizient 
 		
-		effizient 
-		
-		durch Trafo einfacher PI-Regler & Einstieg komplex \\ 
+		-durch Trafo einfacher PI-Regler & -Einstieg komplex \\ 
 		\hline 
 	\end{tabularx} 
 	\captionof{table}{Vor- und Nachteile der verschiedenen Regelungsarten}
@@ -121,29 +120,27 @@ In der Abbildung \ref{figAufbauBLDC} ist das Feldverhalten dargestellt.\\
 Angesteuert wird jede Phase über eine Halbbrücke. Die FOC-Regelungsweise (siehe Kapitel \ref{tGl_FOC}) setzt einen sinusförmigen Strom auf jeder Phase voraus, dies jeweils 120\(^\circ\) phasenverschoben. Realisiert wird dieser Strom mittels PWM-Ansteuerung der Halbbrücken. Da der Strom bei einer L-Last das Integral der Spannung ist, lässt sich ein quasi-sinusförmiger Strom generieren. Dargestellt ist dies in der Abbildung \ref{figStromBLDC}.
 
 \begin{center}
-\begin{tabular}{|c|c|}
+\begin{tabular}{l|c}
 \hline 
-\rule[-1ex]{0pt}{2.5ex}  BLDC Motor & Werte  \\ 
+\rule[-1ex]{0pt}{2.5ex} Leerlaufstrom & 1.2A \\ 
 \hline 
-\rule[-1ex]{0pt}{2.5ex} Idle Current & 1.2A \\ 
-\hline 
-\rule[-1ex]{0pt}{2.5ex} Max. Current & 50A \\ 
+\rule[-1ex]{0pt}{2.5ex} Maximalstrom & 50A \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Input Volt. & 2..10 x 3.6 Lipo (25.2V) \\ 
+\rule[-1ex]{0pt}{2.5ex} Eingangsspannung & 2..10 x 3.6 Lipo (25.2V) \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Max. Output & 1815W \\ 
+\rule[-1ex]{0pt}{2.5ex} Maximale Leistung & 1815W \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Max. Pull & 6700g \\ 
+\rule[-1ex]{0pt}{2.5ex} Maximaler Zug & 6700g \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Rated Curren & 42.5A \\ 
+\rule[-1ex]{0pt}{2.5ex} Nennstrom & 42.5A \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Motor Weight & 460g \\ 
+\rule[-1ex]{0pt}{2.5ex} Gewicht & 460g \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Shaft & 8mm \\ 
+\rule[-1ex]{0pt}{2.5ex} Schaft & 8mm \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Motor dimension & \O 50 x 65mm \\ 
+\rule[-1ex]{0pt}{2.5ex} Abmessung & \O 50 x 65mm \\ 
 \hline
-\rule[-1ex]{0pt}{2.5ex} Internal Resistance & 0.0361$\Omega$ \\ 
+\rule[-1ex]{0pt}{2.5ex} Innenwiderstand & 0.0361$\Omega$ \\ 
 \hline	
 \end{tabular} 
 \captionof{table}{BLDC Daten}
@@ -334,7 +331,18 @@ Die Regelung mit einem PI-Regler geschieht im rotorfesten Bezugssystem. Gegensta
 
 \subsubsection{Nonlinear Observer}
 Die Park-Transformation benötigt die momentane Lage des Rotors. Da der vorgegebene Motor nicht über integrierte Sensoren (wie beispielsweise Hall-Sonden) verfügt, die Ansteuerung also sensorlos erfolgt, muss der Winkel der Rotorlage auf einem anderen Weg herausgefunden werden. Dazu gibt es verschiedene Varianten. 
-Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, weil von den Phasenströme auf die Lage des Motors geschlossen werden kann. Beschrieben wird dieses Verfahren in \cite{IEEE_nonlinearObserver} \todo{	-->Noah: keine Weitere Beschreibung ok?} 
+Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobachter, nonlinear observer genannt, vorzunehmen. Dazu wird ein mathematisches Modell des Motors erstellt. Zudem werden die Phasenströme gemessen. Mit diesen Informationen wird eine Simulation des Motors durchgeführt, und aufgrund der aktuellen Parameter wird die Position ermittelt. Dies funktioniert, weil von den Phasenströme auf die Lage des Motors geschlossen werden kann. Beschrieben wird dieses Verfahren in \cite{IEEE_nonlinearObserver}. Grundsätzlich wird in diesem Verfahren folgende Zustandsvariable definiert:
+
+\begin{equation}\label{statevar}
+	x = Li_{\alpha\beta}+\psi_m \left[ \begin{array}{c} cos\theta \\ sin\theta \end{array} \right]
+\end{equation}
+
+Der nichtlineare Beobachter wird nun um die in \ref{statevar} definierte Zustandsvariable erstellt:
+\begin{equation}\label{nonlinobs}
+	\dot{\hat{x}} = y + \frac{\lambda}{2}\eta(\hat{x})[\psi_m^2-||\eta(\hat{x})||^2]
+\end{equation}
+
+Grundsätzlich werden nun periodisch die Ströme gemessen, clarke-transformiert und der Observer ausgeführt. Der Observer braucht dafür sehr exakte Kennzahlen des Motors wie Motorkonstante, Seriewiderstand und Induktivität. So kann der Winkel $\hat{\theta}$ geschätzt werden. Die Berechnungen sind auf dem gewählten Mikrocontroller dank FPU schnell ausgeführt.
 
 \subsection{H-Brücke}
 \label{tGl_HBrugg}
@@ -395,17 +403,17 @@ Damit nicht gleichzeitig die High- und Low-Side FETs einer Phase eingeschaltet s
 \subsection{Funkübertragung}
 Die Funkübertragung wird mit einem RFM75-Modul ermöglicht. Dieses kommuniziert auf 2.4GHz in einem extrem einfachen proprietären Protokoll. Für dieses Projekt wurde der erste von 83 möglichen Datenkanälen genutzt. Die genaue Übertragungsfrequenz ist somit 2,401GHz. Die folgende Tabelle wurde sinngemäss aus dem Datenblatt des Funkmoduls übernommen und zeigt den Aufbau der übermittelten Pakete, wie sie für dieses Projekt aus den Einstellungen des Moduls gesendet werden.
 \begin{center}
-	\begin{tabularx}{0.3\textwidth}{c|c}
+	\begin{tabularx}{0.3\textwidth}{l|c}
 		Inhalt & Grösse \\ \hline
 		Preample& 1 Bit \\ \hline
 		Adresse &3 Byte \\ \hline
-		Payload Length& 6 Bit \\ \hline
-		PID &2 Bit \\ \hline
+		Payload Länge& 6 Bit \\ \hline
+		Paket-ID &2 Bit \\ \hline
 		NO ACK & 1 Bit \\ \hline
 		Daten & 1 Byte \\ \hline
-		CRC & 1 Byte \\
+		CRC & 1 Byte \\ \hline
 	\end{tabularx}
-	\captionof{table}{Packetaufbau des Funkmoduls}
+	\captionof{table}{Paketaufbau des Funkmoduls}
 \end{center}
 
 Das Modul sendet im Stromsparmodus mit einer Datenrate von maximal 1Msps was für eine angestrebte Übertragungsrate von 100 8-Bit-Werten pro Sekunde ausreicht.
