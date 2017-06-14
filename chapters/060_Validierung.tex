@@ -12,8 +12,14 @@ Jeder Hardware-Bestandteil – Brett, Steuerung, Stromversorgung und Motoransteu
 % Brett
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Brett} \label{ValidBrett}
-Das Brett selber, die gepressten Birkenholzplatten, dessen Bearbeitung und die darauf befindliche Stromleiter und Gehäuse wurden einem Stabilitätstest unterzogen, wo geprüft wurde, ob die Komponenten ein Ausreizen der Flexibilität des Brettes vertragen. Die Verbindungen wurden durchgemessen. Es wurde keine Widerstandserhöhung festgestellt. Das Brett selber ist auch nicht zerbrochen.
-
+Das Brett selber, die gepressten Birkenholzplatten, dessen Bearbeitung und die darauf befindliche Stromleiter und Gehäuse wurden einem Stabilitätstest unterzogen, wo geprüft wurde, ob die Komponenten ein Ausreizen der Flexibilität des Brettes vertragen. Die Verbindungen wurden durchgemessen. Es wurde keine Widerstandserhöhung festgestellt. Leider ist das Brett angebrochen nachdem die Bohrungen für
+\begin{center}
+	\begin{tabular}{l|c}
+		\hline 
+		Getestete Belastung & 100kg \\ \hline
+	\end{tabular} 
+	\captionof{table}{Belastung Brett}
+\end{center}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Magic Glove
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,7 +120,7 @@ Software
 	\item Balancing Steuerung
 \end{itemize}
 
-\subsection*{Hardware}
+\subsection{Hardware}
 \subsubsection*{FETs}
 Als erstes werde die FETs des Balancing der Reihe nach eingeschaltet. Dabei wird jeweils eine Spannung von 4.2V zwischen Zellanschluss 6 und 5, Zellanschluss 5 und 4 usw. angeschlossen. Sobald die richtige Spannung angeschlossen ist und derjenige FET durchgeschaltet ist, sollte einen Strom von 100mA fliessen. 
 
@@ -217,7 +223,7 @@ Einen Duty-Cycle von 100\% wird nicht geprüft, da der Highside-Driver nicht daz
 
 Dies konnte aufgrund eines defekten Highside-Driver nicht evaluiert werden. 
 
-\subsection*{Software}
+\subsection{Software}
 Um diese Ergebnisse zu überprüfen, muss am UART des Mikrocontroller ein TTL-Kabel angeschlossen werden.
 
 \subsubsection*{ADC}
@@ -286,7 +292,7 @@ Software
 	\item D und Q Stromregler
 \end{itemize}
 
-\subsection*{Hardware}
+\subsection{Hardware}
 \subsubsection*{FETs}
 Die FETs werden der Reihe nach von der Software eingeschaltet. Zum Test der FETs wird am Ausgang ein Widerstand auf Masse geschaltet. So kann die Spannung am Ausgang gemessen und aufgezeichnet werden. Zusätzlich wird die Gatespannung gemessen.
 
@@ -348,7 +354,7 @@ Ist der Mikrocontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann e
 
 Die Spannungen gemessen nach den Spannungsteiler entsprechen exakt dem angelegten Wert mal dem Teilungsfaktor. Dies ist erstaunlich exakt und völlig innerhalb der Widerstandstoleranzen.
 
-\subsection*{Software}
+\subsection{Software}
 \subsubsection*{Einlesen der Spannungen}
 Über die Shell des Mikrocontrollers werden alle gemessenen Spannungen periodisch ausgegeben. Um die Spannungen zu messen, werden die FETs ausgeschalten und eine Spannung an den Ausgängen angelegt. Um die Strommessung zu validieren, werden die Low-Side-FETs eingeschalten und ein Strom an den Ausgängen eingespiesen. So kann der gesamte Signalpfad der Messungen validiert werden.
 
@@ -368,7 +374,7 @@ Die Spannungen gemessen nach den Spannungsteiler entsprechen exakt dem angelegte
 		5V & 3.7V\\ \hline
 		10V & 8.5V\\ \hline
 		15V & 13.3V\\ \hline
-		20V & 18.0\\ \hline
+		20V & 18.0V\\ \hline
 	\end{tabular} 
 	\captionof{table}{Spannungsmessung Software}
 	\label{tab:spannsw}
@@ -460,7 +466,6 @@ Abbildung \ref{fig:reg} zeigt die Sprungantwort der beiden Stromregler. Beide si
 
 
 \subsubsection*{Fazit}
-\todo{Anderer Titel?}
 Die meisten Komponenten der Motorsteuerung funktionieren. Der Motor dreht jedoch nur bei langsamen Drehzahlen (kleiner 1000rpm) und mit wenig Drehmoment. Der Fehler liegt in der Implementierung des Stromreglers. Vermutlich ist es nur noch eine Sache der richtigen Parameter. Da das Umsetzen sehr zeitaufwändig ist, wurde darauf verzichtet.
 
 
@@ -470,20 +475,30 @@ Die meisten Komponenten der Motorsteuerung funktionieren. Der Motor dreht jedoch
 \section{Gesamtvalidierung} \label{ValidGesamtv}
 Nach eingehendem Testen der einzelnen Komponenten wird das Gesamtprodukt getestet. Dabei wird primär die Lauffähigkeit des Longboards und die Zusammenarbeit der einzelnen Komponenten untereinander untersucht. Insbesondere werden die im Pflichtenheft festgelegten Kriterien überprüft.
 
-\subsubsection*{Steuerung}
-Schaltet der Motor aus, wenn der Benutzer nicht mehr auf dem Longboard steht? Wie gross ist die maximale Distanz, über die die Funkübertragung noch funktioniert?
+\begin{center}
+	\begin{tabular}{p{0.5\textwidth}|p{0.5\textwidth}}
+		Funktioniert und validiert & Nicht funktionsfähig \\ \hline 
+		\begin{itemize}
+			\item Stereung Magic Glove
+			\item Stromversorgung: Verbindung zur Motoransteuerung
+			\item Stromversorgung: Hardware
+			\item Motoransteuerung: Hardware, Positionsbeobachter
+		\end{itemize}
+		&
+		\begin{itemize}
+			\item Stromversorgung: Laderegelung und Balancing
+			\item Motoransteuerung: Motorregelung
+		\end{itemize}
+		\\ \hline
+	\end{tabular} 
+	\captionof{table}{Zusammenfassung der funktionierenden Komponenten}
+	\label{tab:sumblk}
+\end{center}
 
-\subsubsection*{Stromversorgung}
-Funktioniert das aktive Balancing während dem Ladevorgang? Dazu werden die Zellspannungen während eines Ladevorganges überprüft und miteinander verglichen. Existiert der Überstromschutz?
-\todo{gehört zur Stromvers-Valid! > gesamtvalid.frage??}
-
-\subsubsection*{Motoransteuerung}
-Ist das Fahren des Longboards ohne aktivierter Antrieb möglich?
-Da das Longboard nicht fahrtüchtig ist, kann die Gesamtvalidierung nicht gemacht werden, deshalb sind keine Ergebnisse vorhanden.
+Tabelle \ref{tab:sumblk} fasst zusammen welche Komponenten funktionieren und welche nicht. Die Steuerung Magic Glove ist voll funktionsfähig und getestet. Um die Stromversorgung fertigzustellen muss die Regelung des Ladevorgangs in der Software implementiert werden sowie das Balancing. Die Hardware funktioniert und wurde validiert. Dasselbe ist der Fall bei der Motoransteuerung: Die Hardware wurde validiert und funktioniert einwandfrei. Das Einlesen der Ströme sowie das Schätzen der Rotorposition wurde ebenfalls validiert. Der Algorithmus zur Regelung des Motores ist auch implementiert doch war keine Zeit mehr vorhanden für das Einstellen der Parameter. Der Motor dreht langsam und mit viel Drehmoment, doch bei hohen Drehzahlen blokiert er.
 
 \subsubsection*{Alltagstauglichkeit} \label{ValidAlltag}
 Wie bereits angetönt, soll das fertige Board anhand von Testpersonen unterschiedlicher Skate-Erfahrung getestet werden. Die sanfte Anfahrmöglichkeit, die Manövrierfähigkeit und das allgemeine Wohlbefinden des Skaters sind die entscheidenden Kriterien. 
 Testpersonen werden zufällig ausgewählt und die Bewertungen erfolgten nach subjektivem Einschätzen. 
 Da das Longboard nicht fahrtüchtig ist, kann die Alltagstauglichkeit nicht getestet werden.
-\todo{unterschiedliche Zeiten (soll getestet werden - wurden ausgewählt / bereits getestet)}
 
