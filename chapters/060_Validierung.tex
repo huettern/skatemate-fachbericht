@@ -32,22 +32,22 @@ Für die Validierung des Magic Glove wurde eine Hand 3D-gedruckt und ein seperat
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MC
-Damit die Ergebnisse reproduzierbar sind, wird die Stromversorgung auf einem Prüfstand getestet. In der ersten Validierungsphase wird der Print und die Software ohne Akku getestet, welcher dann in der zweiten Valierungsphase angeschlossen wird. \textbf{Achtung:} Da es sich beim Akku um einen Lithium-Polymer Akku handelt, welcher einen Spitzenstrom von bis zu 500A liefert, sollte der Print zuerst auf allfälligen Kurzschluss geprüft werden.   
+Damit die Ergebnisse reproduzierbar sind, wird die Stromversorgung auf einem Prüfstand getestet. In der ersten Validierungsphase wird der Print und die Software ohne Akku getestet, welcher dann in der zweiten Valierungsphase angeschlossen wird. \textbf{Achtung:} Da es sich beim Akku um einen Lithium-Polymer Akku handelt, welcher einen Spitzenstrom von bis zu 500A liefert, sollte der Print zuerst auf allfällige Kurzschlüsse geprüft werden.   
 
-\textbf{Hardware}
+Hardware
 \begin{itemize}
 	\item Funktion der FETs
 	\item Messung der Spannungen
 	\item Ausmessung des Highside-Driver
 \end{itemize}
-\textbf{Software}
+Software
 \begin{itemize}
 	\item Einlesen Spannung und Ströme
 	\item PWM-Regelung
 	\item Balancing Steuerung
 \end{itemize}
 
-\subsection*{Hardware}
+\subsection{Hardware}
 \subsubsection*{FETs}
 Als erstes werde die FETs des Balancing der Reihe nach eingeschaltet. Dabei wird jeweils eine Spannung von 4.2V zwischen Zellanschluss 6 und 5, Zellanschluss 5 und 4 usw. angeschlossen. Sobald die richtige Spannung angeschlossen ist und derjenige FET durchgeschaltet ist, sollte einen Strom von 100mA fliessen. 
 
@@ -55,12 +55,12 @@ Als erstes werde die FETs des Balancing der Reihe nach eingeschaltet. Dabei wird
 	\begin{tabular}{|c|c|}
 		\hline 
 		Messobjekt & Strom \\ \hline
-		Balance Zelle 1 & $**mA$ \\ \hline
-		Balance Zelle 2 & $**mA$ \\ \hline
-		Balance Zelle 3 & $**mA$ \\ \hline
-		Balance Zelle 4 & $**mA$ \\ \hline
-		Balance Zelle 5 & $**mA$ \\ \hline
-		Balance Zelle 6 & $**mA$ \\ \hline
+		Balance Zelle 1 & $103.1mA$ \\ \hline
+		Balance Zelle 2 & $102.7mA$ \\ \hline
+		Balance Zelle 3 & $103.5mA$ \\ \hline
+		Balance Zelle 4 & $103.4mA$ \\ \hline
+		Balance Zelle 5 & $102.9mA$ \\ \hline
+		Balance Zelle 6 & $102.8mA$ \\ \hline
 	\end{tabular} 
 	\captionof{table}{Balancing Strom je Zelle}
 	\label{tab:StromBalancing}
@@ -83,11 +83,13 @@ Nun sollte ein Strom von rund 10A fliessen. Dabei sollten die FETs nur leicht bz
 \begin{center}
 	\begin{tabular}{|c|c|}
 		\hline 
-		Strom & $***A$ \\ \hline
+		Strom & $10.02A$ \\ \hline
 	\end{tabular} 
 	\captionof{table}{Strom durch Motorcontrol-FET}
 	\label{tab:StromMotorcontrollFET}
 \end{center}
+
+Der FET wurde bei diesem Strom kaum merklich warm.
 
 Der FET welcher fürs Laden zuständig ist, wird bei der Ausmessung des Highside-Driver getestet.
 
@@ -148,9 +150,9 @@ Damit der Highside-Driver getestet werden kann, sollte die Batterie entfernt und
 
 Einen Duty-Cycle von 100\% wird nicht geprüft, da der Highside-Driver nicht dazu ausgelegt ist einen FET dauerhaft durch zusteuern.
 
-Dies konnte aufgrund eines defekten Highside-Driver nicht evaluiert werden. \todo{Wenn bis Mittwoch doch möglich, unbedingt Graphik einbinden, dann kann dieser text gelöscht werden}
+Dies konnte aufgrund eines defekten Highside-Driver nicht evaluiert werden. 
 
-\subsection*{Software}
+\subsection{Software}
 Um diese Ergebnisse zu überprüfen, muss am UART des Mikrocontroller ein TTL-Kabel angeschlossen werden.
 
 \subsubsection*{ADC}
@@ -164,13 +166,12 @@ Um die einzelnen Zellen auszulesen, kann die Batterie sowie eine Ladespannung vo
 		Zelle 2 & $4.134V$ & $4.121V$ & $0.013V$ \\ \hline
 		Zelle 3 & $4.065V$ & $4.028V$ & $0.037V$ \\ \hline
 		Zelle 4 & $4.117V$ & $4.106V$ & $0.011V$ \\ \hline
-		Zelle 5 & $4.132V$ & $4.131B$ & $0.001V$ \\ \hline
+		Zelle 5 & $4.132V$ & $4.131V$ & $0.001V$ \\ \hline
 		Zelle 6 & $4.131V$ & $4.111V$ & $0.020V$ \\ \hline
-		Ladespannung & $***$ & $***$ & $***$ \\ \hline
-		Strom & $***$ & $***$ & $***$ \\ \hline
+		Ladespannung & $2.113V$ & $2.105V$ & $0.008$ \\ \hline
 	\end{tabular} 
-	\captionof{table}{Ladestrom bei verschiedenen Duty-Cycle}
-	\label{tab:LadestromHighsideDriver}
+	\captionof{table}{gemessene Spannungen}
+	\label{tab:Spannungengemessen}
 \end{center}
 
 All diese Werte liegen innerhalb der Toleranz des ADCs des Mikrocontrollers und sind somit genug genau.
@@ -183,16 +184,19 @@ Um zu überprüfen wird Software-Seitig ein vordefinierter Strom eingestellt. Da
 		Teststrom & $1A$ \\ \hline
 		${f}_{PWM}$ & $32kH$ \\ \hline
 	\end{tabular} 
-	\captionof{table}{Ladestrom bei verschiedenen Duty-Cycle}
+	\captionof{table}{Vorgabe PWM}
 	\label{tab:LadestromHighsideDriver}
 \end{center}
 
-\todo{Hier muss noch ein KO-bild eingefügt werden.} 
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/PWM.jpg}
+	\caption{PWM Mikrocontroller bei 50\% Duty-Cycle}
+	\label{fig:PWM uC}
+\end{figure}
 
 \subsubsection{Balancing-Regelung}
 Für diese Validierung wird jeweils eine Spannung an den Zellen Anschlüssen angeschlossen. Dabei wird überprüft, ob die Software bei den jeweiligen Zellen die FETs durchsteuert, um  die gleiche Spannung wie bei den anderen Zellen zu erreichen.
-
-\todo{Wie sollte dies bewiesen werden, das es Validiert wurde?}
 
 
 %\begin{itemize}
