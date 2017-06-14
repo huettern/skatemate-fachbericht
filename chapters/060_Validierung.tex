@@ -166,14 +166,14 @@ Der FET wurde bei diesem Strom kaum merklich warm.
 Der FET welcher fürs Laden zuständig ist, wird bei der Ausmessung des Highside-Driver getestet.
 
 \subsubsection*{Spannungsmessung}
-Nun werden die einzelnen Spannungsteiler ausgemessen. Dabei wird am Balancing Anschluss die einzelnen Zellen angeschlossen. Weiter wird die Ladespannung angeschlossen. Nun sollte an den Spannungsteiler gemessen werden. Der Akku sollte voll geladen sein und die Spannungsteiler dürfen die Microcontrollerspeissung nicht überschreiten.
+Nun werden die einzelnen Spannungsteiler ausgemessen. Dabei wird am Balancing Anschluss die einzelnen Zellen angeschlossen. Weiter wird die Ladespannung angeschlossen. Nun sollte an den Spannungsteiler gemessen werden. Der Akku sollte voll geladen sein und die Spannungsteiler dürfen die Mikrocontrollerspeissung nicht überschreiten.
 
 \begin{center}
 	\begin{tabular}{l|c}
 		\hline 
 		Versorgungsspannung Batterieseitig & $25V$ \\ \hline
 		Versorgungsspannung Ladeseitig & $30V$ \\ \hline
-		Versorgungsspannung Mikrokontroller & $5V$ \\ \hline
+		Versorgungsspannung Mikrocontroller & $5V$ \\ \hline
 		Versorgungsspannung Highside-Driver & $15V$ \\ \hline
 		
 	\end{tabular} 
@@ -186,7 +186,7 @@ Um zu Prüfen, ob die Spannungsregelung funktioniert, wurde auch diese gemessen.
 \begin{center}
 	\begin{tabular}{l|c|c}
 		Messobjekt & Gemessene Spannung & Skalierungsfaktor \\ \hline
-		Versorgungsspannung Mikrokontroller & $5.016V$ & - \\ \hline
+		Versorgungsspannung Mikrocontroller & $5.016V$ & - \\ \hline
 		Versorgungsspannung Highside-Driver & $15.65V$ & - \\ \hline
 		Zelle 1 & $4.132V / 4.132V$ & 1 \\ \hline
 		Zelle 2 & $8.268V / 4.077V$ & 0.493 \\ \hline
@@ -406,7 +406,7 @@ Für diese Validierung wird ein sinusförmige Spannung mit konstanter Frequenz u
 	\label{fig:svpwm}
 \end{figure}
 
-Im unteren Plot der Abbildung \ref{fig:svpwm} ist sehr gut der dreiphasige Sinus mit dritter harmonischer Welle zu sehen. Diese Werte entsprechen den Dutycyclen der MOSFETs.
+Im unteren Plot der Abbildung \ref{fig:svpwm} ist sehr gut der dreiphasige Sinus mit dritter harmonischer Welle zu sehen. Diese Werte entsprechen den Duty-Cycle der MOSFETs.
 
 \subsubsection*{Positions- und Geschwindigkeitsbeobachter} \label{val:obs}
 Nun wird der Motor zwangskommutiert. Das heisst, dass wieder eine sinusförmige Spannung mit konstanter Frequenz und Amplitude berechnet und auf die H-Brücke geführt wird. Der Motor dreht nun mit einer konstanter Drehzahl. Die Ausgangswerte der Positions- und Geschwindigkeitsbeobachter werden erneut aufgezeichnet und mit dem Computer ausgewertet.

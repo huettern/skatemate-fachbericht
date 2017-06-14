@@ -7,7 +7,7 @@ Damit der Akku fachgerecht geladen wird, braucht es eine Ladeelektronik, welche 
 	\label{fig:Buck_Converter}
 \end{figure}
 
-Wie man in der vereinfachten Abbildung \ref{fig:Buck_Converter} des Buck-Converter sieht, ist dieser einfach und schnell aufgebaut. Der Widerstand ist ein Shunt-Widerstand, an welchem der Strom gemessen wird. Anhand dieses Stromes wird der PWM, welcher über einen High-Side Treiber am Mosfet anliegt, durch den Mikrocontroller geregelt. Die Taktfrequenz des Clocks liegt bei 31.3kHz und wurde mit der Formel \eqref{eqn:Taktfrequenz} aus dem Datenblatt des Atmega berechnet \cite{DatenblattATMEGA}.
+Wie man in der vereinfachten Abbildung \ref{fig:Buck_Converter} des Buck-Converter sieht, ist dieser einfach und schnell aufgebaut. Der Widerstand ist ein Shunt-Widerstand, an welchem der Strom gemessen wird. Anhand dieses Stromes wird der PWM, welcher über einen High-Side Treiber am MOSFET anliegt, durch den Mikrocontroller geregelt. Die Taktfrequenz des Clocks liegt bei 31.3kHz und wurde mit der Formel \eqref{eqn:Taktfrequenz} aus dem Datenblatt des Atmega berechnet \cite{DatenblattATMEGA}.
 
 \begin{equation}
 f_{ PWM }=\frac { { f }_{ \mu C } }{ N\cdot256 } 
@@ -24,7 +24,7 @@ L=\frac { RF\cdot\left( { V }_{ IN }-{ V }_{ OUT } \right) \cdot\frac { { V }_{ 
 Berechnet wurde eine Spule von rund 120$\mu$H. Eingesetzt wurde eine Coilcraft-Spule mit dem Wert von 100$\mu$H. Da die Batterie wie ein grosser geladener Kondensator wirkt, sind keine all zu grossen Ripple am Ausgang des Buck-Converter zu erwarten.
 
 \subsection*{Selbsterhaltung}
-Wenn das Board voll geladen ist oder die fahrt für mehr als 20min unterbrochen wird, sollte es sich selbstständig herunterfahren und möglichst keinen Strom brauchen. Dafür wurde eine Selbsterhaltungsschaltung entwickelt (Abbildung \ref{fig:Selbsterhaltung}). Sobald beim Mikrocontroller einer von beiden Zustände (langer Stillstand oder voll geladen) eintrifft, wird der N-Kanal Mosfet ausgeschaltet. Somit wird die Speisung auf dem gesamten Print unterbrochen. Dadurch wird die Batterie bei einer längeren Lagerung vor dem zerstören geschützt.
+Wenn das Board voll geladen ist oder die fahrt für mehr als 20min unterbrochen wird, sollte es sich selbstständig herunterfahren und möglichst keinen Strom brauchen. Dafür wurde eine Selbsterhaltungsschaltung entwickelt (Abbildung \ref{fig:Selbsterhaltung}). Sobald beim Mikrocontroller einer von beiden Zustände (langer Stillstand oder voll geladen) eintrifft, wird der N-Kanal MOSFET ausgeschaltet. Somit wird die Speisung auf dem gesamten Print unterbrochen. Dadurch wird die Batterie bei einer längeren Lagerung vor dem zerstören geschützt.
 
 \begin{figure} [H]
 	\centering

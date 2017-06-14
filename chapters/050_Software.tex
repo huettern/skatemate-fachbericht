@@ -1,6 +1,6 @@
 \chapter{Software} \label{Software}
 \section{Überblick}
-Die Software besteht aus drei unterschiedlichen Teilen mit separaten Teilaufgaben (Steuerung, Stromversorgung und Motoransteuerung). Zum einen die Batteriezellenbalancierung und -ladung. Andererseits die eigentliche Motoransteuerung, welche per Drahtlos-Modul mit dem Magic-Glove(Human Interface) verbunden ist. Das reibungslose Zusammenspiel dieser drei Softwarekomponenten ist äusserst kritisch, da jegliche Softwarefehler extrem gefährlich für den Piloten sein können.
+Die Software besteht aus drei unterschiedlichen Teilen mit separaten Teilaufgaben (Steuerung, Stromversorgung und Motoransteuerung). Zum einen die Batteriezellenbalancierung und -ladung. Andererseits die eigentliche Motoransteuerung, welche per Drahtlos-Modul mit dem Magic Glove(Human Interface) verbunden ist. Das reibungslose Zusammenspiel dieser drei Softwarekomponenten ist äusserst kritisch, da jegliche Softwarefehler extrem gefährlich für den Piloten sein können.
 \section{Steuerung - Magic Glove} \label{SW_MagicGlove}
 Die Software des Magic Glove ist um eine einfache Bedienung zu garantieren, sehr simpel aufgebaut. Sie misst in periodischen Abständen von 10ms die Beugung des Fingers des Piloten und übermittelt diesen Wert via eingebautem Drahtlos-Modul zur Motorensteuerung, welche die Motordrehzahl entsprechend anpasst. Ausserdem kann durch Betätigen des Buttons auf der Platine der Batteriestand des Longboards auf den acht angebrachten LED's dargestellt werden. Die Steuerung merkt automatisch, wann die Verbindung zum Board verloren ist, stellt diese aber wieder her, sobald das Board wieder in Reichweite des Magic Gloves ist.\\
 \subsection*{Entwicklungsumgebung}
@@ -33,7 +33,7 @@ Wichtige Einstellungen und Parameter sind zur einfacheren Wartung in Headerdatei
 	Name & Beschreibung \\ \hline
 	\texttt{rfm7x.h} & Enthält die Funktionsdefinitionen und spezifischen Einstellungen für das RFM75-Modul. \\ \hline
 	\texttt{rfm7x{\_}config.h} & Enthält die Konfigurationseinstellungen welche bei der Initialisierung auf das RFM75-Modul geladen werden. \\ \hline
-	\texttt{spi.h} & Speichert die Einstellungen der SPI für den verwendeten Atmega-Chip. \\ \hline
+	\texttt{spi.h} & Speichert die Einstellungen der SPI für den verwendeten ATmega-Chip. \\ \hline
 	\texttt{asf.h} & Automatisch generierte Header-Datei des Atmel Software Frameworks. \\
 	\hline
 \end{tabularx}
@@ -54,7 +54,7 @@ Die Ansteuerung des RFM75-Modules wurde mittels einer existierenden Library impl
 \end{center}
 \newpage
 \subsection*{Programmablauf} \label{MagicGloveCode}
-Der Code auf dem ATMega328PB-AU sieht folgendermassen aus:
+Der Code auf dem ATmega328PB-AU sieht folgendermassen aus:
 \begin{center}    
 	\begin{tikzpicture}[node distance = 1.5cm, auto]
 	\node [block] (InitMCU) {Mikrocontroller initialisieren};
@@ -107,9 +107,9 @@ In diesem Zustand wird der Strom zunehmend auf die maximalen 5A hochgefahren und
 Im Zustand \texttt{Charge\_CV} wird mit der Regelung des Zuführstromes versucht, die Zellenspannung weiterhin auf dem Sollwert von 4.15V zu halten. Dieser Strom nimmt mit der immer weiter fortschreitenden Aufladung der Zellen kontinuierlich ab, bis schliesslich ein unterer Grenzwert von 100mA erreicht wird. An diesem Punkt gilt der Akku als voll geladen und wechselt in den Zustand \texttt{Off}.
 Anders als vielleicht zuerst angenommen bleibt das Board dank der Überbrückung der Selbsthaltung aktiv und zeigt durch die drei leuchtenden LED’s an, dass der Akku voll aufgeladen ist. Sobald  die Spannung des Ladegeräts abfällt, fällt auch die Selbsthaltung ab. Somit ist das Board komplett ausgeschaltet.
 \\\\
-Ein weiterer Schwerpunkt der Software ist die Berechnung der Spannungen der einzelnen Zellen. Die Zellen sind seriell miteinander verbunden. Somit addieren sich die Spannungen an den Ausgängen jeder Zelle bis auf 24,9V auf der sechsten Zelle. Da der AD-Wandler des Mikrocontrollers nur zwischen 0 und 5 Volt messen kann, müssen die Ausgänge der Zellen mit einem Spannungsteiler mit dem Faktor \(\frac 1n\) herunter skaliert werden. Ab der zweiten Spannung sind die Ausgänge jedoch abhängig von den vorherigen Zellen. Um einen korrekten Wert zu erhalten, muss die Differenz inklusive den richtigen Skalierungsfaktoren berechnet werden. Mithilfe dieser Daten kann man für die Spannung der einzelnen Zellen $cell[n]$ folgende Formel herleiten:
+Ein weiterer Schwerpunkt der Software ist die Berechnung der Spannungen der einzelnen Zellen. Die Zellen sind seriell miteinander verbunden. Somit addieren sich die Spannungen an den Ausgängen jeder Zelle bis auf 24,9V auf der sechsten Zelle. Da der AD-Wandler des Mikrocontrollers nur zwischen 0 und 5 Volt messen kann, müssen die Ausgänge der Zellen mit einem Spannungsteiler mit dem Faktor \(\frac 1n\) herunter skaliert werden. Ab der zweiten Spannung sind die Ausgänge jedoch abhängig von den vorherigen Zellen. Um einen korrekten Wert zu erhalten, muss die Differenz inklusive den richtigen Skalierungsfaktoren berechnet werden. Mithilfe dieser Daten kann man für die Spannung der einzelnen Zellen $Zelle[n]$ folgende Formel herleiten:
 \begin{equation}
-	cell[n] = V_{ADC}[n] - V_{ADC}[n-1]
+	Zelle[n] = V_{ADC}[n] - V_{ADC}[n-1]
 	\label{eq:CellNSpannung}
 \end{equation}
 
@@ -178,7 +178,7 @@ Um dem Mikrocotroller Rechenleistung abzunehmen werden möglichst viele Aufgaben
 
 	Die PWM Kanäle schalten, sobald deren Komperator-Wert dem Zählerwert entsprechen. So sind alle PWM-Ausgänge in der Mitte des Pulses zentriert. Alle Kanäle sind komplementär, so wird der Low-Side-FET ausgeschaltet, wenn der High-Side-FET eingeschaltet ist und umgekehrt. Kanäle eins bis drei werden für die drei Phasen verwendet und der Kanal vier zur Triggerung des ADC. 
 
-	Der Dutycycle des vierten Kanals ist auf den kleinsten Wert konfiguriert, so werden die Signale genau in der Mitte des PWM Pulses eingelesen. So wird das \texttt{TIM1-TRGO}-Signal generiert.
+	Der Duty-Cycle des vierten Kanals ist auf den kleinsten Wert konfiguriert, so werden die Signale genau in der Mitte des PWM Pulses eingelesen. So wird das \texttt{TIM1-TRGO}-Signal generiert.
 	\\ \hline
 	ADC1 &
 	- &
@@ -233,7 +233,7 @@ Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers, sodas
 \begin{tabularx}{\textwidth}{l|c|X}
 	Name & Thread/ISR & Verwendung \\ \hline
 	\texttt{ADC ISR} & ISR & FOC Routine und Motor Regelung \\ \hline
-	\texttt{main} & Thread & Einlesen der Magic-Glove-Daten \\ \hline
+	\texttt{main} & Thread & Einlesen der Magic Glove-Daten \\ \hline
 	\texttt{mcfoc main} & Thread & Statusmaschine für die Motorregelung mit Anfahren und Schutzfunktionen \\ \hline
 	\texttt{mcfoc secondary} & Thread & Zur Aufzeichnung von Regeldaten. Nur zu Debugzwecken \\ \hline
 	\texttt{shell} & Thread & Bedient die Konsole. Nur zu Debugzwecken. Eingebaute ChibiOS-Funktion \\
@@ -248,7 +248,7 @@ Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers, sodas
 	    \node [block] (title) {VectorFC ADC3 Interrupt};
 	    \node [block, below of=title] (lock) {Lock System, Clear Flags};
 	    \node [block, below of=lock] (store) {Store Supply voltage and Phase Currents};
-	    \node [block, below of=store] (clark) {Clark transformation};
+	    \node [block, below of=store] (clark) {Clarke transformation};
 	    \node [block, below of=clark] (esti) {run Position and Speed Estimation};
 		\node [draw, diamond, aspect=2, below of=esti] (slowdown) {Slowdown};
 	    \node [block, below of=slowdown] (park) {Park transformation};
@@ -272,8 +272,8 @@ Der Grossteil der Software läuft in der Interruptroutine des AD-Wandlers, sodas
 	\label{fig:fw_adc}
 \end{center}
 
-Vor den Berechnungen wird das Betriebssystem mittels \texttt{chSysLockFromISR} in den I-Locked State geschaltet. So können keine andere Interrupts die Berechnungen unterbrechen und I-Class-API Funktionen sind verfügbar. Die konvertierten Signale werden vom DMA-Buffer in Spannungswerte, respektive Stromwerte umgerechnet und abgespeichert. Die Ströme werden clark-transformiert, sodass der Positions- und Geschwindigkeits Beobachter aufgerufen werden kann. Der Stromregler wird langsamer ausgeführt als die Beobachter. Mit dem Define \texttt{FOC\_CURRENT\_CONTROLLER\_SLOWDOWN} kann dieser Faktor eingestellt werden. \\
-Vor dem Stromregler werden die Messdaten park-transformiert. Der Stromregler wird aufgerufen und danach die berechneten Dutycycles im Timer gesetzt.\\
+Vor den Berechnungen wird das Betriebssystem mittels \texttt{chSysLockFromISR} in den I-Locked State geschaltet. So können keine andere Interrupts die Berechnungen unterbrechen und I-Class-API Funktionen sind verfügbar. Die konvertierten Signale werden vom DMA-Buffer in Spannungswerte, respektive Stromwerte umgerechnet und abgespeichert. Die Ströme werden Clarke-transformiert, sodass der Positions- und Geschwindigkeits Beobachter aufgerufen werden kann. Der Stromregler wird langsamer ausgeführt als die Beobachter. Mit dem Define \texttt{FOC\_CURRENT\_CONTROLLER\_SLOWDOWN} kann dieser Faktor eingestellt werden. \\
+Vor dem Stromregler werden die Messdaten park-transformiert. Der Stromregler wird aufgerufen und danach die berechneten Duty-Cycle im Timer gesetzt.\\
 Am Ende der ISR wird das System aus dem I-Locked State entsperrt.
 
 \subsubsection*{Thread main}
