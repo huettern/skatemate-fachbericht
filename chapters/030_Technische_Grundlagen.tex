@@ -325,10 +325,38 @@ Im Team wurde entschieden, die Winkelschätzung über einen nichtlinearen Beobac
 	x = Li_{\alpha\beta}+\psi_m \left[ \begin{array}{c} cos\theta \\ sin\theta \end{array} \right]
 \end{equation}
 
-Der nichtlineare Beobachter wird nun um die in \ref{statevar} definierte Zustandsvariable erstellt:
+Der nichtlineare Beobachter wird nun um die in (\ref{statevar}) definierte Zustandsvariable erstellt:
 \begin{equation}\label{nonlinobs}
 	\dot{\hat{x}} = y + \frac{\lambda}{2}\eta(\hat{x})[\psi_m^2-||\eta(\hat{x})||^2]
 \end{equation}
+
+Mit der Vektor Funktion
+\begin{equation}\label{vecfun}
+	\eta(x) = x - Li_{\alpha\beta}
+\end{equation}
+
+Durch Vergleich mit (\ref{statevar}) beträgt die euklidische Norm
+\begin{equation}\label{euklnorm}
+	||\eta(x)||^2 = \psi_m^2
+\end{equation}
+
+Durch Ableiten von (\ref{statevar}) und Einsetzen der Motorengleichung (\ref{moteq}) erhält man eine messbare Grösse:
+\begin{equation}\label{moteq}
+	L\dot{i}_{\alpha\beta} = -R_si_{\alpha\beta} + \omega\psi_m\left[ \begin{array}{c} sin\theta \\ -cos\theta \end{array} \right] +v_{\alpha\beta}
+\end{equation}
+\begin{equation}\label{euklnorm}
+	\dot{x} = L\dot{i}_{\alpha\beta}-\omega\psi_m\left[ \begin{array}{c} sin\theta \\ -cos\theta \end{array} \right] = -R_si_{\alpha\beta}+v_{\alpha\beta}
+\end{equation}
+\begin{center}
+	\begin{tabular}{r l}
+		$L$ & Motorinduktivität \\
+		$R_s$ & Motor Innenwiderstand \\
+		$\psi_m$ & Motorkonstante \\
+		$v_{\alpha\beta}$ & Phasenspannungen Clarke-transformiert\\
+		$i_{\alpha\beta}$ & Phasenströme Clarke-transformiert\\
+		$\lambda$ & Verstärkung des Beobachters
+	\end{tabular}
+\end{center}
 
 Grundsätzlich werden nun periodisch die Ströme gemessen, clarke-transformiert und der Observer ausgeführt. Der Observer braucht dafür sehr exakte Kennzahlen des Motors wie Motorkonstante, Seriewiderstand und Induktivität. So kann der Winkel $\hat{\theta}$ geschätzt werden. Die Berechnungen sind auf dem gewählten Mikrocontroller dank FPU schnell ausgeführt.
 
