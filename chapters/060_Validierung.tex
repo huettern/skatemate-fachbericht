@@ -326,14 +326,14 @@ Zur Gunsten der Übersichtlichkeit wird nur die Messung eines FETs (Abb. \ref{fi
 \begin{center}
 	\begin{tabular}{l|l|l}
 		\hline 
-		Kanal 1 & High FET A Gate & Mit 10x Abschwächung\\ \hline
-		Kanal 2 & Spannung Phase A & {}\\ \hline
+		Kanal 3 & High FET A Gate & 10x Abschwächung\\ \hline
+		Kanal 4 & Spannung Phase A & 1x Abschwächung\\ \hline
 	\end{tabular}
 	\captionof{table}{Scopeeinstellungen}
 	\label{tab:MotorFET_Scopeeinstellung}
 \end{center}
 
-Der Kanal 1 zeigt die Steuerspannung am Gate des FETs. Sie wird vom Treiber IC erzeugt und beträgt im eingeschalteten Zustand 24V, das sind rund 7V Gate-Source-Spannung. Dies sichert ein schnelles Durchschalten des FETs. Erkennbar ist dies an der steilen Flanke am Ausgang der Halbbrücke, zu sehen auf Kanal 4.
+Der Kanal 3 zeigt die Steuerspannung am Gate des FETs. Sie wird vom Treiber IC erzeugt und beträgt im eingeschalteten Zustand 24V, das sind rund 7V Gate-Source-Spannung. Dies sichert ein schnelles Durchschalten des FETs. Erkennbar ist dies an der steilen Flanke am Ausgang der Halbbrücke, zu sehen auf Kanal 4.
 
 \subsubsection*{Spannungsmessung}
 Ist der Mikrocontroller im Resetzustand, sind alle FETs ausgeschaltet. So kann eine Spannung an die Ausgänge der Halbbrücke gegeben und am Ausgang der Spannungsteiler die Spannung gemessen werden. Diese darf bei einem bestimmten Eingangsspannungsbereich die Mikrocontroller-Speisung nicht überschreiten. Die Messbedingungen sind in der Tabelle \ref{tab:vmessbed}, die Ergebnisse in der Tabelle \ref{tab:spannteiler} zusammengefasst.
@@ -476,7 +476,7 @@ Abbildung \ref{fig:reg} zeigt die Sprungantwort der beiden Stromregler. Beide si
 
 
 \subsubsection*{Fazit}
-Die meisten Komponenten der Motorsteuerung funktionieren. Der Motor dreht jedoch nur bei langsamen Drehzahlen (kleiner 1000rpm) und mit wenig Drehmoment. Der Fehler liegt in der Implementierung des Stromreglers. Vermutlich ist es eine Sache der richtigen Parameter. Da das Umsetzen sehr zeitaufwändig ist, wurde darauf verzichtet.
+Die meisten Komponenten der Motorsteuerung funktionieren. Der Motor dreht jedoch nur bei langsamen Drehzahlen (kleiner 1000rpm) doch mit hohem Drehmoment. Der Fehler liegt in der Implementierung des Stromreglers. Vermutlich ist es eine Sache der richtigen Parameter. Da das Umsetzen sehr zeitaufwändig ist, wurde auf den Feinschliff verzichtet.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -490,8 +490,7 @@ Nach eingehendem Testen der einzelnen Komponenten wird das Gesamtprodukt geteste
 		Funktioniert und validiert & Nicht funktionsfähig \\ \hline 
 		\begin{itemize}
 			\item Stereung Magic Glove
-			\item Stromversorgung: Verbindung zur Motoransteuerung
-			\item Stromversorgung: Hardware
+			\item Stromversorgung: Hardware, Verbindung zur Motoransteuerung
 			\item Motoransteuerung: Hardware, Positionsbeobachter, SVPWM
 		\end{itemize}
 		&
@@ -505,7 +504,7 @@ Nach eingehendem Testen der einzelnen Komponenten wird das Gesamtprodukt geteste
 	\label{tab:sumblk}
 \end{center}
 
-Tabelle \ref{tab:sumblk} fasst zusammen, welche Komponenten funktionieren und welche nicht. Die Steuerung mittels Magic Glove ist voll funktionsfähig und getestet. Um die Stromversorgung fertigzustellen, muss die Regelung des Ladevorgangs in der Software implementiert werden, sowie das Balancing. %Satz nid fertig...  verbessert werden
+Tabelle \ref{tab:sumblk} fasst zusammen, welche Komponenten funktionieren und welche nicht. Die Steuerung mittels Magic Glove ist voll funktionsfähig und getestet. Um die Stromversorgung fertigzustellen, muss die Regelung des Ladevorgangs in der Software implementiert werden, sowie auch die Implementierung des Balancing.
 Die Hardware funktioniert und wurde validiert. Dasselbe ist der Fall bei der Motoransteuerung: Die Hardware wurde validiert und funktioniert einwandfrei. Das Einlesen der Ströme sowie das Schätzen der Rotorposition wurde ebenfalls validiert. Der Algorithmus zur Regelung des Motors ist auch implementiert, doch war keine Zeit mehr vorhanden für das Einstellen der Parameter. Der Motor dreht langsam und mit viel Drehmoment, doch bei hohen Drehzahlen blockiert er.
 
 \subsubsection*{Alltagstauglichkeit} \label{ValidAlltag}
